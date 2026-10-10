@@ -1,5 +1,4 @@
 import { colorTokens, cssVarOf, hueOf, primitiveColors } from '../../ds/foundations'
-import { isDark } from '../../lib/contrast'
 import { readCssVar } from '../../lib/cssVar'
 import { nbsp } from '../../lib/nbsp'
 import CodeNames from './CodeNames'
@@ -11,6 +10,8 @@ const groupBy = (items, keyOf) =>
     ;(acc[k] ||= []).push(item)
     return acc
   }, {})
+
+const hexOf = cssVar => readCssVar(cssVar).toUpperCase()
 
 export default function ColorsSection() {
   const hues = groupBy(primitiveColors, hueOf)
@@ -27,23 +28,17 @@ export default function ColorsSection() {
           <div key={hue} className="flex flex-col gap-indents-xs">
             <h3 className="text-text-caps text-text-secondary">{hue}</h3>
             <ul className="flex flex-wrap gap-indents-m">
-              {colors.map(c => {
-                const hex = readCssVar(c.cssVar).toUpperCase()
-                return (
-                  <li key={c.cssVar} className="flex flex-col gap-indents-xxs">
-                    <div
-                      className={`flex size-indents-xxl-minus items-end rounded-rounds-l border border-border-default p-indents-xs text-text-grotesk-bold ${
-                        isDark(hex, readCssVar('--bg-default')) ? 'text-text-on-color' : 'text-text-primary'
-                      }`}
-                      style={{ background: `var(${c.cssVar})` }}
-                    >
-                      {hex}
-                    </div>
-                    <CopyButton value={`var(${c.cssVar})`} className="text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
-                    <CodeNames cssVar={c.cssVar} />
-                  </li>
-                )
-              })}
+              {colors.map(c => (
+                <li key={c.cssVar} className="flex flex-col gap-indents-xxs">
+                  <div
+                    className="size-indents-xxl-minus rounded-rounds-l border border-border-default"
+                    style={{ background: `var(${c.cssVar})` }}
+                  />
+                  <span className="px-indents-xxs text-text-grotesk-bold text-text-primary">{hexOf(c.cssVar)}</span>
+                  <CopyButton value={`var(${c.cssVar})`} className="self-start text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
+                  <CodeNames cssVar={c.cssVar} />
+                </li>
+              ))}
             </ul>
           </div>
         ))}
@@ -75,13 +70,15 @@ export default function ColorsSection() {
                       <div className="size-indents-l rounded-rounds-s border border-border-default" style={{ background: `var(${t.cssVar})` }} />
                     </td>
                     <td className="py-indents-xxs">
-                      <CopyButton value={`var(${t.cssVar})`} className="block text-text-grotesk-bold">{t.figma}</CopyButton>
-                      <CodeNames cssVar={t.cssVar} />
+                      <div className="flex flex-col items-start">
+                        <CopyButton value={`var(${t.cssVar})`} className="text-text-grotesk-bold">{t.figma}</CopyButton>
+                        <CodeNames cssVar={t.cssVar} />
+                      </div>
                     </td>
                     <td className="py-indents-xxs">
                       <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>
                     </td>
-                    <td className="py-indents-xxs text-right text-text-grotesk-bold text-text-primary">{readCssVar(t.cssVar).toUpperCase()}</td>
+                    <td className="py-indents-xxs text-right text-text-grotesk-bold text-text-primary">{hexOf(t.cssVar)}</td>
                   </tr>
                 ))}
               </tbody>
