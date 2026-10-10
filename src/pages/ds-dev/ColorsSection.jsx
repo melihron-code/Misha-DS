@@ -26,7 +26,7 @@ export default function ColorsSection() {
         </p>
         {Object.entries(groups).map(([group, colors]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
-            <h3 className="text-heading-h4">{group}</h3>
+            <h3 className="text-heading-h4 text-status-info">{group}</h3>
             {/* 6 equal columns: swatches line up in a grid in both groups.
                 White gets a row of its own, so the six grays fill one full row. */}
             <ul className="grid grid-cols-6 gap-x-indents-xs gap-y-indents-l">
@@ -57,7 +57,7 @@ export default function ColorsSection() {
         </p>
         {Object.entries(tokenGroups).map(([group, tokens]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
-            <h3 className="text-heading-h4">{group}</h3>
+            <h3 className="text-heading-h4 text-status-info">{group}</h3>
             {/* Fixed layout + shared column widths keep columns aligned across all groups. */}
             <table className="w-full table-fixed border-collapse">
               <colgroup>
