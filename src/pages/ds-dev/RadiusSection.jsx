@@ -1,18 +1,27 @@
 import { radiusTokens } from '../../ds/foundations'
 import CodeNames from './CodeNames'
 import TokenRowHeader from './TokenRowHeader'
-import { TOKEN_ROW_CLASS, TOKEN_ROW_COLUMNS } from './tokenRow'
+import { columnsOf, TEXT_LABEL, TOKEN_ROW_CLASS } from './tokenRow'
+
+const COLUMNS = columnsOf(['preview', 'name', 'cssVar', 'primitive'])
+const LABELS = [
+  { text: 'Preview/value', className: 'text-center' },
+  { text: 'Token', className: TEXT_LABEL },
+  { text: 'CSS variable', className: TEXT_LABEL },
+  { text: 'Primitive', className: TEXT_LABEL },
+]
 
 export default function RadiusSection() {
   return (
     <div>
-      <TokenRowHeader />
+      <TokenRowHeader columns={COLUMNS} labels={LABELS} />
       <ul className="flex flex-col">
         {radiusTokens.map(r => (
-          <li key={r.cssVar} className={TOKEN_ROW_CLASS} style={{ gridTemplateColumns: TOKEN_ROW_COLUMNS }}>
-            {/* Example: an indents/XXL (out) square (90 × 90px) with the radius applied. */}
-            <div className={`size-indents-xxl-out bg-accent-highlight ${r.tw}`} />
-            <span className="text-heading-h3">{r.px}px</span>
+          <li key={r.cssVar} className={TOKEN_ROW_CLASS} style={{ gridTemplateColumns: COLUMNS }}>
+            {/* An indents/XXL (out) square (90 × 90px) with the radius applied, value inside. */}
+            <div className={`flex size-indents-xxl-out items-center justify-center bg-accent-highlight text-heading-h4 ${r.tw}`}>
+              {r.px}px
+            </div>
             <span className="whitespace-nowrap px-indents-xxs text-heading-h4">{r.figma}</span>
             {/* Wrapper so the copy button is centered in the row like the other cells. */}
             <div>
