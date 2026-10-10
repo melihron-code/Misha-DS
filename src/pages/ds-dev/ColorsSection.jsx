@@ -45,7 +45,7 @@ export default function ColorsSection() {
                   />
                   {/* Negative margin cancels the copy buttons' padding so all text starts at the swatch edge. */}
                   <div className="-ml-indents-xxs flex flex-col items-start">
-                    <span className="px-indents-xxs text-text-grotesk-bold text-text-primary">{hexOf(c.cssVar)}</span>
+                    <span className="mb-indents-xs px-indents-xxs text-text-grotesk-bold text-text-primary">{hexOf(c.cssVar)}</span>
                     <span className="px-indents-xxs text-text-grotesk-bold">{c.figma.replace('color/', '')}</span>
                     <CodeNames cssVar={c.cssVar} />
                   </div>

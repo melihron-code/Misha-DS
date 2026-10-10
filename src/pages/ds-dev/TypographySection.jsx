@@ -31,7 +31,7 @@ function useRendered(ref, { weight, size, family }) {
 function Spec({ label, figma, rendered }) {
   const ok = rendered === undefined || rendered === figma
   return (
-    <div className="flex flex-col gap-indents-xxxs">
+    <div className="flex flex-col gap-indents-xs">
       <dt className="text-text-caps text-text-secondary">{label}</dt>
       <dd className="text-text-grotesk">
         {figma}
