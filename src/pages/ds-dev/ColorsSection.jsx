@@ -64,19 +64,19 @@ export default function ColorsSection() {
         {Object.entries(tokenGroups).map(([group, tokens]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h3 text-status-info">{group}</h3>
-            {/* Fixed layout + shared column widths keep columns aligned across all groups. */}
-            {/* The name column is a third of size/base with minus indents/XXL- (84px). The table is
-                84px + 200px (2 × indents/XXL (out) + indents/M) narrower than the content, which
-                keeps the hex values close to the variable they belong to. */}
+            {/* Fixed layout + shared column widths keep columns aligned across all groups:
+                swatch | name (a third of size/base with minus indents/XXL-) |
+                CSS variable (size/base with ÷ 6 + indents/L) | primitive (the rest).
+                The table is 84px + 200px (2 × indents/XXL (out) + indents/M) narrower than the content. */}
             <table className="table-fixed border-collapse" style={{ width: 'calc(100% - var(--indents-xxl-minus) - var(--indents-xxl-out) * 2 - var(--indents-m))' }}>
               <colgroup>
                 <col className="w-indents-x" />
                 <col style={{ width: 'calc(var(--size-base-with) / 3 - var(--indents-xxl-minus))' }} />
+                <col style={{ width: 'calc(var(--size-base-with) / 6 + var(--indents-l))' }} />
                 <col />
-                <col style={{ width: 'calc(var(--size-base-with) / 6)' }} />
               </colgroup>
               <thead className="sr-only">
-                <tr><th>Swatch</th><th>Token</th><th>CSS variable and primitive</th><th>Value</th></tr>
+                <tr><th>Swatch</th><th>Token</th><th>CSS variable</th><th>Primitive</th></tr>
               </thead>
               <tbody>
                 {tokens.map(t => (
@@ -88,12 +88,11 @@ export default function ColorsSection() {
                       <CopyButton value={`var(${t.cssVar})`} className="text-text-grotesk-bold">{t.figma}</CopyButton>
                     </td>
                     <td className="py-indents-xxs">
-                      <div className="flex flex-col items-start">
-                        <CodeNames cssVar={t.cssVar} />
-                        <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>
-                      </div>
+                      <CodeNames cssVar={t.cssVar} />
                     </td>
-                    <td className="py-indents-xxs text-right text-text-grotesk-bold text-text-primary">{hexOf(t.cssVar)}</td>
+                    <td className="py-indents-xxs">
+                      <CopyButton value={`var(${cssVarOf(t.alias)})`} className="whitespace-nowrap text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>
+                    </td>
                   </tr>
                 ))}
               </tbody>
