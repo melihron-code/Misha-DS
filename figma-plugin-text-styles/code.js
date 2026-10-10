@@ -73,7 +73,7 @@ async function snapshot(targets) {
   const map = {};
   for (const n of targets) {
     try { map[n.id] = fnv(await n.exportAsync({ format: 'PNG', constraint: { type: 'SCALE', value: 0.5 } })); }
-    catch (e) { map[n.id] = 'ERR'; }
+    catch { map[n.id] = 'ERR'; }
   }
   return map;
 }
@@ -205,12 +205,12 @@ async function run(apply) {
 
   // Apply to own layers (main components and frames).
   progress('Applying styles…');
-  let applied = 0, failed = [];
+  const failed = [];
   const applyPlan = async p => {
     try {
       if (p.whole) await p.node.setTextStyleIdAsync(p.ranges[0].def.styleId);
       else for (const r of p.ranges) await p.node.setRangeTextStyleIdAsync(r.start, r.end, r.def.styleId);
-      applied++;
+
     } catch (e) { failed.push(p.node.id + ' ' + p.node.name + ': ' + String(e)); }
   };
   for (const p of plan) await applyPlan(p);

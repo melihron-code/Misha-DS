@@ -3,6 +3,67 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.2.0 — Step 2: Styles and variables (2026-10-10)
+
+### Summary
+Set up the project (Vite + React in JSX, Tailwind CSS 4.3, react-router-dom, Git) and moved every
+foundation from Figma into code: variables, text styles and the one shadow, read live from the file.
+`src/styles/tokens.css` holds primitives as CSS variables, alias tokens that reference them with
+`var()`, the Tailwind theme and text-style utilities. The /ds-dev/ page documents them and is built
+with those same tokens. In the browser, all 9 text styles render with Figma's exact size, weight,
+line height and letter spacing, with the real fonts loaded.
+
+### Added
+- **Primitives: 46** CSS variables: 21 colors, 11 space, 4 radius, 3 font families, 6 font sizes, 1 size.
+- **Tokens: 78** alias CSS variables, Light mode: 53 colors, 11 spacing (`indents/*`), 4 radius (`rounds/*`),
+  3 font families, 6 font sizes, 1 size. Every one is `var(--primitive)`; the alias chain is the same as in Figma.
+- **Tailwind theme:** 53 color classes, 11 spacing keys, 4 radius keys, 3 font families, 1 width.
+  Tailwind's own palette, spacing scale, radii, shadows and type scale are switched off.
+- **Text styles: 9** `@utility` classes with exact px line heights and em letter spacing.
+- **Effects: 1** shadow token (`--shadow-card`, class `shadow-card`).
+- **Fonts:** Akkurat LL Cyr TT (Regular, Bold) and Pixform self-hosted from `src/assets/fonts/`;
+  Instrument Serif and Inter (600) from Google Fonts.
+- **/ds-dev/ page** (`/` redirects to it): a sidebar with Colors, Typography, Spacing, Radius and Effects.
+  One section is shown at a time, and the URL holds it (`/ds-dev/colors` …), so refresh and back/forward work.
+  Clicking a name copies its Tailwind class or CSS variable. Colors and typography show the values the
+  browser actually computes, and the Typography section flags any mismatch with Figma.
+- `CLAUDE.md` with the project rules; `npm run tokens` regenerates `tokens.css` from `src/ds/foundations.js`.
+
+### Differences from Figma
+- **CSS-safe names.** `/` and spaces become `-`, brackets are dropped, a negative value becomes `neg-`
+  and a trailing `-` becomes `-minus`, all lowercase:
+  `indents/S (inner)` → `--indents-s-inner`, `indents/-(XS)` → `--indents-neg-xs`, `space/-sm` → `--space-neg-sm`,
+  `indents/XXL-` → `--indents-xxl-minus`, `indents/XXL (out)` → `--indents-xxl-out`, `font/size/text - gr` → `--font-size-text-gr`,
+  `size/base with` → `--size-base-with` (the "with" typo is kept to stay 1:1).
+- **Tailwind spacing and radius keys keep the Figma group** (`p-indents-m`, `rounded-rounds-s`). Short keys
+  like `rounded-s` or `rounded-l` would clash with Tailwind's built-in side utilities.
+- **`heading/H4` → `text-heading-h4`** (lowercase, like the other styles). Renaming the style in Figma to `heading/h4` is recommended.
+- **No effect styles in Figma.** `--shadow-card` is the one drop shadow used in the designs (checklist panel:
+  0 24 34 0, color `surface/shadow`). Not included: background blurs with radius 0 (no visible effect)
+  and the glass blur inside the library `Frame 1` components.
+- **Text box trim** (cap height on `heading/H4`) is not carried over: browser support is uneven, and the px line heights already match.
+- **No variable in Figma** for `heading/h2` size (40), `text/pixel` size (10) or the `heading/H4` font (Inter),
+  and none for any line height or letter spacing. These values are written directly in the text utilities.
+- **Styles frame table text is out of date** compared with the styles (the code follows the styles):
+  `text/grotesk` line height says 10 (style: 11 px); H3 weight says Semibold (style: Regular);
+  H4 says Akkurat Semibold (style: Inter Semi Bold); the font column says "Akkurat LL Cyrillic" (font: Akkurat LL Cyr TT).
+- **Hardcoded in the Figma Styles frame** (not variables): the 11 color swatches, the colors panel background,
+  the SpacingScale bar colors and outline, and the table and spacing label text (no text style).
+- `color/color/*` primitives were renamed to `color/colors/*` in Figma before this step.
+
+### How to use
+```jsx
+<div className="rounded-rounds-l bg-surface-card p-indents-l shadow-card">
+  <h2 className="text-heading-h2 text-text-primary">Senior DevOps</h2>
+  <p className="text-text-caps text-text-secondary">applied</p>
+  <button className="rounded-rounds-over bg-accent-primary px-indents-s-inner py-indents-xs text-text-pixel text-text-on-accent">More info</button>
+</div>
+```
+```css
+.custom { border-color: var(--border-default); gap: var(--indents-xs); }
+```
+Add or change a foundation: edit `src/ds/foundations.js`, then run `npm run tokens`.
+
 ## v0.1.0 — Step 1: Figma cleanup (2026-10-10)
 
 ### Summary
