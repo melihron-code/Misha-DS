@@ -2,6 +2,12 @@
 @import "./styles/tokens.css";
 
 @layer base {
+  /* Always reserve the scrollbar's space, so short and long pages have the
+     same width and centered layouts don't jump when switching pages. */
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     @apply bg-bg-default text-text-primary text-text-grotesk;
   }

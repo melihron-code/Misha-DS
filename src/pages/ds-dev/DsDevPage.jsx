@@ -8,8 +8,10 @@ const MAIN_MAX_WIDTH = 'calc(var(--size-base-with) + var(--indents-xxl-out) * 2 
 
 // Design-system foundations page. Only the selected section is rendered, so
 // scrolling can never reveal another one; the URL (/ds-dev/<section>) holds
-// the selection, so refresh and back/forward work. Sidebar and content are
-// centered together as one block.
+// the selection, so refresh and back/forward work.
+// Layout: [white filler | sidebar | content | page-color filler]. The two
+// fillers grow equally, so sidebar + content stay centered as one block and
+// the white of the sidebar extends to the left edge of the window.
 export default function DsDevPage() {
   const { section } = useParams()
   const current = SECTIONS.find(s => s.slug === section)
@@ -22,7 +24,8 @@ export default function DsDevPage() {
   const { Component } = current
 
   return (
-    <div className="flex min-h-screen justify-center">
+    <div className="flex min-h-screen">
+      <div className="flex-1 bg-surface-card" aria-hidden="true" />
       <aside className="sticky top-0 flex h-screen shrink-0 flex-col gap-indents-x border-r border-border-default bg-surface-card p-indents-m">
         <p className="text-heading-h3">Misha DS</p>
         <nav aria-label="Foundations">
@@ -32,7 +35,7 @@ export default function DsDevPage() {
                 <NavLink
                   to={`/ds-dev/${s.slug}`}
                   className={({ isActive }) =>
-                    `block rounded-rounds-m px-indents-s-inner py-indents-xs text-text-grotesk focus-visible:outline-2 focus-visible:outline-border-focus ${
+                    `block rounded-rounds-m px-indents-s-inner py-indents-xs text-heading-h4 focus-visible:outline-2 focus-visible:outline-border-focus ${
                       isActive ? 'bg-accent-primary text-text-on-accent' : 'text-text-primary hover:bg-surface-control'
                     }`
                   }
@@ -48,6 +51,7 @@ export default function DsDevPage() {
         <h1 className="pb-indents-x text-heading-h1">{current.label}</h1>
         <Component />
       </main>
+      <div className="flex-1" aria-hidden="true" />
     </div>
   )
 }
