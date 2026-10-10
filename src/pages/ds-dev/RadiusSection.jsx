@@ -7,7 +7,7 @@ export default function RadiusSection() {
     <ul className="flex flex-col">
       {radiusTokens.map(r => (
         <li key={r.cssVar} className={TOKEN_ROW_CLASS} style={{ gridTemplateColumns: TOKEN_ROW_COLUMNS }}>
-          <span className="px-indents-xxs text-text-grotesk-bold">{r.figma}</span>
+          <span className="whitespace-nowrap px-indents-xxs text-heading-h4">{r.figma}</span>
           {/* Wrapper so the copy button is centered in the row like the other cells. */}
           <div>
             <CodeNames cssVar={r.cssVar} />

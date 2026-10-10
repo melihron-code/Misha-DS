@@ -85,7 +85,7 @@ export default function ColorsSection() {
                       <div className="size-indents-l rounded-rounds-s border border-border-default" style={{ background: `var(${t.cssVar})` }} />
                     </td>
                     <td className="py-indents-xxs">
-                      <span className="px-indents-xxs text-text-grotesk-bold">{t.figma}</span>
+                      <span className="px-indents-xxs text-heading-h4">{t.figma}</span>
                     </td>
                     <td className="py-indents-xxs">
                       <CodeNames cssVar={t.cssVar} />

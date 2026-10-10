@@ -7,7 +7,7 @@ export default function SpacingSection() {
     <ul className="flex flex-col">
       {spacingTokens.map(s => (
         <li key={s.cssVar} className={TOKEN_ROW_CLASS} style={{ gridTemplateColumns: TOKEN_ROW_COLUMNS }}>
-          <span className="px-indents-xxs text-text-grotesk-bold">{s.figma}</span>
+          <span className="whitespace-nowrap px-indents-xxs text-heading-h4">{s.figma}</span>
           {/* Wrapper so the copy button is centered in the row like the other cells. */}
           <div>
             <CodeNames cssVar={s.cssVar} />

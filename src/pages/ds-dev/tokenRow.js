@@ -1,11 +1,12 @@
 // Shared row layout for token lists (Spacing, Radius), five columns:
 // name | CSS variable | primitive | example | px.
-// name: a quarter minus indents/XXL- (84px) · variable: indents/XXL (out) + indents/L (114px,
-// fits the longest variable) · primitive: indents/XXL (out) (90px) · example: a quarter · px: the rest.
+// name: a quarter minus indents/XXL- plus indents/L (≈132px, fits the longest name in
+// heading/h4) · variable: indents/XXL (out) + indents/L (114px, fits the longest variable) ·
+// primitive: indents/XXL (out) (90px) · example: a quarter · px: the rest.
 const QUARTER = '((100% - 3 * var(--indents-m)) / 4)'
 
 export const TOKEN_ROW_COLUMNS = [
-  `calc(${QUARTER} - var(--indents-xxl-minus))`,
+  `calc(${QUARTER} - var(--indents-xxl-minus) + var(--indents-l))`,
   'calc(var(--indents-xxl-out) + var(--indents-l))',
   'var(--indents-xxl-out)',
   `calc(${QUARTER})`,
