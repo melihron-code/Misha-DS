@@ -1,4 +1,4 @@
-import { colorTokens, cssVarOf, hueOf, primitiveColors } from '../../ds/foundations'
+import { colorTokens, cssVarOf, groupOf, primitiveColors } from '../../ds/foundations'
 import { readCssVar } from '../../lib/cssVar'
 import { nbsp } from '../../lib/nbsp'
 import CodeNames from './CodeNames'
@@ -14,7 +14,7 @@ const groupBy = (items, keyOf) =>
 const hexOf = cssVar => readCssVar(cssVar).toUpperCase()
 
 export default function ColorsSection() {
-  const hues = groupBy(primitiveColors, hueOf)
+  const groups = groupBy(primitiveColors, groupOf)
   const tokenGroups = groupBy(colorTokens, t => t.figma.split('/')[0])
 
   return (
@@ -24,9 +24,9 @@ export default function ColorsSection() {
         <p className="max-w-size-base-with text-text-grotesk text-text-secondary">
           {nbsp('Raw palette. Primitives have no Tailwind classes on purpose: components use the tokens below. Copy the CSS variable only when defining a new token.')}
         </p>
-        {Object.entries(hues).map(([hue, colors]) => (
-          <div key={hue} className="flex flex-col gap-indents-xs">
-            <h3 className="text-heading-h4">{hue}</h3>
+        {Object.entries(groups).map(([group, colors]) => (
+          <div key={group} className="flex flex-col gap-indents-xs">
+            <h3 className="text-heading-h4">{group}</h3>
             <ul className="flex flex-wrap gap-indents-m">
               {colors.map(c => (
                 <li key={c.cssVar} className="flex flex-col gap-indents-xxs">

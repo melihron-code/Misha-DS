@@ -31,11 +31,8 @@ export const primitiveColors = [
   { figma: 'color/colors/brown', cssVar: '--color-colors-brown', hex: '#d1a63b' },
 ]
 
-// Hue groups for the swatch grid (by the name before the shade number).
-export const hueOf = c => {
-  const last = c.figma.split('/').pop()
-  return c.figma.startsWith('color/neutral/') ? 'neutral' : last.replace(/-\d+$/, '')
-}
+// Swatch groups follow the Figma folders: color/neutral/* → neutral, color/colors/* → colors.
+export const groupOf = c => c.figma.split('/')[1]
 
 // tw: the Tailwind class to copy; every token is also available with any other
 // color utility (bg-, text-, border-, fill-, …).
