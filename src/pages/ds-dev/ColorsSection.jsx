@@ -1,4 +1,5 @@
 import { colorTokens, cssVarOf, hueOf, primitiveColors } from '../../ds/foundations'
+import { isDark } from '../../lib/contrast'
 import { readCssVar } from '../../lib/cssVar'
 import { nbsp } from '../../lib/nbsp'
 import CodeNames from './CodeNames'
@@ -26,17 +27,23 @@ export default function ColorsSection() {
           <div key={hue} className="flex flex-col gap-indents-xs">
             <h3 className="text-text-caps text-text-secondary">{hue}</h3>
             <ul className="flex flex-wrap gap-indents-m">
-              {colors.map(c => (
-                <li key={c.cssVar} className="flex flex-col gap-indents-xxs">
-                  <div
-                    className="size-indents-xxl-minus rounded-rounds-l border border-border-default"
-                    style={{ background: `var(${c.cssVar})` }}
-                  />
-                  <CopyButton value={`var(${c.cssVar})`} className="text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
-                  <CodeNames cssVar={c.cssVar} />
-                  <span className="px-indents-xxs text-text-grotesk-bold text-text-primary">{readCssVar(c.cssVar).toUpperCase()}</span>
-                </li>
-              ))}
+              {colors.map(c => {
+                const hex = readCssVar(c.cssVar).toUpperCase()
+                return (
+                  <li key={c.cssVar} className="flex flex-col gap-indents-xxs">
+                    <div
+                      className={`flex size-indents-xxl-minus items-end rounded-rounds-l border border-border-default p-indents-xs text-text-grotesk-bold ${
+                        isDark(hex, readCssVar('--bg-default')) ? 'text-text-on-color' : 'text-text-primary'
+                      }`}
+                      style={{ background: `var(${c.cssVar})` }}
+                    >
+                      {hex}
+                    </div>
+                    <CopyButton value={`var(${c.cssVar})`} className="text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
+                    <CodeNames cssVar={c.cssVar} />
+                  </li>
+                )
+              })}
             </ul>
           </div>
         ))}
