@@ -1,6 +1,5 @@
 import { spacingTokens } from '../../ds/foundations'
 import CodeNames from './CodeNames'
-import CopyButton from './CopyButton'
 
 // Five columns: name | CSS variable | primitive | bar | px.
 // name: a quarter minus indents/XXL- (84px) · variable: indents/XXL (out) + indents/L (114px,
@@ -20,7 +19,7 @@ export default function SpacingSection() {
       <ul className="flex flex-col">
         {spacingTokens.map(s => (
           <li key={s.cssVar} className="grid items-center gap-indents-m border-t border-divider-default py-indents-s-inner" style={{ gridTemplateColumns: COLUMNS }}>
-            <CopyButton value={`var(${s.cssVar})`} className="self-center justify-self-start text-text-grotesk-bold">{s.figma}</CopyButton>
+            <span className="px-indents-xxs text-text-grotesk-bold">{s.figma}</span>
             {/* Wrapper so the copy button is centered in the row like the other cells. */}
             <div>
               <CodeNames cssVar={s.cssVar} />

@@ -46,7 +46,7 @@ export default function ColorsSection() {
                   {/* Negative margin cancels the copy buttons' padding so all text starts at the swatch edge. */}
                   <div className="-ml-indents-xxs flex flex-col items-start">
                     <span className="px-indents-xxs text-text-grotesk-bold text-text-primary">{hexOf(c.cssVar)}</span>
-                    <CopyButton value={`var(${c.cssVar})`} className="text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
+                    <span className="px-indents-xxs text-text-grotesk-bold">{c.figma.replace('color/', '')}</span>
                     <CodeNames cssVar={c.cssVar} />
                   </div>
                 </li>
@@ -85,7 +85,7 @@ export default function ColorsSection() {
                       <div className="size-indents-l rounded-rounds-s border border-border-default" style={{ background: `var(${t.cssVar})` }} />
                     </td>
                     <td className="py-indents-xxs">
-                      <CopyButton value={`var(${t.cssVar})`} className="text-text-grotesk-bold">{t.figma}</CopyButton>
+                      <span className="px-indents-xxs text-text-grotesk-bold">{t.figma}</span>
                     </td>
                     <td className="py-indents-xxs">
                       <CodeNames cssVar={t.cssVar} />
