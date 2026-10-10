@@ -1,0 +1,9 @@
+/* Text helpers (hand-written, tokens only).
+
+   trim-letter-spacing: CSS adds letter-spacing after the last character too, Figma
+   doesn't. On a label inside a control this cancels that trailing space, so the
+   control is exactly as wide as in Figma. Every text-style utility sets
+   --text-letter-spacing, and it inherits into the label. */
+@utility trim-letter-spacing {
+  margin-inline-end: calc(var(--text-letter-spacing, 0em) * -1);
+}

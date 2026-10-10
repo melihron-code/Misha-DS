@@ -1,13 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import DsDevPage from './pages/ds-dev/DsDevPage'
-import { SECTIONS } from './pages/ds-dev/sections'
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/ds-dev/" replace />} />
-      <Route path="/ds-dev" element={<Navigate to={`/ds-dev/${SECTIONS[0].slug}`} replace />} />
-      <Route path="/ds-dev/:section" element={<DsDevPage />} />
+      {/* /ds-dev/<foundation> and /ds-dev/atoms/<atom>; DsDevPage resolves the path. */}
+      <Route path="/ds-dev/*" element={<DsDevPage />} />
       <Route path="*" element={<Navigate to="/ds-dev/" replace />} />
     </Routes>
   )

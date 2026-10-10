@@ -1,0 +1,81 @@
+/* Interaction utilities shared by all interactive atoms. Hand-written (not
+   generated); only design tokens are used.
+
+   - transition-state: animates color, background, border, shadow and transform
+     only (never layout), with the motion tokens.
+   - state-overlay: lays overlay/hover (15% black) or overlay/pressed (25% black)
+     over the control. data-state="hover|pressed" forces it for the docs page.
+   - focus-ring: visible keyboard focus in border/focus. data-state="focus" forces it. */
+
+@utility transition-state {
+  transition-property: color, background-color, border-color, outline-color, box-shadow, transform;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-out);
+}
+
+@utility state-overlay {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background-color: transparent;
+    transition-property: background-color;
+    transition-duration: var(--duration-fast);
+    transition-timing-function: var(--ease-out);
+  }
+  &:hover::after,
+  &[data-state="hover"]::after {
+    background-color: var(--overlay-hover);
+  }
+  &:active::after,
+  &[data-state="pressed"]::after {
+    background-color: var(--overlay-pressed);
+  }
+  /* No overlay on disabled controls (must come last to win over :hover/:active). */
+  &:disabled::after,
+  &[aria-disabled="true"]::after,
+  &[data-state="disabled"]::after {
+    background-color: transparent;
+  }
+}
+
+@utility focus-ring {
+  outline: 0 solid transparent;
+
+  &:focus-visible,
+  &[data-state="focus"] {
+    outline-style: solid;
+    outline-width: var(--indents-3xs);
+    outline-color: var(--border-focus);
+    outline-offset: var(--indents-3xs);
+  }
+}
+
+/* For inputs: the ring sits on the field when its input has keyboard focus. */
+@utility focus-ring-within {
+  outline: 0 solid transparent;
+
+  &:has(:focus-visible),
+  &[data-state="focus"] {
+    outline-style: solid;
+    outline-width: var(--indents-3xs);
+    outline-color: var(--border-focus);
+    outline-offset: var(--indents-3xs);
+  }
+}
+
+@layer base {
+  /* Respect reduced motion: no transitions at all. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+    }
+  }
+}

@@ -36,6 +36,7 @@
   --color-neutral-300: #cbcbcb;
   --color-neutral-500: #979797;
   --color-neutral-900: #000000;
+  --color-neutral-900-a15: #00000026;
   --color-neutral-900-a25: #00000040;
   --color-colors-red-100: #f5dedb;
   --color-colors-red-200: #f5cfca;
@@ -106,6 +107,9 @@
   --surface-control-selected: var(--color-neutral-0);
   --surface-control-on-color: var(--color-neutral-0);
   --surface-shadow: var(--color-neutral-900-a25);
+  /* overlay */
+  --overlay-hover: var(--color-neutral-900-a15);
+  --overlay-pressed: var(--color-neutral-900-a25);
   /* text */
   --text-primary: var(--color-neutral-900);
   --text-secondary: var(--color-neutral-500);
@@ -175,6 +179,10 @@
   --font-size-h1: var(--font-size-84);
   /* size */
   --size-base-with: var(--size-830);
+  /* motion (code only) */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ---------- Tailwind theme ----------
@@ -214,6 +222,8 @@
   --color-surface-control-selected: var(--surface-control-selected);
   --color-surface-control-on-color: var(--surface-control-on-color);
   --color-surface-shadow: var(--surface-shadow);
+  --color-overlay-hover: var(--overlay-hover);
+  --color-overlay-pressed: var(--overlay-pressed);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
@@ -291,6 +301,7 @@
   font-weight: 400;
   line-height: 76px;
   letter-spacing: -0.01em;
+  --text-letter-spacing: -0.01em;
   text-transform: none;
 }
 /* heading/h2: Instrument Serif Regular 40/36, -1% */
@@ -300,6 +311,7 @@
   font-weight: 400;
   line-height: 36px;
   letter-spacing: -0.01em;
+  --text-letter-spacing: -0.01em;
   text-transform: none;
 }
 /* text/description: Pixform Regular 30/27, -3%, UPPER */
@@ -309,6 +321,7 @@
   font-weight: 400;
   line-height: 27px;
   letter-spacing: -0.03em;
+  --text-letter-spacing: -0.03em;
   text-transform: uppercase;
 }
 /* heading/h3: Akkurat LL Cyr TT Regular 20/18, -2% */
@@ -318,6 +331,7 @@
   font-weight: 400;
   line-height: 18px;
   letter-spacing: -0.02em;
+  --text-letter-spacing: -0.02em;
   text-transform: none;
 }
 /* heading/H4: Inter Semi Bold 15/14, -2% */
@@ -327,6 +341,7 @@
   font-weight: 600;
   line-height: 14px;
   letter-spacing: -0.02em;
+  --text-letter-spacing: -0.02em;
   text-transform: none;
 }
 /* text/pixel: Pixform Regular 10/9, 20%, UPPER */
@@ -336,6 +351,7 @@
   font-weight: 400;
   line-height: 9px;
   letter-spacing: 0.2em;
+  --text-letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 /* text/grotesk: Akkurat LL Cyr TT Regular 11/11, 0% */
@@ -345,6 +361,7 @@
   font-weight: 400;
   line-height: 11px;
   letter-spacing: 0;
+  --text-letter-spacing: 0;
   text-transform: none;
 }
 /* text/grotesk-bold: Akkurat LL Cyr TT Bold 11/10, 0% */
@@ -354,6 +371,7 @@
   font-weight: 700;
   line-height: 10px;
   letter-spacing: 0;
+  --text-letter-spacing: 0;
   text-transform: none;
 }
 /* text/caps: Akkurat LL Cyr TT Regular 8/7, 20%, UPPER */
@@ -363,5 +381,6 @@
   font-weight: 400;
   line-height: 7px;
   letter-spacing: 0.2em;
+  --text-letter-spacing: 0.2em;
   text-transform: uppercase;
 }

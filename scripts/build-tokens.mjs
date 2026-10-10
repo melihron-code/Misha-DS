@@ -77,6 +77,8 @@ w('  /* font */')
 for (const t of f.fontTokens) w(`  ${t.cssVar}: var(${fontVar(t.alias)});`)
 w('  /* size */')
 for (const s of f.sizeTokens) w(`  ${s.cssVar}: ${ref(s.alias)};`)
+w('  /* motion (code only) */')
+for (const m of f.motion) w(`  ${m.cssVar}: ${m.value};`)
 w('}\n')
 
 w(`/* ---------- Tailwind theme ----------
@@ -125,6 +127,7 @@ for (const t of f.textStyles) {
   font-weight: ${t.weight};
   line-height: ${px(t.lineHeight)};
   letter-spacing: ${ls};
+  --text-letter-spacing: ${ls};
   text-transform: ${t.textCase};
 }`)
 }

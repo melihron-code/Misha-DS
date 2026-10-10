@@ -14,6 +14,7 @@ export const primitiveColors = [
   { figma: 'color/neutral/300', cssVar: '--color-neutral-300', hex: '#cbcbcb' },
   { figma: 'color/neutral/500', cssVar: '--color-neutral-500', hex: '#979797' },
   { figma: 'color/neutral/900', cssVar: '--color-neutral-900', hex: '#000000' },
+  { figma: 'color/neutral/900-a15', cssVar: '--color-neutral-900-a15', hex: '#00000026' },
   { figma: 'color/neutral/900-a25', cssVar: '--color-neutral-900-a25', hex: '#00000040' },
   { figma: 'color/colors/red-100', cssVar: '--color-colors-red-100', hex: '#f5dedb' },
   { figma: 'color/colors/red-200', cssVar: '--color-colors-red-200', hex: '#f5cfca' },
@@ -57,6 +58,9 @@ export const colorTokens = [
   { figma: 'surface/control-selected', cssVar: '--surface-control-selected', alias: 'color/neutral/0', tw: 'bg-surface-control-selected' },
   { figma: 'surface/control-on-color', cssVar: '--surface-control-on-color', alias: 'color/neutral/0', tw: 'bg-surface-control-on-color' },
   { figma: 'surface/shadow', cssVar: '--surface-shadow', alias: 'color/neutral/900-a25', tw: 'shadow-surface-shadow' },
+  // Interaction overlays (added in step 3): laid over a control while hovered / pressed.
+  { figma: 'overlay/hover', cssVar: '--overlay-hover', alias: 'color/neutral/900-a15', tw: 'bg-overlay-hover' },
+  { figma: 'overlay/pressed', cssVar: '--overlay-pressed', alias: 'color/neutral/900-a25', tw: 'bg-overlay-pressed' },
   { figma: 'text/primary', cssVar: '--text-primary', alias: 'color/neutral/900', tw: 'text-text-primary' },
   { figma: 'text/secondary', cssVar: '--text-secondary', alias: 'color/neutral/500', tw: 'text-text-secondary' },
   { figma: 'text/tertiary', cssVar: '--text-tertiary', alias: 'color/neutral/300', tw: 'text-text-tertiary' },
@@ -177,6 +181,14 @@ export const textStyles = [
   { figma: 'text/grotesk', tw: 'text-text-grotesk', family: 'Akkurat LL Cyr TT', familyVar: '--font-family-grotesk', size: 11, sizeVar: '--font-size-text-gr', weight: 400, weightName: 'Regular', lineHeight: 11, letterSpacing: 0, textCase: 'none' },
   { figma: 'text/grotesk-bold', tw: 'text-text-grotesk-bold', family: 'Akkurat LL Cyr TT', familyVar: '--font-family-grotesk', size: 11, sizeVar: '--font-size-text-gr', weight: 700, weightName: 'Bold', lineHeight: 10, letterSpacing: 0, textCase: 'none' },
   { figma: 'text/caps', tw: 'text-text-caps', family: 'Akkurat LL Cyr TT', familyVar: '--font-family-grotesk', size: 8, sizeVar: '--font-size-caps', weight: 400, weightName: 'Regular', lineHeight: 7, letterSpacing: 20, textCase: 'uppercase' },
+]
+
+// Motion (code only: Figma variables can't hold durations or easings).
+// Used for state transitions of color, background, border, shadow and transform only.
+export const motion = [
+  { name: 'duration/fast', cssVar: '--duration-fast', value: '120ms', use: 'hover, pressed, focus' },
+  { name: 'duration/base', cssVar: '--duration-base', value: '200ms', use: 'opening a menu, larger state changes' },
+  { name: 'ease/out', cssVar: '--ease-out', value: 'cubic-bezier(0.22, 1, 0.36, 1)', use: 'all state transitions' },
 ]
 
 // No effect styles exist in Figma; this is the one drop shadow used in the
