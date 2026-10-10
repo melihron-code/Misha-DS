@@ -27,13 +27,15 @@ export default function ColorsSection() {
         {Object.entries(groups).map(([group, colors]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h4">{group}</h3>
-            {/* 7 equal columns: swatches line up in a grid in both groups. */}
-            <ul className="grid grid-cols-7 gap-x-indents-xs gap-y-indents-l">
+            {/* 6 equal columns: swatches line up in a grid in both groups.
+                White gets a row of its own, so the six grays fill one full row. */}
+            <ul className="grid grid-cols-6 gap-x-indents-xs gap-y-indents-l">
               {colors.map(c => (
-                <li key={c.cssVar} className="flex min-w-0 flex-col gap-indents-xxs">
+                <li key={c.cssVar} className={`flex min-w-0 flex-col gap-indents-xxs ${c.figma === 'color/neutral/0' ? 'col-span-6' : ''}`}>
+                  {/* 1.5 × indents/XXL- wide (126px), indents/XXL- tall (84px). */}
                   <div
-                    className="size-indents-xxl-minus rounded-rounds-l border border-border-default"
-                    style={{ background: `var(${c.cssVar})` }}
+                    className="h-indents-xxl-minus rounded-rounds-l border border-border-default"
+                    style={{ width: 'calc(var(--indents-xxl-minus) * 1.5)', background: `var(${c.cssVar})` }}
                   />
                   {/* Negative margin cancels the copy buttons' padding so all text starts at the swatch edge. */}
                   <div className="-ml-indents-xxs flex flex-col items-start">
