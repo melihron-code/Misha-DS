@@ -1,0 +1,32 @@
+<style>
+  body { font: 12px/1.4 system-ui, sans-serif; margin: 12px; color: #222; }
+  .row { display: flex; gap: 8px; margin-bottom: 10px; }
+  button { flex: 1; padding: 8px; border: 1px solid #999; border-radius: 6px; background: #fff; cursor: pointer; }
+  button.primary { background: #18a0fb; border-color: #18a0fb; color: #fff; }
+  button:disabled { opacity: .5; cursor: default; }
+  pre { white-space: pre-wrap; background: #f4f4f4; border-radius: 6px; padding: 8px; height: 360px; overflow: auto; margin: 0; }
+  p { margin: 0 0 10px; color: #555; }
+</style>
+<p><b>Check</b> changes nothing. <b>Create &amp; apply</b> creates the text styles and applies them. Save a version first.</p>
+<div class="row">
+  <button id="check">Check</button>
+  <button id="apply" class="primary">Create &amp; apply</button>
+</div>
+<pre id="out">Ready.</pre>
+<div class="row" style="margin-top:10px"><button id="copy">Copy report</button></div>
+<script>
+  const out = document.getElementById('out');
+  const btns = [...document.querySelectorAll('#check,#apply')];
+  const run = type => { btns.forEach(b => b.disabled = true); out.textContent = 'Working… (this can take a minute)'; parent.postMessage({ pluginMessage: { type } }, '*'); };
+  document.getElementById('check').onclick = () => run('check');
+  document.getElementById('apply').onclick = () => run('apply');
+  document.getElementById('copy').onclick = () => {
+    const r = document.createRange(); r.selectNodeContents(out);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r); document.execCommand('copy');
+  };
+  onmessage = e => {
+    const m = e.data.pluginMessage;
+    if (m.type === 'progress') out.textContent = m.text;
+    if (m.type === 'done' || m.type === 'error') { out.textContent = m.text; btns.forEach(b => b.disabled = false); }
+  };
+</script>
