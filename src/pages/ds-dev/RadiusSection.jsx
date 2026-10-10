@@ -13,8 +13,8 @@ export default function RadiusSection() {
             <CodeNames cssVar={r.cssVar} />
           </div>
           <span className="whitespace-nowrap px-indents-xxs text-text-grotesk text-text-secondary">→ {r.alias}</span>
-          {/* Example: indents/XXL- × indents/X (84 × 30px) with the radius applied. */}
-          <div className={`h-indents-x w-indents-xxl-minus border border-border-strong bg-surface-card ${r.tw}`} />
+          {/* Example: an indents/X square (30 × 30px) with the radius applied. */}
+          <div className={`size-indents-x border border-border-strong bg-surface-card ${r.tw}`} />
           <span className="text-heading-h3">{r.px}px</span>
         </li>
       ))}
