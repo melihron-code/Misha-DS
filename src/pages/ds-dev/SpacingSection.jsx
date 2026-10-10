@@ -7,9 +7,9 @@ export default function SpacingSection() {
     <div className="flex flex-col gap-indents-l">
       <ul className="flex flex-col">
         {spacingTokens.map(s => (
-          <li key={s.cssVar} className="grid grid-cols-3 items-center gap-indents-m border-t border-divider-default py-indents-s-inner">
+          <li key={s.cssVar} className="grid grid-cols-4 items-center gap-indents-m border-t border-divider-default py-indents-s-inner">
+            <CopyButton value={`var(${s.cssVar})`} className="self-center justify-self-start text-text-grotesk-bold">{s.figma}</CopyButton>
             <div className="flex flex-col gap-indents-xxxs">
-              <CopyButton value={`var(${s.cssVar})`} className="self-start text-text-grotesk-bold">{s.figma}</CopyButton>
               <CodeNames cssVar={s.cssVar} />
               <span className="px-indents-xxs text-text-grotesk text-text-secondary">→ {s.alias}</span>
             </div>
