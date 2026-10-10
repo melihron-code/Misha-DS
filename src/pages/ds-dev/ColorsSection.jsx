@@ -20,6 +20,22 @@ const ALONE = new Set(['color/neutral/0'])
 const ROW_START = new Set(['color/colors/green-100', 'color/colors/yellow-200'])
 const placement = c => (ALONE.has(c.figma) ? 'col-span-6' : ROW_START.has(c.figma) ? 'col-start-1' : '')
 
+// Token tables (one per group, plus the header) share these widths so every column lines up:
+// swatch | name (a third of size/base with minus indents/XXL-) |
+// CSS variable (size/base with ÷ 6 + indents/L) | primitive (the rest).
+// The table is 84px + 200px (2 × indents/XXL (out) + indents/M) narrower than the content.
+const TOKEN_TABLE_STYLE = { width: 'calc(100% - var(--indents-xxl-minus) - var(--indents-xxl-out) * 2 - var(--indents-m))' }
+function TokenColumns() {
+  return (
+    <colgroup>
+      <col className="w-indents-x" />
+      <col style={{ width: 'calc(var(--size-base-with) / 3 - var(--indents-xxl-minus))' }} />
+      <col style={{ width: 'calc(var(--size-base-with) / 6 + var(--indents-l))' }} />
+      <col />
+    </colgroup>
+  )
+}
+
 export default function ColorsSection() {
   const groups = groupBy(primitiveColors, groupOf)
   const tokenGroups = groupBy(colorTokens, t => t.figma.split('/')[0])
@@ -61,20 +77,23 @@ export default function ColorsSection() {
         <p className="text-text-grotesk text-text-secondary">
           {nbsp('Use these in components.')}
         </p>
+        {/* Column labels, once for all groups (same widths as the group tables). */}
+        <table className="table-fixed border-collapse" style={TOKEN_TABLE_STYLE} aria-hidden="true">
+          <TokenColumns />
+          <thead>
+            <tr className="text-left">
+              <th />
+              <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">Token</th>
+              <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">CSS variable</th>
+              <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">Primitive</th>
+            </tr>
+          </thead>
+        </table>
         {Object.entries(tokenGroups).map(([group, tokens]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h3 text-status-info">{group}</h3>
-            {/* Fixed layout + shared column widths keep columns aligned across all groups:
-                swatch | name (a third of size/base with minus indents/XXL-) |
-                CSS variable (size/base with ÷ 6 + indents/L) | primitive (the rest).
-                The table is 84px + 200px (2 × indents/XXL (out) + indents/M) narrower than the content. */}
-            <table className="table-fixed border-collapse" style={{ width: 'calc(100% - var(--indents-xxl-minus) - var(--indents-xxl-out) * 2 - var(--indents-m))' }}>
-              <colgroup>
-                <col className="w-indents-x" />
-                <col style={{ width: 'calc(var(--size-base-with) / 3 - var(--indents-xxl-minus))' }} />
-                <col style={{ width: 'calc(var(--size-base-with) / 6 + var(--indents-l))' }} />
-                <col />
-              </colgroup>
+            <table className="table-fixed border-collapse" style={TOKEN_TABLE_STYLE}>
+              <TokenColumns />
               <thead className="sr-only">
                 <tr><th>Swatch</th><th>Token</th><th>CSS variable</th><th>Primitive</th></tr>
               </thead>
