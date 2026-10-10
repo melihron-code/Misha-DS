@@ -9,10 +9,10 @@ export default function SpacingSection() {
           <div className="flex flex-col gap-indents-xxxs">
             <CopyButton value={s.example} className="text-text-grotesk-bold">{s.figma}</CopyButton>
             <div className="flex flex-wrap gap-indents-xxs">
-              <CopyButton value={s.example} className="text-text-pixel text-text-secondary">{s.example}</CopyButton>
-              <CopyButton value={`var(${s.cssVar})`} className="text-text-pixel text-text-secondary">{s.cssVar}</CopyButton>
+              <CopyButton value={s.example} className="text-text-grotesk text-text-secondary">{s.example}</CopyButton>
+              <CopyButton value={`var(${s.cssVar})`} className="text-text-grotesk text-text-secondary">{s.cssVar}</CopyButton>
             </div>
-            <span className="px-indents-xxs text-text-pixel text-text-tertiary">→ {s.alias}</span>
+            <span className="px-indents-xxs text-text-grotesk text-text-tertiary">→ {s.alias}</span>
           </div>
           <span className="text-heading-h3">{s.px}px</span>
           <div className="flex items-center">

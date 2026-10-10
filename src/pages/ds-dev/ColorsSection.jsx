@@ -60,7 +60,7 @@ export default function ColorsSection() {
                     </td>
                     <td className="py-indents-xxs">
                       <CopyButton value={t.tw} className="text-text-grotesk-bold">{t.figma}</CopyButton>
-                      <CopyButton value={`var(${t.cssVar})`} className="text-text-pixel text-text-secondary">{t.cssVar}</CopyButton>
+                      <CopyButton value={`var(${t.cssVar})`} className="text-text-grotesk text-text-secondary">{t.cssVar}</CopyButton>
                     </td>
                     <td className="py-indents-xxs">
                       <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>

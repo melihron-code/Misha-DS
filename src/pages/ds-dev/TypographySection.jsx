@@ -48,7 +48,7 @@ function StyleRow({ s }) {
     <li data-measured={m ? (m.fontLoaded ? 'ok' : 'fallback') : undefined} className="flex flex-col gap-indents-s-inner border-t border-divider-default py-indents-l">
       <div className="flex flex-wrap items-baseline gap-indents-xs">
         <CopyButton value={s.tw} className="text-heading-h4 text-status-info">{s.figma}</CopyButton>
-        <CopyButton value={s.tw} className="text-text-pixel text-text-secondary">.{s.tw}</CopyButton>
+        <CopyButton value={s.tw} className="text-text-grotesk text-text-secondary">{s.tw}</CopyButton>
       </div>
       <p ref={ref} className={`${s.tw} break-words`}>{SAMPLE}</p>
       {/* Same 6 columns in every style, so each property lines up vertically. */}
