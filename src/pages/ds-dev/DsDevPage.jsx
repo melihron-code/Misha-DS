@@ -2,9 +2,14 @@ import { useEffect } from 'react'
 import { Navigate, NavLink, useParams } from 'react-router-dom'
 import { SECTIONS } from './sections'
 
+// Content column, built from tokens: size/base with (830) + 2 × indents/XXL (out) (90)
+// = 1010px, plus the main area's own padding (indents/X on both sides).
+const MAIN_MAX_WIDTH = 'calc(var(--size-base-with) + var(--indents-xxl-out) * 2 + var(--indents-x) * 2)'
+
 // Design-system foundations page. Only the selected section is rendered, so
 // scrolling can never reveal another one; the URL (/ds-dev/<section>) holds
-// the selection, so refresh and back/forward work.
+// the selection, so refresh and back/forward work. Sidebar and content are
+// centered together as one block.
 export default function DsDevPage() {
   const { section } = useParams()
   const current = SECTIONS.find(s => s.slug === section)
@@ -17,7 +22,7 @@ export default function DsDevPage() {
   const { Component } = current
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen justify-center">
       <aside className="sticky top-0 flex h-screen shrink-0 flex-col gap-indents-x border-r border-border-default bg-surface-card p-indents-m">
         <p className="text-heading-h3">Misha DS</p>
         <nav aria-label="Foundations">
@@ -39,14 +44,9 @@ export default function DsDevPage() {
           </ul>
         </nav>
       </aside>
-      <main className="min-w-0 flex-1 p-indents-x">
-        {/* One content width for every section, built from tokens:
-            size/base with (830) + 2 × indents/XXL (out) (90) = 1010px,
-            centered in the space next to the sidebar. */}
-        <div className="mx-auto" style={{ maxWidth: 'calc(var(--size-base-with) + var(--indents-xxl-out) * 2)' }}>
-          <h1 className="pb-indents-x text-heading-h1">{current.label}</h1>
-          <Component />
-        </div>
+      <main className="w-full min-w-0 p-indents-x" style={{ maxWidth: MAIN_MAX_WIDTH }}>
+        <h1 className="pb-indents-x text-heading-h1">{current.label}</h1>
+        <Component />
       </main>
     </div>
   )
