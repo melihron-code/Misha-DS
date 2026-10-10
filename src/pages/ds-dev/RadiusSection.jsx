@@ -10,7 +10,7 @@ export default function RadiusSection() {
           <div className={`size-indents-xxl-out border border-border-strong bg-surface-card ${r.tw}`} />
           <CopyButton value={`var(${r.cssVar})`} className="self-start text-text-grotesk-bold">{r.figma}</CopyButton>
           <CodeNames cssVar={r.cssVar} />
-          <span className="px-indents-xxs text-text-grotesk">{r.px}px <span className="text-text-tertiary">→ {r.alias}</span></span>
+          <span className="px-indents-xxs text-text-grotesk">{r.px}px <span className="text-text-secondary">→ {r.alias}</span></span>
         </li>
       ))}
     </ul>

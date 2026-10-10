@@ -34,7 +34,7 @@ export default function ColorsSection() {
                   />
                   <CopyButton value={`var(${c.cssVar})`} className="text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
                   <CodeNames cssVar={c.cssVar} />
-                  <span className="px-indents-xxs text-text-pixel text-text-secondary">{readCssVar(c.cssVar)}</span>
+                  <span className="px-indents-xxs text-text-grotesk-bold text-text-primary">{readCssVar(c.cssVar).toUpperCase()}</span>
                 </li>
               ))}
             </ul>
@@ -72,9 +72,9 @@ export default function ColorsSection() {
                       <CodeNames cssVar={t.cssVar} />
                     </td>
                     <td className="py-indents-xxs">
-                      <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-tertiary">→ {t.alias}</CopyButton>
+                      <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>
                     </td>
-                    <td className="py-indents-xxs text-right text-text-pixel">{readCssVar(t.cssVar)}</td>
+                    <td className="py-indents-xxs text-right text-text-grotesk-bold text-text-primary">{readCssVar(t.cssVar).toUpperCase()}</td>
                   </tr>
                 ))}
               </tbody>
