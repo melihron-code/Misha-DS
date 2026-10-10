@@ -21,15 +21,15 @@ const ROW_START = new Set(['color/colors/green-100', 'color/colors/yellow-200'])
 const placement = c => (ALONE.has(c.figma) ? 'col-span-6' : ROW_START.has(c.figma) ? 'col-start-1' : '')
 
 // Token tables (one per group, plus the header) share these widths so every column lines up:
-// swatch | name (a third of size/base with minus indents/XXL-) |
+// swatch | name (a third of size/base with minus indents/XXL) |
 // CSS variable (size/base with ÷ 6 + indents/L) | primitive (the rest).
 // The table is 84px + 200px (2 × indents/XXL (out) + indents/M) narrower than the content.
-const TOKEN_TABLE_STYLE = { width: 'calc(100% - var(--indents-xxl-minus) - var(--indents-xxl-out) * 2 - var(--indents-m))' }
+const TOKEN_TABLE_STYLE = { width: 'calc(100% - var(--indents-xxl) - var(--indents-xxl-out) * 2 - var(--indents-m))' }
 function TokenColumns() {
   return (
     <colgroup>
       <col className="w-indents-x" />
-      <col style={{ width: 'calc(var(--size-base-with) / 3 - var(--indents-xxl-minus))' }} />
+      <col style={{ width: 'calc(var(--size-base-with) / 3 - var(--indents-xxl))' }} />
       <col style={{ width: 'calc(var(--size-base-with) / 6 + var(--indents-l))' }} />
       <col />
     </colgroup>
@@ -41,7 +41,7 @@ export default function ColorsSection() {
   const tokenGroups = groupBy(colorTokens, t => t.figma.split('/')[0])
 
   return (
-    <div className="flex flex-col gap-indents-xxl-minus">
+    <div className="flex flex-col gap-indents-xxl">
       <section className="flex flex-col gap-indents-l">
         <h2 className="text-heading-h2">Primitives</h2>
         <p className="text-text-grotesk text-text-secondary">
@@ -53,16 +53,16 @@ export default function ColorsSection() {
             {/* 6 equal columns: swatches line up in a grid in both groups. */}
             <ul className="grid grid-cols-6 gap-x-indents-xs gap-y-indents-l">
               {colors.map(c => (
-                <li key={c.cssVar} className={`flex min-w-0 flex-col gap-indents-xxs ${placement(c)}`}>
-                  {/* 1.5 × indents/XXL- wide (126px), indents/XXL- tall (84px). */}
+                <li key={c.cssVar} className={`flex min-w-0 flex-col gap-indents-2xs ${placement(c)}`}>
+                  {/* 1.5 × indents/XXL wide (126px), indents/XXL tall (84px). */}
                   <div
-                    className="h-indents-xxl-minus rounded-rounds-l border border-border-default"
-                    style={{ width: 'calc(var(--indents-xxl-minus) * 1.5)', background: `var(${c.cssVar})` }}
+                    className="h-indents-xxl rounded-radius-l border border-border-default"
+                    style={{ width: 'calc(var(--indents-xxl) * 1.5)', background: `var(${c.cssVar})` }}
                   />
                   {/* Negative margin cancels the copy buttons' padding so all text starts at the swatch edge. */}
-                  <div className="-ml-indents-xxs flex flex-col items-start">
-                    <span className="mb-indents-xs px-indents-xxs text-text-grotesk-bold text-text-primary">{hexOf(c.cssVar)}</span>
-                    <span className="mb-indents-xxs px-indents-xxs text-text-grotesk-bold">{c.figma.replace('color/', '')}</span>
+                  <div className="-ml-indents-2xs flex flex-col items-start">
+                    <span className="mb-indents-xs px-indents-2xs text-text-grotesk-bold text-text-primary">{hexOf(c.cssVar)}</span>
+                    <span className="mb-indents-2xs px-indents-2xs text-text-grotesk-bold">{c.figma.replace('color/', '')}</span>
                     <CodeNames cssVar={c.cssVar} />
                   </div>
                 </li>
@@ -86,9 +86,9 @@ export default function ColorsSection() {
               <thead>
                 <tr className="text-left">
                   <th><span className="sr-only">Swatch</span></th>
-                  <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">Token</th>
-                  <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">CSS variable</th>
-                  <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">Primitive</th>
+                  <th className="px-indents-2xs pb-indents-xs text-text-caps text-text-secondary">Token</th>
+                  <th className="px-indents-2xs pb-indents-xs text-text-caps text-text-secondary">CSS variable</th>
+                  <th className="px-indents-2xs pb-indents-xs text-text-caps text-text-secondary">Primitive</th>
                 </tr>
               </thead>
               <tbody>
@@ -96,10 +96,10 @@ export default function ColorsSection() {
                 {tokens.map(t => (
                   <tr key={t.cssVar} className="border-t border-divider-default">
                     <td className="py-indents-xs">
-                      <div className="size-indents-l rounded-rounds-s border border-border-default" style={{ background: `var(${t.cssVar})` }} />
+                      <div className="size-indents-l rounded-radius-s border border-border-default" style={{ background: `var(${t.cssVar})` }} />
                     </td>
                     <td className="py-indents-xs">
-                      <span className="px-indents-xxs text-heading-h4">{t.figma}</span>
+                      <span className="px-indents-2xs text-heading-h4">{t.figma}</span>
                     </td>
                     <td className="py-indents-xs">
                       <CodeNames cssVar={t.cssVar} />

@@ -22,12 +22,12 @@ export default function RadiusSection() {
             <div className={`flex size-indents-xxl-out items-center justify-center bg-accent-highlight text-heading-h4 ${r.tw}`}>
               {r.px}px
             </div>
-            <span className="whitespace-nowrap px-indents-xxs text-heading-h4">{r.figma}</span>
+            <span className="whitespace-nowrap px-indents-2xs text-heading-h4">{r.figma}</span>
             {/* Wrapper so the copy button is centered in the row like the other cells. */}
             <div>
               <CodeNames cssVar={r.cssVar} />
             </div>
-            <span className="whitespace-nowrap px-indents-xxs text-text-grotesk text-text-secondary">→ {r.alias}</span>
+            <span className="whitespace-nowrap px-indents-2xs text-text-grotesk text-text-secondary">→ {r.alias}</span>
           </li>
         ))}
       </ul>

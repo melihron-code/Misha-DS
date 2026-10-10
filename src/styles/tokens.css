@@ -52,22 +52,22 @@
   --color-colors-olive-800: #646905;
   --color-colors-brown: #d1a63b;
   /* space */
-  --space-neg-sm: -8px;
-  --space-neg-xs: -1px;
-  --space-2xs: 2px;
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 14px;
-  --space-lg: 20px;
-  --space-xl: 24px;
-  --space-2xl: 30px;
-  --space-3xl: 84px;
-  --space-4xl: 90px;
+  --space-neg-8: -8px;
+  --space-neg-1: -1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-14: 14px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-30: 30px;
+  --space-84: 84px;
+  --space-90: 90px;
   /* radius */
-  --radius-xs: 4px;
-  --radius-s: 8px;
-  --radius-l: 12px;
-  --radius-full: 999px;
+  --radius-4: 4px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-999: 999px;
   /* font */
   --font-family-pixform: "Pixform";
   --font-family-akkurat: "Akkurat LL Cyr TT";
@@ -147,22 +147,22 @@
   --data-chart: var(--color-neutral-500);
   --data-chart-muted: var(--color-neutral-50);
   /* indents */
-  --indents-neg-xs: var(--space-neg-sm);
-  --indents-neg-1: var(--space-neg-xs);
-  --indents-xxxs: var(--space-2xs);
-  --indents-xxs: var(--space-xs);
-  --indents-xs: var(--space-sm);
-  --indents-s-inner: var(--space-md);
-  --indents-m: var(--space-lg);
-  --indents-l: var(--space-xl);
-  --indents-x: var(--space-2xl);
-  --indents-xxl-minus: var(--space-3xl);
-  --indents-xxl-out: var(--space-4xl);
+  --indents-neg-xs: var(--space-neg-8);
+  --indents-neg-4xs: var(--space-neg-1);
+  --indents-3xs: var(--space-2);
+  --indents-2xs: var(--space-4);
+  --indents-xs: var(--space-8);
+  --indents-s-inner: var(--space-14);
+  --indents-m: var(--space-20);
+  --indents-l: var(--space-24);
+  --indents-x: var(--space-30);
+  --indents-xxl: var(--space-84);
+  --indents-xxl-out: var(--space-90);
   /* rounds */
-  --rounds-s: var(--radius-xs);
-  --rounds-m: var(--radius-s);
-  --rounds-l: var(--radius-l);
-  --rounds-over: var(--radius-full);
+  --radius-s: var(--radius-4);
+  --radius-m: var(--radius-8);
+  --radius-l: var(--radius-12);
+  --radius-over: var(--radius-999);
   /* font */
   --font-family-pixel: var(--font-family-pixform);
   --font-family-grotesk: var(--font-family-akkurat);
@@ -250,24 +250,24 @@
 
   /* spacing → p-indents-xs, gap-indents-s-inner, ml-indents-neg-xs … */
   --spacing-indents-neg-xs: var(--indents-neg-xs);
-  --spacing-indents-neg-1: var(--indents-neg-1);
-  --spacing-indents-xxxs: var(--indents-xxxs);
-  --spacing-indents-xxs: var(--indents-xxs);
+  --spacing-indents-neg-4xs: var(--indents-neg-4xs);
+  --spacing-indents-3xs: var(--indents-3xs);
+  --spacing-indents-2xs: var(--indents-2xs);
   --spacing-indents-xs: var(--indents-xs);
   --spacing-indents-s-inner: var(--indents-s-inner);
   --spacing-indents-m: var(--indents-m);
   --spacing-indents-l: var(--indents-l);
   --spacing-indents-x: var(--indents-x);
-  --spacing-indents-xxl-minus: var(--indents-xxl-minus);
+  --spacing-indents-xxl: var(--indents-xxl);
   --spacing-indents-xxl-out: var(--indents-xxl-out);
   /* zero is not a design value, but layout needs it: top-0, inset-0, m-0, p-0, gap-0 */
   --spacing-0: 0px;
 
-  /* radius → rounded-rounds-s … */
-  --radius-rounds-s: var(--rounds-s);
-  --radius-rounds-m: var(--rounds-m);
-  --radius-rounds-l: var(--rounds-l);
-  --radius-rounds-over: var(--rounds-over);
+  /* radius → rounded-radius-s … */
+  --radius-radius-s: var(--radius-s);
+  --radius-radius-m: var(--radius-m);
+  --radius-radius-l: var(--radius-l);
+  --radius-radius-over: var(--radius-over);
 
   /* font families → font-pixel, font-grotesk, font-antiqa */
   --font-pixel: var(--font-family-pixel), monospace;

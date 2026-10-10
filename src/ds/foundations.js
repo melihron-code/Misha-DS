@@ -3,9 +3,9 @@
 // src/styles/tokens.css implements these; the /ds-dev/ page documents them.
 //
 // Figma name → CSS variable: lowercase, "/" and spaces → "-", brackets
-// dropped, a leading "-" (negative value) → "neg-", a trailing "-" → "-minus".
+// dropped, a leading "-" (negative value) → "neg-".
 // e.g. color/neutral/900 → --color-neutral-900, indents/S (inner) → --indents-s-inner,
-// indents/-(XS) → --indents-neg-xs, indents/XXL- → --indents-xxl-minus.
+// indents/-XS → --indents-neg-xs, space/-8 → --space-neg-8.
 
 export const primitiveColors = [
   { figma: 'color/neutral/0', cssVar: '--color-neutral-0', hex: '#ffffff' },
@@ -93,47 +93,49 @@ export const colorTokens = [
 ]
 
 export const spacePrimitives = [
-  { figma: 'space/-sm', cssVar: '--space-neg-sm', px: -8 },
-  { figma: 'space/-xs', cssVar: '--space-neg-xs', px: -1 },
-  { figma: 'space/2xs', cssVar: '--space-2xs', px: 2 },
-  { figma: 'space/xs', cssVar: '--space-xs', px: 4 },
-  { figma: 'space/sm', cssVar: '--space-sm', px: 8 },
-  { figma: 'space/md', cssVar: '--space-md', px: 14 },
-  { figma: 'space/lg', cssVar: '--space-lg', px: 20 },
-  { figma: 'space/xl', cssVar: '--space-xl', px: 24 },
-  { figma: 'space/2xl', cssVar: '--space-2xl', px: 30 },
-  { figma: 'space/3xl', cssVar: '--space-3xl', px: 84 },
-  { figma: 'space/4xl', cssVar: '--space-4xl', px: 90 },
+  { figma: 'space/-8', cssVar: '--space-neg-8', px: -8 },
+  { figma: 'space/-1', cssVar: '--space-neg-1', px: -1 },
+  { figma: 'space/2', cssVar: '--space-2', px: 2 },
+  { figma: 'space/4', cssVar: '--space-4', px: 4 },
+  { figma: 'space/8', cssVar: '--space-8', px: 8 },
+  { figma: 'space/14', cssVar: '--space-14', px: 14 },
+  { figma: 'space/20', cssVar: '--space-20', px: 20 },
+  { figma: 'space/24', cssVar: '--space-24', px: 24 },
+  { figma: 'space/30', cssVar: '--space-30', px: 30 },
+  { figma: 'space/84', cssVar: '--space-84', px: 84 },
+  { figma: 'space/90', cssVar: '--space-90', px: 90 },
 ]
 
 // key: Tailwind spacing key, works with any spacing utility (p-, m-, gap-, w-, h-, inset-…).
 // example: the class shown on /ds-dev/ (padding for positive values, margin for negative ones).
 export const spacingTokens = [
-  { figma: 'indents/-(XS)', cssVar: '--indents-neg-xs', alias: 'space/-sm', px: -8, key: 'indents-neg-xs', example: 'ml-indents-neg-xs' },
-  { figma: 'indents/-1', cssVar: '--indents-neg-1', alias: 'space/-xs', px: -1, key: 'indents-neg-1', example: 'ml-indents-neg-1' },
-  { figma: 'indents/XXXS', cssVar: '--indents-xxxs', alias: 'space/2xs', px: 2, key: 'indents-xxxs', example: 'p-indents-xxxs' },
-  { figma: 'indents/XXS', cssVar: '--indents-xxs', alias: 'space/xs', px: 4, key: 'indents-xxs', example: 'p-indents-xxs' },
-  { figma: 'indents/XS', cssVar: '--indents-xs', alias: 'space/sm', px: 8, key: 'indents-xs', example: 'p-indents-xs' },
-  { figma: 'indents/S (inner)', cssVar: '--indents-s-inner', alias: 'space/md', px: 14, key: 'indents-s-inner', example: 'p-indents-s-inner' },
-  { figma: 'indents/M', cssVar: '--indents-m', alias: 'space/lg', px: 20, key: 'indents-m', example: 'p-indents-m' },
-  { figma: 'indents/L', cssVar: '--indents-l', alias: 'space/xl', px: 24, key: 'indents-l', example: 'p-indents-l' },
-  { figma: 'indents/X', cssVar: '--indents-x', alias: 'space/2xl', px: 30, key: 'indents-x', example: 'p-indents-x' },
-  { figma: 'indents/XXL-', cssVar: '--indents-xxl-minus', alias: 'space/3xl', px: 84, key: 'indents-xxl-minus', example: 'p-indents-xxl-minus' },
-  { figma: 'indents/XXL (out)', cssVar: '--indents-xxl-out', alias: 'space/4xl', px: 90, key: 'indents-xxl-out', example: 'p-indents-xxl-out' },
+  { figma: 'indents/-XS', cssVar: '--indents-neg-xs', alias: 'space/-8', px: -8, key: 'indents-neg-xs', example: 'ml-indents-neg-xs' },
+  { figma: 'indents/-4XS', cssVar: '--indents-neg-4xs', alias: 'space/-1', px: -1, key: 'indents-neg-4xs', example: 'ml-indents-neg-4xs' },
+  { figma: 'indents/3XS', cssVar: '--indents-3xs', alias: 'space/2', px: 2, key: 'indents-3xs', example: 'p-indents-3xs' },
+  { figma: 'indents/2XS', cssVar: '--indents-2xs', alias: 'space/4', px: 4, key: 'indents-2xs', example: 'p-indents-2xs' },
+  { figma: 'indents/XS', cssVar: '--indents-xs', alias: 'space/8', px: 8, key: 'indents-xs', example: 'p-indents-xs' },
+  { figma: 'indents/S (inner)', cssVar: '--indents-s-inner', alias: 'space/14', px: 14, key: 'indents-s-inner', example: 'p-indents-s-inner' },
+  { figma: 'indents/M', cssVar: '--indents-m', alias: 'space/20', px: 20, key: 'indents-m', example: 'p-indents-m' },
+  { figma: 'indents/L', cssVar: '--indents-l', alias: 'space/24', px: 24, key: 'indents-l', example: 'p-indents-l' },
+  { figma: 'indents/X', cssVar: '--indents-x', alias: 'space/30', px: 30, key: 'indents-x', example: 'p-indents-x' },
+  { figma: 'indents/XXL', cssVar: '--indents-xxl', alias: 'space/84', px: 84, key: 'indents-xxl', example: 'p-indents-xxl' },
+  { figma: 'indents/XXL (out)', cssVar: '--indents-xxl-out', alias: 'space/90', px: 90, key: 'indents-xxl-out', example: 'p-indents-xxl-out' },
 ]
 
 export const radiusPrimitives = [
-  { figma: 'radius/XS', cssVar: '--radius-xs', px: 4 },
-  { figma: 'radius/S', cssVar: '--radius-s', px: 8 },
-  { figma: 'radius/L', cssVar: '--radius-l', px: 12 },
-  { figma: 'radius/full', cssVar: '--radius-full', px: 999 },
+  { figma: 'radius/4', cssVar: '--radius-4', px: 4 },
+  { figma: 'radius/8', cssVar: '--radius-8', px: 8 },
+  { figma: 'radius/12', cssVar: '--radius-12', px: 12 },
+  { figma: 'radius/999', cssVar: '--radius-999', px: 999 },
 ]
 
+// Tailwind keys keep the group name (rounded-radius-s): a bare rounded-s / rounded-l
+// would clash with Tailwind's own start/left-corner utilities.
 export const radiusTokens = [
-  { figma: 'rounds/S', cssVar: '--rounds-s', alias: 'radius/XS', px: 4, tw: 'rounded-rounds-s' },
-  { figma: 'rounds/M', cssVar: '--rounds-m', alias: 'radius/S', px: 8, tw: 'rounded-rounds-m' },
-  { figma: 'rounds/L', cssVar: '--rounds-l', alias: 'radius/L', px: 12, tw: 'rounded-rounds-l' },
-  { figma: 'rounds/Over', cssVar: '--rounds-over', alias: 'radius/full', px: 999, tw: 'rounded-rounds-over' },
+  { figma: 'radius/S', cssVar: '--radius-s', alias: 'radius/4', px: 4, tw: 'rounded-radius-s' },
+  { figma: 'radius/M', cssVar: '--radius-m', alias: 'radius/8', px: 8, tw: 'rounded-radius-m' },
+  { figma: 'radius/L', cssVar: '--radius-l', alias: 'radius/12', px: 12, tw: 'rounded-radius-l' },
+  { figma: 'radius/Over', cssVar: '--radius-over', alias: 'radius/999', px: 999, tw: 'rounded-radius-over' },
 ]
 
 export const fontPrimitives = [

@@ -19,4 +19,4 @@ export const TOKEN_ROW_CLASS = 'grid items-center gap-indents-m border-t border-
 
 // Text columns (name, variable, primitive) have the copy buttons' inline padding;
 // their labels get it too, so each label starts where its column's text starts.
-export const TEXT_LABEL = 'px-indents-xxs'
+export const TEXT_LABEL = 'px-indents-2xs'

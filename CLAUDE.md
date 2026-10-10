@@ -22,7 +22,7 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 1. **Only design tokens and text-style utilities.** No hardcoded colors, spacing, radius, font values or shadows: no hex values, no `px` values, no arbitrary values like `p-[13px]` or `text-[#000]`. Tailwind's default palette, spacing scale, radii, shadows and type scale are switched off, so only design-system classes exist:
    - color: `bg-surface-card`, `text-text-primary`, `border-border-default`, `bg-accent-highlight` …
    - spacing: `p-indents-m`, `gap-indents-xs`, `px-indents-s-inner`, `ml-indents-neg-xs` …
-   - radius: `rounded-rounds-s | -m | -l | -over`
+   - radius: `rounded-radius-s | -m | -l | -over`
    - shadow: `shadow-card`
    - text: `text-heading-h1 | -h2 | -h3 | -h4`, `text-text-description | -pixel | -grotesk | -grotesk-bold | -caps`
    - widths: `max-w-size-base-with`

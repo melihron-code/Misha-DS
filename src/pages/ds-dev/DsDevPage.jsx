@@ -29,13 +29,13 @@ export default function DsDevPage() {
       <aside className="sticky top-0 flex h-screen shrink-0 flex-col gap-indents-x border-r border-border-default bg-surface-card p-indents-m">
         <p className="text-heading-h3">Misha DS</p>
         <nav aria-label="Foundations">
-          <ul className="flex flex-col gap-indents-xxs">
+          <ul className="flex flex-col gap-indents-2xs">
             {SECTIONS.map(s => (
               <li key={s.slug}>
                 <NavLink
                   to={`/ds-dev/${s.slug}`}
                   className={({ isActive }) =>
-                    `block rounded-rounds-m px-indents-s-inner py-indents-xs text-heading-h4 focus-visible:outline-2 focus-visible:outline-border-focus ${
+                    `block rounded-radius-m px-indents-s-inner py-indents-xs text-heading-h4 focus-visible:outline-2 focus-visible:outline-border-focus ${
                       isActive ? 'bg-accent-primary text-text-on-accent' : 'text-text-primary hover:bg-surface-control'
                     }`
                   }

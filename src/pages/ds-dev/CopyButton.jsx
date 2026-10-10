@@ -24,7 +24,7 @@ export default function CopyButton({ value, children, className = '' }) {
       type="button"
       onClick={copy}
       title={`Copy ${value}`}
-      className={`inline-grid cursor-pointer rounded-rounds-s px-indents-xxs py-indents-xxxs text-left hover:bg-surface-control focus-visible:outline-2 focus-visible:outline-border-focus ${className}`}
+      className={`inline-grid cursor-pointer rounded-radius-s px-indents-2xs py-indents-3xs text-left hover:bg-surface-control focus-visible:outline-2 focus-visible:outline-border-focus ${className}`}
     >
       <span className={`col-start-1 row-start-1 ${copied ? 'invisible' : ''}`}>{children ?? value}</span>
       <span className={`col-start-1 row-start-1 ${copied ? '' : 'invisible'}`} aria-hidden="true">Copied</span>

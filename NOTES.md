@@ -3,6 +3,33 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.2.1 — Spacing and radius renamed in Figma (2026-10-10)
+
+### Summary
+The spacing and radius primitives and some tokens were renamed in Figma (values and bindings
+unchanged). Code and the /ds-dev/ page now use the new names. Every renamed variable still
+resolves to the same px value, so nothing looks different.
+
+### Changed
+| Figma (old → new) | CSS variable (old → new) | Tailwind (old → new) |
+|---|---|---|
+| space/-sm → space/-8 | --space-neg-sm → --space-neg-8 | — |
+| space/-xs → space/-1 | --space-neg-xs → --space-neg-1 | — |
+| space/2xs, xs, sm, md, lg, xl, 2xl, 3xl, 4xl → space/2, 4, 8, 14, 20, 24, 30, 84, 90 | --space-2xs … → --space-2 … | — |
+| radius/XS, S, L, full → radius/4, 8, 12, 999 | --radius-xs … → --radius-4 … | — |
+| indents/-(XS) → indents/-XS | --indents-neg-xs (same) | ml-indents-neg-xs (same) |
+| indents/-1 → indents/-4XS | --indents-neg-1 → --indents-neg-4xs | ml-indents-neg-1 → ml-indents-neg-4xs |
+| indents/XXXS → indents/3XS | --indents-xxxs → --indents-3xs | p-indents-xxxs → p-indents-3xs |
+| indents/XXS → indents/2XS | --indents-xxs → --indents-2xs | p-indents-xxs → p-indents-2xs |
+| indents/XXL- → indents/XXL | --indents-xxl-minus → --indents-xxl | p-indents-xxl-minus → p-indents-xxl |
+| rounds/S, M, L, Over → radius/S, M, L, Over | --rounds-s … → --radius-s … | rounded-rounds-s … → rounded-radius-s … |
+
+Unchanged: indents/XS, S (inner), M, L, X, XXL (out).
+
+### Differences from Figma
+- The "trailing - → -minus" naming rule is no longer needed (no Figma name ends in "-" now).
+- Radius classes keep the group name (`rounded-radius-s`), because `rounded-s` and `rounded-l` are Tailwind's own corner utilities.
+
 ## v0.2.0 — Step 2: Styles and variables (2026-10-10)
 
 ### Summary
