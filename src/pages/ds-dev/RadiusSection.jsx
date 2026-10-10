@@ -1,17 +1,21 @@
 import { radiusTokens } from '../../ds/foundations'
 import CodeNames from './CodeNames'
+import { TOKEN_ROW_CLASS, TOKEN_ROW_COLUMNS } from './tokenRow'
 
 export default function RadiusSection() {
   return (
-    <ul className="flex flex-wrap gap-indents-x">
+    <ul className="flex flex-col">
       {radiusTokens.map(r => (
-        <li key={r.cssVar} className="flex flex-col gap-indents-xxs">
-          <div className={`flex size-indents-xxl-out items-center justify-center border border-border-strong bg-surface-card text-heading-h3 ${r.tw}`}>
-            {r.px}px
-          </div>
+        <li key={r.cssVar} className={TOKEN_ROW_CLASS} style={{ gridTemplateColumns: TOKEN_ROW_COLUMNS }}>
           <span className="px-indents-xxs text-text-grotesk-bold">{r.figma}</span>
-          <CodeNames cssVar={r.cssVar} />
-          <span className="px-indents-xxs text-text-grotesk text-text-secondary">→ {r.alias}</span>
+          {/* Wrapper so the copy button is centered in the row like the other cells. */}
+          <div>
+            <CodeNames cssVar={r.cssVar} />
+          </div>
+          <span className="whitespace-nowrap px-indents-xxs text-text-grotesk text-text-secondary">→ {r.alias}</span>
+          {/* Example: indents/XXL- × indents/X (84 × 30px) with the radius applied. */}
+          <div className={`h-indents-x w-indents-xxl-minus border border-border-strong bg-surface-card ${r.tw}`} />
+          <span className="text-heading-h3">{r.px}px</span>
         </li>
       ))}
     </ul>
