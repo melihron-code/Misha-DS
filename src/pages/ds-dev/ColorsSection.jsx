@@ -27,16 +27,20 @@ export default function ColorsSection() {
         {Object.entries(groups).map(([group, colors]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h4">{group}</h3>
-            <ul className="flex flex-wrap gap-indents-m">
+            {/* 7 equal columns: swatches line up in a grid in both groups. */}
+            <ul className="grid grid-cols-7 gap-x-indents-m gap-y-indents-l">
               {colors.map(c => (
-                <li key={c.cssVar} className="flex flex-col gap-indents-xxs">
+                <li key={c.cssVar} className="flex min-w-0 flex-col gap-indents-xxs">
                   <div
                     className="size-indents-xxl-minus rounded-rounds-l border border-border-default"
                     style={{ background: `var(${c.cssVar})` }}
                   />
-                  <span className="px-indents-xxs text-text-grotesk-bold text-text-primary">{hexOf(c.cssVar)}</span>
-                  <CopyButton value={`var(${c.cssVar})`} className="self-start text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
-                  <CodeNames cssVar={c.cssVar} />
+                  {/* Negative margin cancels the copy buttons' padding so all text starts at the swatch edge. */}
+                  <div className="-ml-indents-xxs flex flex-col items-start">
+                    <span className="px-indents-xxs text-text-grotesk-bold text-text-primary">{hexOf(c.cssVar)}</span>
+                    <CopyButton value={`var(${c.cssVar})`} className="text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
+                    <CodeNames cssVar={c.cssVar} />
+                  </div>
                 </li>
               ))}
             </ul>
