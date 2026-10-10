@@ -19,9 +19,13 @@ export default function SpacingSection() {
       <ul className="flex flex-col">
         {spacingTokens.map(s => (
           <li key={s.cssVar} className={TOKEN_ROW_CLASS} style={{ gridTemplateColumns: COLUMNS }}>
+            {/* Bar: as wide as the spacing, indents/S (inner) + indents/XS (22px) tall. */}
             <div
-              className={`h-indents-s-inner ${s.px < 0 ? 'bg-status-error' : 'bg-accent-highlight'}`}
-              style={{ width: s.px < 0 ? `calc(var(${s.cssVar}) * -1)` : `var(${s.cssVar})` }}
+              className={s.px < 0 ? 'bg-status-error' : 'bg-accent-highlight'}
+              style={{
+                width: s.px < 0 ? `calc(var(${s.cssVar}) * -1)` : `var(${s.cssVar})`,
+                height: 'calc(var(--indents-s-inner) + var(--indents-xs))',
+              }}
             />
             <div className="flex flex-col gap-indents-xxs">
               <span className="text-heading-h4">{s.px}px</span>
