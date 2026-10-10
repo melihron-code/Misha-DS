@@ -3,7 +3,7 @@ import { textStyles } from '../../ds/foundations'
 import { nbsp } from '../../lib/nbsp'
 import CopyButton from './CopyButton'
 
-const SAMPLE = nbsp('Hired & Wired: hire the right people')
+const SAMPLE = nbsp('Hire the right people')
 
 // Measures what the browser actually renders, to compare with Figma.
 function useRendered(ref, { weight, size, family }) {
@@ -47,11 +47,11 @@ function StyleRow({ s }) {
   return (
     <li data-measured={m ? (m.fontLoaded ? 'ok' : 'fallback') : undefined} className="flex flex-col gap-indents-s-inner border-t border-divider-default py-indents-l">
       <div className="flex flex-wrap items-baseline gap-indents-xs">
-        <CopyButton value={s.tw} className="text-text-grotesk-bold">{s.figma}</CopyButton>
+        <CopyButton value={s.tw} className="text-text-grotesk-bold text-status-info">{s.figma}</CopyButton>
         <CopyButton value={s.tw} className="text-text-pixel text-text-secondary">.{s.tw}</CopyButton>
       </div>
       <p ref={ref} className={`${s.tw} break-words`}>{SAMPLE}</p>
-      <dl className="flex flex-wrap gap-indents-x">
+      <dl className="flex flex-wrap gap-indents-x rounded-rounds-m bg-bg-subtle p-indents-s-inner">
         <Spec label="Font" figma={s.family} rendered={m && !m.fontLoaded ? 'fallback font' : undefined} />
         <Spec label="Size" figma={`${s.size}px`} rendered={m ? `${m.size}px` : undefined} />
         <Spec label="Weight" figma={`${s.weightName} ${s.weight}`} rendered={m ? `${s.weightName} ${m.weight}` : undefined} />
