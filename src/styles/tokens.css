@@ -260,6 +260,8 @@
   --spacing-indents-x: var(--indents-x);
   --spacing-indents-xxl-minus: var(--indents-xxl-minus);
   --spacing-indents-xxl-out: var(--indents-xxl-out);
+  /* zero is not a design value, but layout needs it: top-0, inset-0, m-0, p-0, gap-0 */
+  --spacing-0: 0px;
 
   /* radius → rounded-rounds-s … */
   --radius-rounds-s: var(--rounds-s);

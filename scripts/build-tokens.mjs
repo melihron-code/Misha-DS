@@ -99,6 +99,8 @@ w('  /* colors → bg-surface-card, text-text-primary, border-border-default …
 for (const t of f.colorTokens) w(`  --color-${t.cssVar.slice(2)}: var(${t.cssVar});`)
 w('\n  /* spacing → p-indents-xs, gap-indents-s-inner, ml-indents-neg-xs … */')
 for (const s of f.spacingTokens) w(`  --spacing-${s.key}: var(${s.cssVar});`)
+w('  /* zero is not a design value, but layout needs it: top-0, inset-0, m-0, p-0, gap-0 */')
+w('  --spacing-0: 0px;')
 w('\n  /* radius → rounded-rounds-s … */')
 for (const r of f.radiusTokens) w(`  --radius-${r.cssVar.slice(2)}: var(${r.cssVar});`)
 w('\n  /* font families → font-pixel, font-grotesk, font-antiqa */')

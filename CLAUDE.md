@@ -9,6 +9,7 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 - `npm run dev`: dev server at http://localhost:5173 (`/` → `/ds-dev/`)
 - `npm run build` / `npm run lint`
 - `npm run tokens`: regenerates `src/styles/tokens.css` from `src/ds/foundations.js`
+- `npm run check:classes` (after `npm run build`): fails if a class used in `src/` produces no CSS. Tailwind drops unknown classes without any warning. Run it after every UI change, and test the behaviour in a browser (scrolling, sticky, clicks), not just the look.
 
 ## Where things live
 - `src/ds/foundations.js`: every foundation as read from Figma (names, aliases, values). Edit here, then run `npm run tokens`. Never edit `tokens.css` by hand.
@@ -25,6 +26,7 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
    - shadow: `shadow-card`
    - text: `text-heading-h1 | -h2 | -h3 | -h4`, `text-text-description | -pixel | -grotesk | -grotesk-bold | -caps`
    - widths: `max-w-size-base-with`
+   - zero: `top-0`, `inset-0`, `m-0`, `p-0`, `gap-0` (the only spacing value without a token)
    In inline styles, use only `var(--token)`.
    If a design needs a value that has no token, stop and ask. Don't invent one.
 2. **Names in code match Figma names.** Components, props and variant values follow the "Rename reference" in `NOTES.md` (e.g. `Button` with `variant="primary-sm"`, `cta`). Tokens follow the Figma variable names (see `foundations.js` for the exact mapping).
