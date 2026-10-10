@@ -1,5 +1,7 @@
 import { colorTokens, cssVarOf, hueOf, primitiveColors } from '../../ds/foundations'
 import { readCssVar } from '../../lib/cssVar'
+import { nbsp } from '../../lib/nbsp'
+import CodeNames from './CodeNames'
 import CopyButton from './CopyButton'
 
 const groupBy = (items, keyOf) =>
@@ -17,6 +19,9 @@ export default function ColorsSection() {
     <div className="flex flex-col gap-indents-xxl-minus">
       <section className="flex flex-col gap-indents-l">
         <h2 className="text-heading-h2">Primitives</h2>
+        <p className="max-w-size-base-with text-text-grotesk text-text-secondary">
+          {nbsp('Raw palette. Primitives have no Tailwind classes on purpose: components use the tokens below. Copy the CSS variable only when defining a new token.')}
+        </p>
         {Object.entries(hues).map(([hue, colors]) => (
           <div key={hue} className="flex flex-col gap-indents-xs">
             <h3 className="text-text-caps text-text-secondary">{hue}</h3>
@@ -27,7 +32,8 @@ export default function ColorsSection() {
                     className="size-indents-xxl-minus rounded-rounds-l border border-border-default"
                     style={{ background: `var(${c.cssVar})` }}
                   />
-                  <CopyButton value={`var(${c.cssVar})`} className="text-text-grotesk">{c.figma.replace('color/', '')}</CopyButton>
+                  <CopyButton value={`var(${c.cssVar})`} className="text-text-grotesk-bold">{c.figma.replace('color/', '')}</CopyButton>
+                  <CodeNames cssVar={c.cssVar} />
                   <span className="px-indents-xxs text-text-pixel text-text-secondary">{readCssVar(c.cssVar)}</span>
                 </li>
               ))}
@@ -38,6 +44,9 @@ export default function ColorsSection() {
 
       <section className="flex flex-col gap-indents-l">
         <h2 className="text-heading-h2">Tokens</h2>
+        <p className="max-w-size-base-with text-text-grotesk text-text-secondary">
+          {nbsp('Use these in components.')}
+        </p>
         {Object.entries(tokenGroups).map(([group, tokens]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-text-caps text-text-secondary">{group}</h3>
@@ -59,11 +68,11 @@ export default function ColorsSection() {
                       <div className="size-indents-l rounded-rounds-s border border-border-default" style={{ background: `var(${t.cssVar})` }} />
                     </td>
                     <td className="py-indents-xxs">
-                      <CopyButton value={t.tw} className="text-text-grotesk-bold">{t.figma}</CopyButton>
-                      <CopyButton value={`var(${t.cssVar})`} className="text-text-grotesk text-text-secondary">{t.cssVar}</CopyButton>
+                      <CopyButton value={`var(${t.cssVar})`} className="block text-text-grotesk-bold">{t.figma}</CopyButton>
+                      <CodeNames cssVar={t.cssVar} />
                     </td>
                     <td className="py-indents-xxs">
-                      <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>
+                      <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-tertiary">→ {t.alias}</CopyButton>
                     </td>
                     <td className="py-indents-xxs text-right text-text-pixel">{readCssVar(t.cssVar)}</td>
                   </tr>

@@ -1,4 +1,5 @@
 import { radiusTokens } from '../../ds/foundations'
+import CodeNames from './CodeNames'
 import CopyButton from './CopyButton'
 
 export default function RadiusSection() {
@@ -7,9 +8,8 @@ export default function RadiusSection() {
       {radiusTokens.map(r => (
         <li key={r.cssVar} className="flex flex-col gap-indents-xxs">
           <div className={`size-indents-xxl-out border border-border-strong bg-surface-card ${r.tw}`} />
-          <CopyButton value={r.tw} className="text-text-grotesk-bold">{r.figma}</CopyButton>
-          <CopyButton value={r.tw} className="text-text-grotesk text-text-secondary">{r.tw}</CopyButton>
-          <CopyButton value={`var(${r.cssVar})`} className="text-text-grotesk text-text-secondary">{r.cssVar}</CopyButton>
+          <CopyButton value={`var(${r.cssVar})`} className="self-start text-text-grotesk-bold">{r.figma}</CopyButton>
+          <CodeNames cssVar={r.cssVar} />
           <span className="px-indents-xxs text-text-grotesk">{r.px}px <span className="text-text-tertiary">→ {r.alias}</span></span>
         </li>
       ))}

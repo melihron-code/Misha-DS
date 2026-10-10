@@ -109,19 +109,20 @@ export const spacePrimitives = [
   { figma: 'space/4xl', cssVar: '--space-4xl', px: 90 },
 ]
 
-// key: Tailwind spacing key → p-indents-xs, gap-indents-s-inner, -ml-…, ml-indents-neg-xs
+// key: Tailwind spacing key, works with any spacing utility (p-, m-, gap-, w-, h-, inset-…).
+// example: the class shown on /ds-dev/ (padding for positive values, margin for negative ones).
 export const spacingTokens = [
   { figma: 'indents/-(XS)', cssVar: '--indents-neg-xs', alias: 'space/-sm', px: -8, key: 'indents-neg-xs', example: 'ml-indents-neg-xs' },
   { figma: 'indents/-1', cssVar: '--indents-neg-1', alias: 'space/-xs', px: -1, key: 'indents-neg-1', example: 'ml-indents-neg-1' },
-  { figma: 'indents/XXXS', cssVar: '--indents-xxxs', alias: 'space/2xs', px: 2, key: 'indents-xxxs', example: 'gap-indents-xxxs' },
-  { figma: 'indents/XXS', cssVar: '--indents-xxs', alias: 'space/xs', px: 4, key: 'indents-xxs', example: 'gap-indents-xxs' },
-  { figma: 'indents/XS', cssVar: '--indents-xs', alias: 'space/sm', px: 8, key: 'indents-xs', example: 'gap-indents-xs' },
+  { figma: 'indents/XXXS', cssVar: '--indents-xxxs', alias: 'space/2xs', px: 2, key: 'indents-xxxs', example: 'p-indents-xxxs' },
+  { figma: 'indents/XXS', cssVar: '--indents-xxs', alias: 'space/xs', px: 4, key: 'indents-xxs', example: 'p-indents-xxs' },
+  { figma: 'indents/XS', cssVar: '--indents-xs', alias: 'space/sm', px: 8, key: 'indents-xs', example: 'p-indents-xs' },
   { figma: 'indents/S (inner)', cssVar: '--indents-s-inner', alias: 'space/md', px: 14, key: 'indents-s-inner', example: 'p-indents-s-inner' },
   { figma: 'indents/M', cssVar: '--indents-m', alias: 'space/lg', px: 20, key: 'indents-m', example: 'p-indents-m' },
   { figma: 'indents/L', cssVar: '--indents-l', alias: 'space/xl', px: 24, key: 'indents-l', example: 'p-indents-l' },
   { figma: 'indents/X', cssVar: '--indents-x', alias: 'space/2xl', px: 30, key: 'indents-x', example: 'p-indents-x' },
-  { figma: 'indents/XXL-', cssVar: '--indents-xxl-minus', alias: 'space/3xl', px: 84, key: 'indents-xxl-minus', example: 'py-indents-xxl-minus' },
-  { figma: 'indents/XXL (out)', cssVar: '--indents-xxl-out', alias: 'space/4xl', px: 90, key: 'indents-xxl-out', example: 'px-indents-xxl-out' },
+  { figma: 'indents/XXL-', cssVar: '--indents-xxl-minus', alias: 'space/3xl', px: 84, key: 'indents-xxl-minus', example: 'p-indents-xxl-minus' },
+  { figma: 'indents/XXL (out)', cssVar: '--indents-xxl-out', alias: 'space/4xl', px: 90, key: 'indents-xxl-out', example: 'p-indents-xxl-out' },
 ]
 
 export const radiusPrimitives = [
