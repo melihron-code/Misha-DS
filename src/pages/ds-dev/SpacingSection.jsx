@@ -19,9 +19,9 @@ export default function SpacingSection() {
       <ul className="flex flex-col">
         {spacingTokens.map(s => (
           <li key={s.cssVar} className={TOKEN_ROW_CLASS} style={{ gridTemplateColumns: COLUMNS }}>
-            {/* Bar: as wide as the spacing, indents/S (inner) + indents/XS (22px) tall. */}
+            {/* Bar: as wide as the spacing, indents/S (inner) + indents/XS (22px) tall, rounds/S (4px) corners. */}
             <div
-              className={s.px < 0 ? 'bg-status-error' : 'bg-accent-highlight'}
+              className={`rounded-rounds-s ${s.px < 0 ? 'bg-status-error' : 'bg-accent-highlight'}`}
               style={{
                 width: s.px < 0 ? `calc(var(${s.cssVar}) * -1)` : `var(${s.cssVar})`,
                 height: 'calc(var(--indents-s-inner) + var(--indents-xs))',
