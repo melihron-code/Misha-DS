@@ -5,7 +5,7 @@ import CopyButton from './CopyButton'
 export default function SpacingSection() {
   return (
     <div className="flex flex-col gap-indents-l">
-      <ul className="flex max-w-size-base-with flex-col">
+      <ul className="flex flex-col">
         {spacingTokens.map(s => (
           <li key={s.cssVar} className="grid grid-cols-3 items-center gap-indents-m border-t border-divider-default py-indents-s-inner">
             <div className="flex flex-col gap-indents-xxxs">

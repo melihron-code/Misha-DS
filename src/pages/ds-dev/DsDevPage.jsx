@@ -40,8 +40,12 @@ export default function DsDevPage() {
         </nav>
       </aside>
       <main className="min-w-0 flex-1 p-indents-x">
-        <h1 className="pb-indents-x text-heading-h1">{current.label}</h1>
-        <Component />
+        {/* One content width for every section, built from tokens:
+            size/base with (830) + 2 × indents/XXL (out) (90) = 1010px. */}
+        <div style={{ maxWidth: 'calc(var(--size-base-with) + var(--indents-xxl-out) * 2)' }}>
+          <h1 className="pb-indents-x text-heading-h1">{current.label}</h1>
+          <Component />
+        </div>
       </main>
     </div>
   )

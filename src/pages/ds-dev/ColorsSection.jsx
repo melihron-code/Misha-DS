@@ -21,14 +21,14 @@ export default function ColorsSection() {
     <div className="flex flex-col gap-indents-xxl-minus">
       <section className="flex flex-col gap-indents-l">
         <h2 className="text-heading-h2">Primitives</h2>
-        <p className="max-w-size-base-with text-text-grotesk text-text-secondary">
+        <p className="text-text-grotesk text-text-secondary">
           {nbsp('Raw palette. Primitives have no Tailwind classes on purpose: components use the tokens below. Copy the CSS variable only when defining a new token.')}
         </p>
         {Object.entries(groups).map(([group, colors]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h4">{group}</h3>
             {/* 7 equal columns: swatches line up in a grid in both groups. */}
-            <ul className="grid grid-cols-7 gap-x-indents-m gap-y-indents-l">
+            <ul className="grid grid-cols-7 gap-x-indents-xs gap-y-indents-l">
               {colors.map(c => (
                 <li key={c.cssVar} className="flex min-w-0 flex-col gap-indents-xxs">
                   <div
@@ -50,14 +50,14 @@ export default function ColorsSection() {
 
       <section className="flex flex-col gap-indents-l">
         <h2 className="text-heading-h2">Tokens</h2>
-        <p className="max-w-size-base-with text-text-grotesk text-text-secondary">
+        <p className="text-text-grotesk text-text-secondary">
           {nbsp('Use these in components.')}
         </p>
         {Object.entries(tokenGroups).map(([group, tokens]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h4">{group}</h3>
             {/* Fixed layout + shared column widths keep columns aligned across all groups. */}
-            <table className="w-full max-w-size-base-with table-fixed border-collapse">
+            <table className="w-full table-fixed border-collapse">
               <colgroup>
                 <col className="w-indents-x" />
                 <col className="w-1/2" />

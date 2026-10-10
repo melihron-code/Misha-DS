@@ -67,7 +67,7 @@ function StyleRow({ s }) {
 
 export default function TypographySection() {
   return (
-    <ul className="flex max-w-size-base-with flex-col">
+    <ul className="flex flex-col">
       {textStyles.map(s => <StyleRow key={s.figma} s={s} />)}
     </ul>
   )
