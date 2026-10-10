@@ -68,12 +68,11 @@ export default function ColorsSection() {
             <table className="w-full table-fixed border-collapse">
               <colgroup>
                 <col className="w-indents-x" />
-                <col className="w-1/2" />
-                <col className="w-1/3" />
                 <col />
+                <col className="w-1/4" />
               </colgroup>
               <thead className="sr-only">
-                <tr><th>Swatch</th><th>Token</th><th>Primitive</th><th>Value</th></tr>
+                <tr><th>Swatch</th><th>Token, CSS variable and primitive</th><th>Value</th></tr>
               </thead>
               <tbody>
                 {tokens.map(t => (
@@ -85,10 +84,8 @@ export default function ColorsSection() {
                       <div className="flex flex-col items-start">
                         <CopyButton value={`var(${t.cssVar})`} className="text-text-grotesk-bold">{t.figma}</CopyButton>
                         <CodeNames cssVar={t.cssVar} />
+                        <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>
                       </div>
-                    </td>
-                    <td className="py-indents-xxs">
-                      <CopyButton value={`var(${cssVarOf(t.alias)})`} className="text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>
                     </td>
                     <td className="py-indents-xxs text-right text-text-grotesk-bold text-text-primary">{hexOf(t.cssVar)}</td>
                   </tr>

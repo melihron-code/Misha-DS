@@ -10,12 +10,8 @@ export default function SpacingSection() {
           <li key={s.cssVar} className="grid grid-cols-3 items-center gap-indents-m border-t border-divider-default py-indents-s-inner">
             <div className="flex flex-col gap-indents-xxxs">
               <CopyButton value={`var(${s.cssVar})`} className="self-start text-text-grotesk-bold">{s.figma}</CopyButton>
-              {/* Fixed first column (indents/XXL- + indents/L = 108px, just past the longest
-                  variable), so every "→ primitive" starts at the same x in all rows. */}
-              <div className="grid items-baseline" style={{ gridTemplateColumns: 'calc(var(--indents-xxl-minus) + var(--indents-l)) 1fr' }}>
-                <CodeNames cssVar={s.cssVar} />
-                <span className="px-indents-xxs text-text-grotesk text-text-secondary">→ {s.alias}</span>
-              </div>
+              <CodeNames cssVar={s.cssVar} />
+              <span className="px-indents-xxs text-text-grotesk text-text-secondary">→ {s.alias}</span>
             </div>
             <span className="text-heading-h3">{s.px}px</span>
             <div className="flex items-center">
