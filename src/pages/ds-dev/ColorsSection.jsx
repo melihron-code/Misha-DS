@@ -13,6 +13,13 @@ const groupBy = (items, keyOf) =>
 
 const hexOf = cssVar => readCssVar(cssVar).toUpperCase()
 
+// Grid placement in the 6-column swatch grid: white sits alone on its row, and
+// these swatches start a new row so hue families stay together
+// (reds·pink·purples | greens·sage | yellows·olives·brown).
+const ALONE = new Set(['color/neutral/0'])
+const ROW_START = new Set(['color/colors/green-100', 'color/colors/yellow-200'])
+const placement = c => (ALONE.has(c.figma) ? 'col-span-6' : ROW_START.has(c.figma) ? 'col-start-1' : '')
+
 export default function ColorsSection() {
   const groups = groupBy(primitiveColors, groupOf)
   const tokenGroups = groupBy(colorTokens, t => t.figma.split('/')[0])
@@ -27,11 +34,10 @@ export default function ColorsSection() {
         {Object.entries(groups).map(([group, colors]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h3 text-status-info">{group}</h3>
-            {/* 6 equal columns: swatches line up in a grid in both groups.
-                White gets a row of its own, so the six grays fill one full row. */}
+            {/* 6 equal columns: swatches line up in a grid in both groups. */}
             <ul className="grid grid-cols-6 gap-x-indents-xs gap-y-indents-l">
               {colors.map(c => (
-                <li key={c.cssVar} className={`flex min-w-0 flex-col gap-indents-xxs ${c.figma === 'color/neutral/0' ? 'col-span-6' : ''}`}>
+                <li key={c.cssVar} className={`flex min-w-0 flex-col gap-indents-xxs ${placement(c)}`}>
                   {/* 1.5 × indents/XXL- wide (126px), indents/XXL- tall (84px). */}
                   <div
                     className="h-indents-xxl-minus rounded-rounds-l border border-border-default"
