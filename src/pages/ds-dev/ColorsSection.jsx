@@ -65,9 +65,10 @@ export default function ColorsSection() {
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h3 text-status-info">{group}</h3>
             {/* Fixed layout + shared column widths keep columns aligned across all groups. */}
-            {/* The name column is a third of size/base with minus indents/XXL- (84px), and the
-                table is 84px narrower, so the variable column and the hex values sit 84px further left. */}
-            <table className="table-fixed border-collapse" style={{ width: 'calc(100% - var(--indents-xxl-minus))' }}>
+            {/* The name column is a third of size/base with minus indents/XXL- (84px). The table is
+                84px + 200px (2 × indents/XXL (out) + indents/M) narrower than the content, which
+                keeps the hex values close to the variable they belong to. */}
+            <table className="table-fixed border-collapse" style={{ width: 'calc(100% - var(--indents-xxl-minus) - var(--indents-xxl-out) * 2 - var(--indents-m))' }}>
               <colgroup>
                 <col className="w-indents-x" />
                 <col style={{ width: 'calc(var(--size-base-with) / 3 - var(--indents-xxl-minus))' }} />
