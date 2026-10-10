@@ -26,7 +26,7 @@ export default function ColorsSection() {
         </p>
         {Object.entries(hues).map(([hue, colors]) => (
           <div key={hue} className="flex flex-col gap-indents-xs">
-            <h3 className="text-text-caps text-text-secondary">{hue}</h3>
+            <h3 className="text-heading-h4">{hue}</h3>
             <ul className="flex flex-wrap gap-indents-m">
               {colors.map(c => (
                 <li key={c.cssVar} className="flex flex-col gap-indents-xxs">
@@ -51,7 +51,7 @@ export default function ColorsSection() {
         </p>
         {Object.entries(tokenGroups).map(([group, tokens]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
-            <h3 className="text-text-caps text-text-secondary">{group}</h3>
+            <h3 className="text-heading-h4">{group}</h3>
             {/* Fixed layout + shared column widths keep columns aligned across all groups. */}
             <table className="w-full max-w-size-base-with table-fixed border-collapse">
               <colgroup>
