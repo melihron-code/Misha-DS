@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import { Navigate, NavLink, useParams } from 'react-router-dom'
 import { SECTIONS } from './sections'
 
-// Content column, built from tokens: size/base with (830) + indents/XXL- (84)
-// = 914px, plus the main area's own padding (indents/X on both sides).
-const MAIN_MAX_WIDTH = 'calc(var(--size-base-with) + var(--indents-xxl-minus) + var(--indents-x) * 2)'
+// Content column = size/base with (830px), plus the main area's own padding
+// (indents/X on both sides).
+const MAIN_MAX_WIDTH = 'calc(var(--size-base-with) + var(--indents-x) * 2)'
 
 // Design-system foundations page. Only the selected section is rendered, so
 // scrolling can never reveal another one; the URL (/ds-dev/<section>) holds
