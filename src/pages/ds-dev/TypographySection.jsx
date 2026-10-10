@@ -51,7 +51,8 @@ function StyleRow({ s }) {
         <CopyButton value={s.tw} className="text-text-pixel text-text-secondary">.{s.tw}</CopyButton>
       </div>
       <p ref={ref} className={`${s.tw} break-words`}>{SAMPLE}</p>
-      <dl className="flex flex-wrap gap-indents-x rounded-rounds-m bg-bg-subtle p-indents-s-inner">
+      {/* Same 6 columns in every style, so each property lines up vertically. */}
+      <dl className="grid grid-cols-6 gap-indents-m rounded-rounds-m bg-bg-subtle p-indents-s-inner">
         <Spec label="Font" figma={s.family} rendered={m && !m.fontLoaded ? 'fallback font' : undefined} />
         <Spec label="Size" figma={`${s.size}px`} rendered={m ? `${m.size}px` : undefined} />
         <Spec label="Weight" figma={`${s.weightName} ${s.weight}`} rendered={m ? `${s.weightName} ${m.weight}` : undefined} />

@@ -41,14 +41,21 @@ export default function ColorsSection() {
         {Object.entries(tokenGroups).map(([group, tokens]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-text-caps text-text-secondary">{group}</h3>
-            <table className="w-full max-w-size-base-with border-collapse">
+            {/* Fixed layout + shared column widths keep columns aligned across all groups. */}
+            <table className="w-full max-w-size-base-with table-fixed border-collapse">
+              <colgroup>
+                <col className="w-indents-x" />
+                <col className="w-1/2" />
+                <col className="w-1/3" />
+                <col />
+              </colgroup>
               <thead className="sr-only">
                 <tr><th>Swatch</th><th>Token</th><th>Primitive</th><th>Value</th></tr>
               </thead>
               <tbody>
                 {tokens.map(t => (
                   <tr key={t.cssVar} className="border-t border-divider-default">
-                    <td className="w-indents-x py-indents-xxs">
+                    <td className="py-indents-xxs">
                       <div className="size-indents-l rounded-rounds-s border border-border-default" style={{ background: `var(${t.cssVar})` }} />
                     </td>
                     <td className="py-indents-xxs">
