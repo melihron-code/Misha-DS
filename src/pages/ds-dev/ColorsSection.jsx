@@ -77,39 +77,34 @@ export default function ColorsSection() {
         <p className="text-text-grotesk text-text-secondary">
           {nbsp('Use these in components.')}
         </p>
-        {/* Column labels, once for all groups (same widths as the group tables). */}
-        <table className="table-fixed border-collapse" style={TOKEN_TABLE_STYLE} aria-hidden="true">
-          <TokenColumns />
-          <thead>
-            <tr className="text-left">
-              <th />
-              <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">Token</th>
-              <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">CSS variable</th>
-              <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">Primitive</th>
-            </tr>
-          </thead>
-        </table>
         {Object.entries(tokenGroups).map(([group, tokens]) => (
           <div key={group} className="flex flex-col gap-indents-xs">
             <h3 className="text-heading-h3 text-status-info">{group}</h3>
             <table className="table-fixed border-collapse" style={TOKEN_TABLE_STYLE}>
               <TokenColumns />
-              <thead className="sr-only">
-                <tr><th>Swatch</th><th>Token</th><th>CSS variable</th><th>Primitive</th></tr>
+              {/* Column labels under every group name. */}
+              <thead>
+                <tr className="text-left">
+                  <th><span className="sr-only">Swatch</span></th>
+                  <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">Token</th>
+                  <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">CSS variable</th>
+                  <th className="px-indents-xxs pb-indents-xs text-text-caps text-text-secondary">Primitive</th>
+                </tr>
               </thead>
               <tbody>
+                {/* Rows: indents/XS (8px) above and below each line. */}
                 {tokens.map(t => (
                   <tr key={t.cssVar} className="border-t border-divider-default">
-                    <td className="py-indents-xxs">
+                    <td className="py-indents-xs">
                       <div className="size-indents-l rounded-rounds-s border border-border-default" style={{ background: `var(${t.cssVar})` }} />
                     </td>
-                    <td className="py-indents-xxs">
+                    <td className="py-indents-xs">
                       <span className="px-indents-xxs text-heading-h4">{t.figma}</span>
                     </td>
-                    <td className="py-indents-xxs">
+                    <td className="py-indents-xs">
                       <CodeNames cssVar={t.cssVar} />
                     </td>
-                    <td className="py-indents-xxs">
+                    <td className="py-indents-xs">
                       <CopyButton value={`var(${cssVarOf(t.alias)})`} className="whitespace-nowrap text-text-grotesk text-text-secondary">→ {t.alias}</CopyButton>
                     </td>
                   </tr>
