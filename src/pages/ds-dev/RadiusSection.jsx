@@ -14,7 +14,7 @@ export default function RadiusSection() {
           </div>
           <span className="whitespace-nowrap px-indents-xxs text-text-grotesk text-text-secondary">→ {r.alias}</span>
           {/* Example: an indents/XXL (out) square (90 × 90px) with the radius applied. */}
-          <div className={`size-indents-xxl-out border border-border-strong bg-surface-card ${r.tw}`} />
+          <div className={`size-indents-xxl-out bg-accent-highlight ${r.tw}`} />
           <span className="text-heading-h3">{r.px}px</span>
         </li>
       ))}
