@@ -2,9 +2,10 @@ import { cx, PRESSABLE, SIZE, stateAttr } from './shared'
 
 // Figma: ToggleButton. selected true | false, size lg | sm, label.
 // Figma's fixed 32px height with horizontal padding; the label is centred.
+// No disabled state (removed from the design).
 const STYLE = {
-  lg: { base: 'px-indents-s-inner text-text-pixel text-text-primary', on: 'bg-surface-control-selected', off: '' },
-  sm: { base: 'bg-surface-control px-indents-s-inner text-text-caps', on: 'text-text-primary', off: 'text-text-secondary' },
+  lg: { base: 'px-indents-s-inner text-text-pixel', on: 'bg-surface-control-selected text-text-primary', off: 'text-text-primary' },
+  sm: { base: 'px-indents-s-inner text-text-caps', on: 'bg-surface-control text-text-primary', off: 'bg-surface-control text-text-secondary' },
 }
 
 export default function ToggleButton({
@@ -12,14 +13,12 @@ export default function ToggleButton({
   size = 'lg',
   label = 'Team',
   children,
-  disabled = false,
   state,
   onClick,
   className,
   role,
   ...rest
 }) {
-  const isDisabled = disabled || state === 'disabled'
   const s = STYLE[size]
   // Standalone it's a toggle (aria-pressed); inside a ToggleButtonGroup it's a radio (role passed in).
   const ariaState = role === 'radio' ? { 'aria-checked': selected } : { 'aria-pressed': selected }
@@ -28,7 +27,6 @@ export default function ToggleButton({
       type="button"
       role={role}
       {...ariaState}
-      disabled={isDisabled}
       data-state={stateAttr(state)}
       onClick={onClick}
       className={cx(
@@ -36,7 +34,6 @@ export default function ToggleButton({
         PRESSABLE,
         s.base,
         selected ? s.on : s.off,
-        isDisabled && 'bg-bg-disabled-bg text-text-disabled',
         className,
       )}
       style={{ height: SIZE.control }}

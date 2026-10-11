@@ -22,7 +22,7 @@ export default function TextInput({
   const isDisabled = disabled || state === 'disabled'
   return (
     <div className={cx('inline-flex flex-col gap-indents-xs', className)}>
-      <label htmlFor={inputId} className={showLabel ? 'text-text-caps text-text-primary' : 'sr-only'}>
+      <label htmlFor={inputId} className={showLabel ? cx('text-text-caps', isDisabled ? 'text-text-disabled' : 'text-text-primary') : 'sr-only'}>
         {label}
       </label>
       <input
@@ -34,8 +34,8 @@ export default function TextInput({
         disabled={isDisabled}
         data-state={stateAttr(state)}
         className={cx(
-          'focus-ring transition-state w-full rounded-radius-s bg-surface-control px-indents-s-inner text-text-pixel text-text-primary placeholder:text-text-tertiary disabled:cursor-not-allowed',
-          isDisabled && 'bg-bg-disabled-bg text-text-disabled',
+          'focus-ring transition-state w-full rounded-radius-s px-indents-s-inner text-text-pixel placeholder:text-text-tertiary disabled:cursor-not-allowed',
+          isDisabled ? 'bg-bg-disabled-bg text-text-disabled' : 'bg-surface-control text-text-primary',
           inputClassName,
         )}
         style={{ height: SIZE.control }}

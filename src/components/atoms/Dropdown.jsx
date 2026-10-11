@@ -49,6 +49,9 @@ export default function Dropdown({
   const selectedIndex = items.findIndex(o => o.value === value)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(-1)
+  // The active option is highlighted (surface/tag-yellow-bright) only once the pointer or
+  // the arrow keys have moved onto it, not just because the list opened on it.
+  const [moved, setMoved] = useState(false)
   const rootRef = useRef(null)
   const isDisabled = disabled || state === 'disabled'
   const isFilled = filled ?? selectedIndex >= 0
@@ -62,7 +65,12 @@ export default function Dropdown({
   const openList = () => {
     if (isDisabled) return
     setActive(selectedIndex >= 0 ? selectedIndex : 0)
+    setMoved(false)
     setOpen(true)
+  }
+  const moveTo = next => {
+    setActive(next)
+    setMoved(true)
   }
 
   // Close when clicking outside.
@@ -79,10 +87,10 @@ export default function Dropdown({
       return
     }
     const last = items.length - 1
-    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(a => Math.min(last, a + 1)) }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(a => Math.max(0, a - 1)) }
-    else if (e.key === 'Home') { e.preventDefault(); setActive(0) }
-    else if (e.key === 'End') { e.preventDefault(); setActive(last) }
+    if (e.key === 'ArrowDown') { e.preventDefault(); moveTo(Math.min(last, active + 1)) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); moveTo(Math.max(0, active - 1)) }
+    else if (e.key === 'Home') { e.preventDefault(); moveTo(0) }
+    else if (e.key === 'End') { e.preventDefault(); moveTo(last) }
     else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (active >= 0) pick(active) }
     else if (e.key === 'Escape') { e.preventDefault(); setOpen(false) }
     else if (e.key === 'Tab') setOpen(false)
@@ -92,7 +100,7 @@ export default function Dropdown({
   const labelId = `${uid}-label`
   return (
     <div ref={rootRef} className={cx('relative inline-flex flex-col gap-indents-xs', className)}>
-      <span id={labelId} className={showLabel ? cx('text-text-caps', s.label) : 'sr-only'}>
+      <span id={labelId} className={showLabel ? cx('text-text-caps', isDisabled ? 'text-text-disabled' : s.label) : 'sr-only'}>
         {label}
       </span>
       <button
@@ -110,8 +118,7 @@ export default function Dropdown({
         className={cx(
           'inline-flex items-center justify-between whitespace-nowrap rounded-radius-s py-indents-xs pl-indents-s-inner pr-indents-s-inner text-left select-none',
           PRESSABLE,
-          s.field,
-          isDisabled && 'bg-bg-disabled-bg',
+          isDisabled ? 'bg-bg-disabled-bg' : s.field,
         )}
         style={{ gap: SIZE.gap10 }}
       >
@@ -133,13 +140,12 @@ export default function Dropdown({
               id={`${uid}-opt-${i}`}
               role="option"
               aria-selected={i === selectedIndex}
-              data-state={i === active ? 'hover' : undefined}
               onPointerDown={e => e.preventDefault()}
               onClick={() => pick(i)}
-              onPointerEnter={() => setActive(i)}
+              onPointerEnter={() => moveTo(i)}
               className={cx(
-                'state-overlay transition-state cursor-pointer whitespace-nowrap rounded-radius-s px-indents-s-inner py-indents-xs text-text-pixel text-text-primary',
-                i === selectedIndex && 'bg-surface-control',
+                'transition-state cursor-pointer whitespace-nowrap rounded-radius-s px-indents-s-inner py-indents-xs text-text-pixel text-text-primary',
+                i === active && moved ? 'bg-surface-tag-yellow-bright' : i === selectedIndex && 'bg-surface-control',
               )}
             >
               {o.label}

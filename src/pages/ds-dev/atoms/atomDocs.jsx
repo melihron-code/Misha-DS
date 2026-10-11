@@ -6,7 +6,6 @@ import {
   Dropdown,
   ErrorMessage,
   Flag,
-  Icon,
   MiniChart,
   ProgressBar,
   Status,
@@ -16,232 +15,249 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from '../../../components/atoms'
+import IconGallery from './IconGallery'
 
-// Docs for each atom, in the order of the Figma atoms frame.
+// Docs for each component.
+// name:     the component's name in code; label: its name in the docs.
 // grid:     rows (variants) × columns (states or cases); each cell renders <Component {...row} {...column} />.
-// controls: the playground's controls; `initial` its starting props; `defaults` are left out of the code snippet.
+// controls: the playground's controls (shown beside its title); `enabled(props)` disables one when false;
+//           `double` makes a text field twice as wide; `initial` its starting props.
 // bind:     wires the playground so the atom really responds (toggles, selections, typing).
 // wide:     the atom fills its container (shown at full width).
 const STATES = ['default', 'hover', 'pressed', 'focus', 'disabled'].map(s => ({ label: s, props: { state: s } }))
+const STATES_NO_DISABLED = STATES.filter(c => c.label !== 'disabled')
 const ONE = [{ label: 'default', props: {} }]
 const select = (prop, options) => ({ prop, type: 'select', options })
 const toggle = prop => ({ prop, type: 'boolean' })
 const text = (prop, label) => ({ prop, type: 'text', label })
+// Disabled in the playground unless the node variant is chosen (the sublabel exists only there).
+const nodeOnly = control => ({ ...control, enabled: p => p.variant === 'node' })
 
-export const ATOM_DOCS = [
-  {
-    slug: 'button',
-    name: 'Button',
-    Component: Button,
-    about: 'Pill-shaped action button; node is the two-line card button. Hover and pressed lay overlay/hover (15%) or overlay/pressed (25%) over it.',
-    rows: ['secondary', 'on-color', 'primary-sm', 'primary-lg', 'node'].map(v => ({ label: v, props: { variant: v } })),
-    columns: STATES,
-    controls: [select('variant', ['secondary', 'on-color', 'primary-sm', 'primary-lg', 'node']), text('children', 'label'), text('sublabel'), toggle('showSublabel'), toggle('disabled')],
-    initial: { variant: 'secondary', children: 'More info', sublabel: 'more info', showSublabel: true, disabled: false },
-    defaults: { variant: 'secondary', sublabel: 'more info', showSublabel: true, disabled: false },
-  },
-  {
-    slug: 'toggle-button',
-    name: 'ToggleButton',
-    Component: ToggleButton,
-    about: 'A button that stays on or off (aria-pressed). Click to toggle.',
-    rows: [
-      { label: 'lg · selected', props: { size: 'lg', selected: true } },
-      { label: 'lg · not selected', props: { size: 'lg', selected: false } },
-      { label: 'sm · selected', props: { size: 'sm', selected: true } },
-      { label: 'sm · not selected', props: { size: 'sm', selected: false } },
-    ],
-    columns: STATES,
-    controls: [toggle('selected'), select('size', ['lg', 'sm']), text('label'), toggle('disabled')],
-    initial: { selected: true, size: 'lg', label: 'Team', disabled: false },
-    defaults: { selected: false, size: 'lg', label: 'Team', disabled: false },
-    bind: (p, set) => ({ onClick: () => set({ ...p, selected: !p.selected }) }),
-  },
-  {
-    slug: 'toggle-button-group',
-    name: 'ToggleButtonGroup',
-    Component: ToggleButtonGroup,
-    about: 'Single choice from a few options (radio group). Arrow keys move the selection; Tab leaves the group.',
-    rows: [{ label: 'default', props: { value: 'team-1' } }],
-    columns: [{ label: 'default', props: {} }, { label: 'disabled', props: { disabled: true } }],
-    controls: [select('value', ['team-1', 'team-2', 'team-3']), toggle('disabled')],
-    initial: { value: 'team-1', disabled: false },
-    defaults: { disabled: false },
-    bind: (p, set) => ({ onChange: v => set({ ...p, value: v }) }),
-  },
-  {
-    slug: 'tag',
-    name: 'Tag',
-    Component: Tag,
-    about: 'control is clickable (with showIcon it reads "Remove <label>"); static is display-only.',
-    rows: [
-      { label: 'control', props: { variant: 'control' } },
-      { label: 'control · showIcon', props: { variant: 'control', showIcon: true } },
-      { label: 'static', props: { variant: 'static' } },
-      { label: 'static · showIcon', props: { variant: 'static', showIcon: true } },
-    ],
-    columns: STATES,
-    controls: [select('variant', ['control', 'static']), text('label'), toggle('showIcon'), toggle('disabled')],
-    initial: { variant: 'control', label: 'React', showIcon: false, disabled: false },
-    defaults: { variant: 'control', label: 'React', showIcon: false, disabled: false },
-  },
-  {
-    slug: 'flag',
-    name: 'Flag',
-    Component: Flag,
-    about: 'Bookmark toggle (aria-pressed). Click to flag or unflag.',
-    rows: [{ label: 'not checked', props: { checked: false } }, { label: 'checked', props: { checked: true } }],
-    columns: STATES,
-    controls: [toggle('checked'), text('label', 'label (screen readers)'), toggle('disabled')],
-    initial: { checked: false, label: 'Flag', disabled: false },
-    defaults: { checked: false, label: 'Flag', disabled: false },
-    bind: (p, set) => ({ onClick: () => set({ ...p, checked: !p.checked }) }),
-  },
-  {
-    slug: 'status',
-    name: 'Status',
-    Component: Status,
-    about: 'Colored dot and label.',
-    rows: ['growth', 'on-track', 'failing', 'stopped'].map(s => ({ label: s, props: { status: s } })),
-    columns: ONE,
-    controls: [select('status', ['growth', 'on-track', 'failing', 'stopped']), text('label')],
-    initial: { status: 'on-track', label: 'On Track' },
-    defaults: { status: 'on-track' },
-  },
-  {
-    slug: 'error-message',
-    name: 'ErrorMessage',
-    Component: ErrorMessage,
-    about: 'Inline error, announced to screen readers (role="alert").',
-    rows: [{ label: 'default', props: {} }],
-    columns: ONE,
-    controls: [text('message')],
-    initial: { message: 'Something went wrong' },
-    defaults: {},
-  },
-  {
-    slug: 'avatar-group',
-    name: 'AvatarGroup',
-    Component: AvatarGroup,
-    about: 'Overlapping avatars (indents/-XS).',
-    rows: [{ label: 'default', props: {} }],
-    columns: ONE,
-    controls: [],
-    initial: {},
-    defaults: {},
-  },
-  {
-    slug: 'document-row',
-    name: 'DocumentRow',
-    Component: DocumentRow,
-    about: 'A row in a document list: title, type, author, date and an edit button.',
-    rows: [{ label: 'default', props: {} }],
-    columns: ONE,
-    controls: [text('title'), text('author'), text('date')],
-    initial: { title: 'Sarah Johnson', author: 'created by Alan', date: '24.05.2025' },
-    defaults: {},
-    wide: true,
-  },
-  {
-    slug: 'text-area',
-    name: 'TextArea',
-    Component: TextArea,
-    about: 'Multi-line text field with a label.',
-    rows: [{ label: 'label shown', props: {} }, { label: 'label hidden', props: { showLabel: false } }],
-    columns: [
-      { label: 'empty', props: {} },
-      { label: 'filled', props: { defaultValue: 'Michael Lee' } },
-      { label: 'focus', props: { state: 'focus' } },
-      { label: 'disabled', props: { state: 'disabled' } },
-    ],
-    controls: [text('label'), text('placeholder'), toggle('showLabel'), toggle('disabled')],
-    initial: { label: 'head line', placeholder: 'type something here', showLabel: true, disabled: false },
-    defaults: { label: 'head line', placeholder: 'type something here', showLabel: true, disabled: false },
-  },
-  {
-    slug: 'text-input',
-    name: 'TextInput',
-    Component: TextInput,
-    about: 'Single-line text field with a label.',
-    rows: [{ label: 'label shown', props: {} }, { label: 'label hidden', props: { showLabel: false } }],
-    columns: [
-      { label: 'empty', props: { placeholder: 'Michael Lee' } },
-      { label: 'filled', props: { defaultValue: 'Michael Lee' } },
-      { label: 'focus', props: { defaultValue: 'Michael Lee', state: 'focus' } },
-      { label: 'disabled', props: { defaultValue: 'Michael Lee', state: 'disabled' } },
-    ],
-    controls: [text('label'), text('value'), toggle('showLabel'), toggle('disabled')],
-    initial: { label: 'head line', value: 'Michael Lee', showLabel: true, disabled: false },
-    defaults: { label: 'head line', showLabel: true, disabled: false },
-    bind: (p, set) => ({ onChange: e => set({ ...p, value: e.target.value }) }),
-  },
-  {
-    slug: 'dropdown',
-    name: 'Dropdown',
-    Component: Dropdown,
-    about: 'Pick one option from a list. Keyboard: Enter, Space or arrows open; arrows move; Enter picks; Esc closes.',
-    rows: [
-      { label: 'default · filled', props: { variant: 'default', value: 'frontend-team' } },
-      { label: 'default · not filled', props: { variant: 'default' } },
-      { label: 'on-color · filled', props: { variant: 'on-color', value: 'frontend-team' } },
-      { label: 'on-color · not filled', props: { variant: 'on-color' } },
-    ],
-    columns: STATES,
-    controls: [select('variant', ['default', 'on-color']), select('value', ['frontend-team', 'backend-team', 'design-team']), text('label'), toggle('showLabel'), toggle('disabled')],
-    initial: { variant: 'default', value: 'frontend-team', label: 'head line', showLabel: true, disabled: false },
-    defaults: { variant: 'default', label: 'head line', showLabel: true, disabled: false },
-    bind: (p, set) => ({ onChange: v => set({ ...p, value: v }) }),
-  },
-  {
-    slug: 'mini-chart',
-    name: 'MiniChart',
-    Component: MiniChart,
-    about: 'Small bar chart; values are 0–100 (% of the chart height).',
-    rows: [{ label: 'default', props: {} }],
-    columns: ONE,
-    controls: [{ prop: 'first', type: 'number', label: 'bar 1 (0–100)' }, { prop: 'second', type: 'number', label: 'bar 2 (0–100)' }],
-    initial: { first: 100, second: 58 },
-    defaults: {},
-    toProps: p => ({ values: [p.first, p.second] }),
-    narrow: true,
-  },
-  {
-    slug: 'avatar',
-    name: 'Avatar',
-    Component: Avatar,
-    about: 'Round 30px photo.',
-    rows: ['katya', 'dog', 'petya'].map(i => ({ label: i, props: { image: i } })),
-    columns: ONE,
-    controls: [select('image', ['katya', 'dog', 'petya'])],
-    initial: { image: 'katya' },
-    defaults: { image: 'katya' },
-  },
-  {
-    slug: 'progress-bar',
-    name: 'ProgressBar',
-    Component: ProgressBar,
-    about: 'Dotted progress; fills the width of its container.',
-    rows: [
-      { label: 'sm · 75', props: { size: 'sm', value: 75 } },
-      { label: 'sm · 20', props: { size: 'sm', value: 20 } },
-      { label: 'lg · 75', props: { size: 'lg', value: 75 } },
-      { label: 'lg · 20', props: { size: 'lg', value: 20 } },
-    ],
-    columns: ONE,
-    controls: [select('size', ['sm', 'lg']), { prop: 'value', type: 'number', label: 'value (0–100)' }],
-    initial: { size: 'sm', value: 75 },
-    defaults: { size: 'sm' },
-    wide: true,
-  },
+const BUTTON_VARIANTS = ['primary-lg', 'primary-sm', 'secondary', 'on-color', 'node']
+
+const BUTTON = {
+  name: 'Button',
+  label: 'Button',
+  Component: Button,
+  about: 'Pill-shaped action button; node is the two-line card button. Hover and pressed lay overlay/hover (15%) or overlay/pressed (25%) over it. Disabled is the same for every variant: bg/disabled-bg and text/disabled.',
+  rows: BUTTON_VARIANTS.map(v => ({ label: v, props: { variant: v } })),
+  columns: STATES,
+  controls: [select('variant', BUTTON_VARIANTS), text('children', 'label'), nodeOnly(text('sublabel')), nodeOnly(toggle('showSublabel')), toggle('disabled')],
+  initial: { variant: 'primary-lg', children: 'More info', sublabel: 'more info', showSublabel: true, disabled: false },
+}
+
+const TOGGLE_BUTTON = {
+  name: 'ToggleButton',
+  label: 'Toggle button',
+  Component: ToggleButton,
+  about: 'A button that stays on or off (aria-pressed). Click to toggle.',
+  rows: [
+    { label: 'lg · selected', props: { size: 'lg', selected: true } },
+    { label: 'lg · not selected', props: { size: 'lg', selected: false } },
+    { label: 'sm · selected', props: { size: 'sm', selected: true } },
+    { label: 'sm · not selected', props: { size: 'sm', selected: false } },
+  ],
+  columns: STATES_NO_DISABLED,
+  controls: [toggle('selected'), select('size', ['lg', 'sm']), text('label')],
+  initial: { selected: true, size: 'lg', label: 'Team' },
+  bind: (p, set) => ({ onClick: () => set({ ...p, selected: !p.selected }) }),
+}
+
+const TOGGLE_BUTTON_GROUP = {
+  name: 'ToggleButtonGroup',
+  label: 'Toggle button group',
+  Component: ToggleButtonGroup,
+  about: 'Single choice from a few options (radio group). Arrow keys move the selection; Tab leaves the group.',
+  rows: [{ label: 'default', props: { value: 'team-1' } }],
+  columns: ONE,
+  controls: [select('value', ['team-1', 'team-2', 'team-3'])],
+  initial: { value: 'team-1' },
+  bind: (p, set) => ({ onChange: v => set({ ...p, value: v }) }),
+}
+
+const TAG = {
+  name: 'Tag',
+  label: 'Tag',
+  Component: Tag,
+  about: 'control is clickable (with showIcon it reads "Remove <label>"); static is display-only.',
+  rows: [
+    { label: 'control', props: { variant: 'control' } },
+    { label: 'control · showIcon', props: { variant: 'control', showIcon: true } },
+    { label: 'static', props: { variant: 'static' } },
+    { label: 'static · showIcon', props: { variant: 'static', showIcon: true } },
+  ],
+  columns: STATES_NO_DISABLED,
+  controls: [select('variant', ['control', 'static']), text('label'), toggle('showIcon')],
+  initial: { variant: 'control', label: 'React', showIcon: false },
+}
+
+const FLAG = {
+  name: 'Flag',
+  label: 'Flag',
+  Component: Flag,
+  about: 'Bookmark toggle (aria-pressed). Click to flag or unflag.',
+  rows: [{ label: 'not checked', props: { checked: false } }, { label: 'checked', props: { checked: true } }],
+  columns: STATES,
+  controls: [toggle('checked'), toggle('disabled')],
+  initial: { checked: false, disabled: false },
+  bind: (p, set) => ({ onClick: () => set({ ...p, checked: !p.checked }) }),
+}
+
+const STATUS = {
+  name: 'Status',
+  label: 'Status',
+  Component: Status,
+  about: 'Colored dot and label.',
+  rows: ['growth', 'on-track', 'failing', 'stopped'].map(s => ({ label: s, props: { status: s } })),
+  columns: ONE,
+  controls: [select('status', ['growth', 'on-track', 'failing', 'stopped']), text('label')],
+  initial: { status: 'on-track', label: 'On Track' },
+}
+
+const ERROR_MESSAGE = {
+  name: 'ErrorMessage',
+  label: 'Error message',
+  Component: ErrorMessage,
+  about: 'Inline error, announced to screen readers (role="alert").',
+  rows: [{ label: 'default', props: {} }],
+  columns: ONE,
+  controls: [{ ...text('message'), double: true }],
+  initial: { message: 'Something went wrong' },
+}
+
+const AVATAR = {
+  name: 'Avatar',
+  label: 'Avatar',
+  Component: Avatar,
+  about: 'Round 30px photo.',
+  rows: ['katya', 'dog', 'petya'].map(i => ({ label: i, props: { image: i } })),
+  columns: ONE,
+  controls: [select('image', ['katya', 'dog', 'petya'])],
+  initial: { image: 'katya' },
+}
+
+const AVATAR_GROUP = {
+  name: 'AvatarGroup',
+  label: 'Avatar group',
+  Component: AvatarGroup,
+  about: 'Overlapping avatars (indents/-XS).',
+  rows: [{ label: 'default', props: {} }],
+  columns: ONE,
+  controls: [],
+  initial: {},
+}
+
+const DOCUMENT_ROW = {
+  name: 'DocumentRow',
+  label: 'Document row',
+  Component: DocumentRow,
+  about: 'A row in a document list: title, type, author, date and an edit button.',
+  rows: [{ label: 'default', props: {} }],
+  columns: ONE,
+  controls: [text('title'), text('author'), text('date')],
+  initial: { title: 'Sarah Johnson', author: 'created by Alan', date: '24.05.2025' },
+  wide: true,
+}
+
+const TEXT_INPUT = {
+  name: 'TextInput',
+  label: 'Text input',
+  Component: TextInput,
+  about: 'Single-line text field with a label.',
+  rows: [{ label: 'label shown', props: {} }, { label: 'label hidden', props: { showLabel: false } }],
+  columns: [
+    { label: 'empty', props: { placeholder: 'Michael Lee' } },
+    { label: 'filled', props: { defaultValue: 'Michael Lee' } },
+    { label: 'focus', props: { defaultValue: 'Michael Lee', state: 'focus' } },
+    { label: 'disabled', props: { defaultValue: 'Michael Lee', state: 'disabled' } },
+  ],
+  controls: [text('label'), text('value'), toggle('showLabel'), toggle('disabled')],
+  initial: { label: 'head line', value: 'Michael Lee', showLabel: true, disabled: false },
+  bind: (p, set) => ({ onChange: e => set({ ...p, value: e.target.value }) }),
+}
+
+const TEXT_AREA = {
+  name: 'TextArea',
+  label: 'Text area',
+  Component: TextArea,
+  about: 'Multi-line text field with a label.',
+  rows: [{ label: 'label shown', props: {} }, { label: 'label hidden', props: { showLabel: false } }],
+  columns: [
+    { label: 'empty', props: {} },
+    { label: 'filled', props: { defaultValue: 'Michael Lee' } },
+    { label: 'focus', props: { state: 'focus' } },
+    { label: 'disabled', props: { state: 'disabled' } },
+  ],
+  controls: [text('label'), text('placeholder'), toggle('showLabel'), toggle('disabled')],
+  initial: { label: 'head line', placeholder: 'type something here', showLabel: true, disabled: false },
+}
+
+const DROPDOWN = {
+  name: 'Dropdown',
+  label: 'Dropdown',
+  Component: Dropdown,
+  about: 'Pick one option from a list. Keyboard: Enter, Space or arrows open; arrows move; Enter picks; Esc closes.',
+  rows: [
+    { label: 'default · filled', props: { variant: 'default', value: 'frontend-team' } },
+    { label: 'default · not filled', props: { variant: 'default' } },
+    { label: 'on-color · filled', props: { variant: 'on-color', value: 'frontend-team' } },
+    { label: 'on-color · not filled', props: { variant: 'on-color' } },
+  ],
+  columns: STATES,
+  controls: [select('variant', ['default', 'on-color']), select('value', ['frontend-team', 'backend-team', 'design-team']), text('label'), toggle('showLabel'), toggle('disabled')],
+  initial: { variant: 'default', value: 'frontend-team', label: 'head line', showLabel: true, disabled: false },
+  bind: (p, set) => ({ onChange: v => set({ ...p, value: v }) }),
+}
+
+const MINI_CHART = {
+  name: 'MiniChart',
+  label: 'Mini chart',
+  Component: MiniChart,
+  about: 'Small bar chart; values are 0–100 (% of the chart height).',
+  rows: [{ label: 'default', props: {} }],
+  columns: ONE,
+  controls: [{ prop: 'first', type: 'number', label: 'bar 1 (0–100)' }, { prop: 'second', type: 'number', label: 'bar 2 (0–100)' }],
+  initial: { first: 100, second: 58 },
+  toProps: p => ({ values: [p.first, p.second] }),
+  narrow: true,
+}
+
+const PROGRESS_BAR = {
+  name: 'ProgressBar',
+  label: 'Progress bar',
+  Component: ProgressBar,
+  about: 'Dotted progress; fills the width of its container.',
+  rows: [
+    { label: 'sm · 75', props: { size: 'sm', value: 75 } },
+    { label: 'sm · 20', props: { size: 'sm', value: 20 } },
+    { label: 'lg · 75', props: { size: 'lg', value: 75 } },
+    { label: 'lg · 20', props: { size: 'lg', value: 20 } },
+  ],
+  columns: ONE,
+  controls: [select('size', ['sm', 'lg']), { prop: 'value', type: 'number', label: 'value (0–100)' }],
+  initial: { size: 'sm', value: 75 },
+  wide: true,
+}
+
+// Pages under /ds-dev/atoms/<slug>, in sidebar order. A page shows one or more
+// components (`parts`) or a custom `render`.
+export const ATOM_PAGES = [
+  { slug: 'button', label: 'Button', parts: [BUTTON] },
+  { slug: 'input', label: 'Input', about: 'Text fields with a label: one line or several.', parts: [TEXT_INPUT, TEXT_AREA] },
+  { slug: 'dropdown', label: 'Dropdown', parts: [DROPDOWN] },
+  { slug: 'tabs', label: 'Tabs', about: 'A group of toggle buttons where exactly one is selected, or a toggle button on its own.', parts: [TOGGLE_BUTTON_GROUP, TOGGLE_BUTTON] },
+  { slug: 'mini-chart', label: 'Mini chart', parts: [MINI_CHART] },
+  { slug: 'progress-bar', label: 'Progress bar', parts: [PROGRESS_BAR] },
+  { slug: 'status', label: 'Status', parts: [STATUS] },
+  { slug: 'error-message', label: 'Error message', parts: [ERROR_MESSAGE] },
+  { slug: 'flag', label: 'Flag', parts: [FLAG] },
   {
     slug: 'icon',
-    name: 'Icon',
-    Component: Icon,
-    about: 'One of the icons by name; follows the text color.',
-    rows: ['play', 'user', 'more', 'arrow-down', 'close'].map(n => ({ label: n, props: { name: n } })),
-    columns: ONE,
-    controls: [select('name', ['play', 'user', 'more', 'arrow-down', 'close'])],
-    initial: { name: 'play' },
-    defaults: {},
+    label: 'Icon',
+    about: 'Every icon, as <Icon name="play" /> or as its own component (<PlayIcon size={24} />); both follow the text color. Click a name to copy it. Temporary: these are Apple SF Symbols, to be replaced before the site goes public.',
+    render: () => <IconGallery />,
   },
-]
+  { slug: 'tag', label: 'Tag', parts: [TAG] },
+  { slug: 'avatar', label: 'Avatar', about: 'Several round photos overlapping, or one on its own.', parts: [AVATAR_GROUP, AVATAR] },
+  { slug: 'document-row', label: 'Document row', parts: [DOCUMENT_ROW] },
+].map(page => ({ ...page, about: page.about ?? page.parts[0].about }))

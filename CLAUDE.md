@@ -18,7 +18,7 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 - `src/styles/interaction.css`: `state-overlay`, `focus-ring`, `focus-ring-within`, `transition-state` and reduced motion. `src/styles/text.css`: `trim-letter-spacing`.
 - `src/components/atoms/`: one file per atom, all exported from `index.js`. `shared.js` holds `cx`, `SIZE` (sizes built from tokens with `calc()`), `PRESSABLE` and `stateAttr`.
 - `src/components/icons/`: generated icon components (`<PlayIcon size={16} />`) and `ICONS` (Figma name → component). TEMPORARY: these are Apple SF Symbols; replace them before the site is public.
-- `src/pages/ds-dev/`: the /ds-dev/ page. Foundations are at `/ds-dev/<name>`, atoms at `/ds-dev/atoms/<atom>`. Each atom's docs (grid, playground and snippet) are configured in `atoms/atomDocs.jsx`, so add an entry there for every new component.
+- `src/pages/ds-dev/`: the /ds-dev/ page. Foundations are at `/ds-dev/<name>`, atoms at `/ds-dev/atoms/<atom>`. Each atom's docs (grid and playground) are configured in `atoms/atomDocs.jsx`, so add an entry there for every new component.
 - `src/lib/nbsp.js`: `nbsp(text)` binds short words to the next word.
 - `NOTES.md`: release notes and the Figma rename reference.
 

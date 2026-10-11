@@ -3,6 +3,49 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.3.1 — Step 3 refinements: atoms docs and disabled states (2026-10-11)
+
+### Summary
+Review round on the atoms. Disabled states are now consistent: every disabled Button is
+`bg/disabled-bg` + `text/disabled`, and field labels go `text/disabled` too. Tag, ToggleButton and
+ToggleButtonGroup no longer have a disabled state. The /ds-dev/ Atoms section is one scrolling page with
+a submenu that follows the scroll, merged pages (Tabs, Input, Avatar), readable names, and playgrounds
+that don't shift. Checked in headless Chrome: menu clicks, scroll sync, reload, back, every playground
+option, disabled colors, baselines and gaps.
+
+### Changed
+- **Components:**
+  - `Button`: disabled is the same for every variant (neutral/100 fill, neutral/300 text). The
+    variant colors used to clash with the disabled ones, and Tailwind picked the winner by its own order.
+  - `TextInput`, `TextArea`, `Dropdown`: the label turns `text/disabled` when disabled (same class-clash fix on the field).
+  - `Dropdown`: the option under the pointer or arrow keys is `surface/tag-yellow-bright` (yellow/200),
+    with no black overlay on options. The list doesn't highlight the selected option just because it opened.
+  - `Tag`, `ToggleButton`, `ToggleButtonGroup`: no `disabled` prop or disabled state.
+- **/ds-dev/ page:**
+  - Sidebar: one list (the "Foundations" caption is gone). Atoms is an item with a submenu: Button, Input,
+    Dropdown, Tabs, Mini chart, Progress bar, Status, Error message, Flag, Icon, Tag, Avatar, Document row.
+  - Atoms is one scrolling page: overview cards, then every atom 160px apart (`indents/M` × 8). Clicking
+    jumps to an atom, and scrolling updates the URL and the highlighted item.
+  - Merged pages: Tabs (ToggleButtonGroup + ToggleButton), Input (TextInput + TextArea), Avatar
+    (AvatarGroup + Avatar). Icon shows only the gallery of every icon.
+  - Playground: a white card. Its controls sit on the title's line, flush right, and the title shares the
+    values' baseline. Booleans are switches. Controls depending on other props are disabled (Button's
+    sublabel outside node). The JSX snippet is gone. The preview has a fixed height and the controls a
+    fixed width, so nothing shifts.
+  - Spacing: half a section gap under the page description, `indents/X` between grid and playground everywhere.
+
+### Differences from Figma
+- The page names Tabs, Input and Avatar exist only in the docs; the components keep their Figma names.
+- The playground switch (`src/pages/ds-dev/Switch.jsx`) is docs-only and isn't designed in Figma.
+- Tag, ToggleButton and ToggleButtonGroup had a code-only disabled state in v0.3.0; it's removed.
+
+### How to use
+```jsx
+<Button variant="primary-sm" disabled>Save</Button>   // same disabled look for every variant
+<TextInput label="Name" disabled />                   // label and field both disabled
+```
+Docs: `/ds-dev/atoms` (scroll), or `/ds-dev/atoms/<atom>` to jump to one, e.g. `/ds-dev/atoms/tabs`.
+
 ## v0.3.0 — Step 3: Atoms (2026-10-10)
 
 ### Summary
@@ -17,10 +60,10 @@ reduced motion), with no console errors.
 
 ### Added
 - **Atoms** (all exported from `src/components/atoms/index.js`):
-  - `Button`: `variant` secondary | on-color | primary-sm | primary-lg | node, `label` (or children), `sublabel`, `showSublabel` (node only), `disabled`, `state`, `href` (renders an `<a>`), `type`.
-  - `ToggleButton`: `selected`, `size` lg | sm, `label`, `disabled`, `state`, `onClick` (`aria-pressed`).
-  - `ToggleButtonGroup`: `options` [{ value, label }], `value`, `onChange`, `label`, `disabled`. A radio group: one Tab stop, and arrows, Home and End move the selection.
-  - `Tag`: `variant` control (a button) | static (a span), `label`, `showIcon` (close icon, reads "Remove <label>"), `disabled`, `state`, `onClick`.
+  - `Button`: `variant` primary-lg | primary-sm | secondary | on-color | node, `label` (or children), `sublabel`, `showSublabel` (node only), `disabled`, `state`, `href` (renders an `<a>`), `type`.
+  - `ToggleButton`: `selected`, `size` lg | sm, `label`, `state`, `onClick` (`aria-pressed`). No disabled state.
+  - `ToggleButtonGroup`: `options` [{ value, label }], `value`, `onChange`, `label`. No disabled state. A radio group: one Tab stop, and arrows, Home and End move the selection.
+  - `Tag`: `variant` control (a button) | static (a span), `label`, `showIcon` (close icon, reads "Remove <label>"), `state`, `onClick`. No disabled state.
   - `Flag`: `checked`, `label` (for screen readers), `disabled`, `state`, `onClick` (`aria-pressed`).
   - `Status`: `status` growth | on-track | failing | stopped, `label`.
   - `ErrorMessage`: `message`, `prefix` (default "error!"); `role="alert"`.
@@ -47,20 +90,20 @@ reduced motion), with no console errors.
 - **`trim-letter-spacing`** (`src/styles/text.css`): CSS adds letter spacing after the last character, Figma doesn't. It's applied to every control label, so the controls are exactly as wide as in Figma. The text styles now also set `--text-letter-spacing`.
 - **Avatars:** `src/assets/avatars/katya.png`, `dog.png` and `petya.png` (120×120, so they stay sharp at 4×).
 - **/ds-dev/:**
-  - The sidebar has two groups: Foundations, and Atoms (Icons plus the 16 atoms).
+  - The sidebar is one list: Colors, Typography, Spacing, Radius, Effects and Atoms. Atoms has a submenu with 13 atoms: Button, Input (TextInput + TextArea), Dropdown, Tabs (ToggleButtonGroup + ToggleButton), Mini chart, Progress bar, Status, Error message, Flag, Icon, Tag, Avatar (AvatarGroup + Avatar), Document row. These names are for the docs only; the components keep their Figma names.
+  - Atoms is one scrolling page (`src/pages/ds-dev/atoms/AtomsPage.jsx`): the overview cards, then every atom, 160px apart (`indents/M` × 8). A submenu item or card jumps to its atom; scrolling updates the URL and the highlighted submenu item (without adding to the back history).
   - The URL holds the page (`/ds-dev/atoms/button` …), and every `/ds-dev/*` path goes to this page.
-  - Each atom page has three parts:
+  - For each component, an atom page has:
     - a labelled grid of variants × states
-    - a playground whose controls are the atoms themselves: Dropdown for variants, ToggleButton for booleans, TextInput for text
-    - the JSX for the current props, with a copy button
-  - On the Icons page, clicking a name copies it.
+    - a playground in a white card, with its controls on the title's line, flush right; the title sits on the baseline of the values in the controls. A control can be disabled by the other props (Button's sublabel and showSublabel work only for node). Nothing shifts while you play: the preview is as tall as the tallest variant in the grid, and each Dropdown control is as wide as its longest option (invisible, inert copies size them). The controls are the atoms themselves: Dropdown for variants, TextInput for text, and for booleans a switch (`src/pages/ds-dev/Switch.jsx`, docs only, not a Figma atom: 36×20 track, 16px thumb, built from indents tokens)
+  - The Icon page lists every icon component; click a component name or a Figma name to copy it.
 
 ### Differences from Figma
 - **Hover, pressed, focus and disabled are new.** Figma has only the default state:
   - hover lays `overlay/hover` (15% black) over the control
   - pressed lays `overlay/pressed` (25% black) over it
   - focus shows the `border/focus` ring
-  - disabled uses `bg/disabled-bg` with `text/disabled`
+  - disabled uses `bg/disabled-bg` (neutral/100) with `text/disabled` (neutral/300), the same for every variant (Tag, ToggleButton and ToggleButtonGroup have no disabled state); the labels of TextInput, TextArea and Dropdown turn `text/disabled` too
 - **Fixed widths become hug or fill:**
   - These hug their content: Tag (Figma 58px fixed, code 52px, 78px with the icon), Dropdown (143 → 157), ErrorMessage (300px fixed).
   - These fill their container: TextInput and TextArea (106 and 178), DocumentRow, ProgressBar and MiniChart.
@@ -72,7 +115,7 @@ reduced motion), with no console errors.
   - 82px chart = XXL − 3XS
   - DocumentRow column widths: 114, 162 and 74px
   - DocumentRow bottom padding: 13px, so the 1px divider sits inside the 60px row as in Figma
-- **Dropdown:** on-color with no value uses `opacity-50`, which is Figma's 50% layer opacity; there's no token for it. The open list isn't designed in Figma. It's a `surface/card` panel with `shadow-card` and `radius/S`, and its options reuse the field's text style, padding, overlay and `surface/control` (for the selected option).
+- **Dropdown:** on-color with no value uses `opacity-50`, which is Figma's 50% layer opacity; there's no token for it. The open list isn't designed in Figma. It's a `surface/card` panel with `shadow-card` and `radius/S`, and its options reuse the field's text style and padding, with `surface/control` for the selected option. The option under the pointer or arrow keys is `surface/tag-yellow-bright` (yellow/200); it isn't highlighted just because the list opened on it.
 - **Flag** is a 26×26 button (a 22px icon plus `indents/3XS` padding) instead of Figma's 26×18 frame, so the whole bookmark is clickable.
 - **Button:** `cta` was dropped, as agreed in the audit, because `variant` covers every look. `href` was added for links.
 - **Status "stopped"** reads "Stopped". In Figma that variant's text says "Failing", a copy-paste slip.

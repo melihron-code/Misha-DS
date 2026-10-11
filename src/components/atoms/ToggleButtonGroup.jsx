@@ -10,7 +10,7 @@ const DEFAULT_OPTIONS = [
   { value: 'team-3', label: 'Team' },
 ]
 
-export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, onChange, label = 'Options', disabled = false, className }) {
+export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, onChange, label = 'Options', className }) {
   const refs = useRef([])
   const items = options.map(o => (typeof o === 'string' ? { value: o, label: o } : o))
   const selectedIndex = Math.max(0, items.findIndex(o => o.value === value))
@@ -31,7 +31,6 @@ export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, on
     <div
       role="radiogroup"
       aria-label={label}
-      aria-disabled={disabled || undefined}
       onKeyDown={onKeyDown}
       className={`inline-flex items-center gap-indents-3xs rounded-radius-m bg-accent-highlight p-indents-2xs ${className ?? ''}`}
     >
@@ -44,7 +43,6 @@ export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, on
           label={o.label}
           selected={i === selectedIndex}
           tabIndex={i === selectedIndex ? 0 : -1}
-          disabled={disabled}
           onClick={() => select(i)}
         />
       ))}
