@@ -6,7 +6,6 @@ import {
   KanbanBoard,
   PeopleList,
   SubHeader,
-  TeamSummary,
   TopMenu,
 } from '../../../components/organisms'
 import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
@@ -197,18 +196,6 @@ const PEOPLE_LIST = {
   frame: true,
 }
 
-const TEAM_SUMMARY = {
-  name: 'TeamSummary',
-  label: 'Team summary',
-  Component: TeamSummary,
-  about: 'A team’s update for the week: a Notification, full width; the message wraps. New in v0.6.6 (Figma: the summary on all-teams-one).',
-  rows: [{ label: 'default', props: { message: teams[0].summary } }],
-  columns: ONE,
-  controls: [text('message')],
-  initial: { message: teams[0].summary },
-  frame: true,
-}
-
 const listedCampaigns = campaignsOf('engineering').map(c => ({ id: c.id, title: c.title, status: c.status, statusLabel: c.statusLabel, stats: c.stats, href: `/campaigns/${c.id}` }))
 
 const sampleStats = campaignStatsOf(campaignById('forward-architect'))
@@ -243,5 +230,4 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'kanban-board', label: 'Kanban board', uses: [U.profileCard], parts: [KANBAN_BOARD] },
   { slug: 'card-grid', label: 'Card grid', uses: [U.metricCard, U.statCard, U.teamCard, U.campaignCard], parts: [CARD_GRID] },
   { slug: 'people-list', label: 'People list', uses: [U.toggleGroup, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
-  { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
 ])

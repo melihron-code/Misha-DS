@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
-import { PeopleList, TeamSummary } from '../components/organisms'
+import { Notification } from '../components/molecules'
+import { PeopleList } from '../components/organisms'
 import { teamHero } from '../data/heroes'
 import { membersOf } from '../data/people'
 import { teamById } from '../data/teams'
@@ -34,7 +35,11 @@ export default function TeamPage() {
       />
       <main className="flex w-full justify-center px-indents-m pt-indents-xs pb-indents-xxl">
         <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
-          <TeamSummary message={team.summary} />
+          {team.summary && (
+            <section aria-label="Team summary" className="w-full">
+              <Notification message={team.summary} />
+            </section>
+          )}
           <PeopleList title="Team" people={people} emptyText="No members yet." />
         </div>
       </main>

@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
-import { CardGrid, TeamSummary } from '../components/organisms'
+import { Notification } from '../components/molecules'
+import { CardGrid } from '../components/organisms'
 import { teamCampaignsHero } from '../data/heroes'
 import { campaignsOf, hiringSummaryOf, teamById } from '../data/teams'
 import { SiteHero } from '../site/SiteHeader'
@@ -22,7 +23,7 @@ export default function TeamCampaignsPage() {
     stats: c.stats,
     href: paths.campaign(c.id),
   }))
-
+  const hiringSummary = hiringSummaryOf(team.id)
   return (
     <>
       <title>{`${team.name}: campaigns · ${SITE_NAME}`}</title>
@@ -36,7 +37,11 @@ export default function TeamCampaignsPage() {
       />
       <main className="flex w-full justify-center px-indents-m pt-indents-xs pb-indents-xxl">
         <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
-          <TeamSummary label="Hiring summary" message={hiringSummaryOf(team.id)} />
+          {hiringSummary && (
+            <section aria-label="Hiring summary" className="w-full">
+              <Notification message={hiringSummary} />
+            </section>
+          )}
           <CardGrid card="campaign" items={campaigns} cardProps={{ buttonTooltip: NO_ACTION }} emptyText="No campaigns yet." />
         </div>
       </main>

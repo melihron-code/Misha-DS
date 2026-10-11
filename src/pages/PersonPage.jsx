@@ -1,5 +1,6 @@
 import { useParams, useSearchParams } from 'react-router-dom'
-import { HeroCard, TeamSummary } from '../components/organisms'
+import { Notification } from '../components/molecules'
+import { HeroCard } from '../components/organisms'
 import { candidateHero } from '../data/heroes'
 import { personById } from '../data/people'
 import { achievementsFor, personProfile } from '../data/profiles'
@@ -52,7 +53,11 @@ function Profile({ person, negotiateHref }) {
     <main className="flex w-full justify-center px-indents-m pt-indents-xxl-out pb-indents-xxl">
       <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
         <HeroCard variant="with-bg" {...hero} />
-        <TeamSummary label="Summary" message={summary} />
+        {summary && (
+          <section aria-label="Summary" className="w-full">
+            <Notification message={summary} />
+          </section>
+        )}
         <AchievementsCard title={achievements.title} achievements={achievementsFor(person.id)} action={{ label: achievements.actionLabel, tooltip: NO_ACTION }} />
         <DevelopmentCard
           title={development.title}
