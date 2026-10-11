@@ -20,6 +20,14 @@ const groupOf = path => NAV.find(i => i.children && (path === i.path || path.sta
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// The previews' sample data links to site pages (a person, a team, home). Inside the docs those links keep their
+// look and states but don't leave the page; links between docs pages and to other sites still work.
+function stayInDocs(e) {
+  const a = e.target.closest?.('a[href]')
+  if (!a || a.origin !== window.location.origin || a.pathname.startsWith('/ds-dev')) return
+  e.preventDefault()
+}
+
 // Scrolls the sidebar (only) so `el` is fully visible; if it's taller than the sidebar, so its
 // top sits at the top. Nothing happens when it's already fully visible. The sidebar's own
 // padding is kept as a margin.
@@ -224,7 +232,7 @@ export default function DsDevPage() {
           </ul>
         </nav>
       </aside>
-      <main className="w-full min-w-0 p-indents-x" style={{ maxWidth: MAIN_MAX_WIDTH }}>
+      <main className="w-full min-w-0 p-indents-x" style={{ maxWidth: MAIN_MAX_WIDTH }} onClickCapture={stayInDocs} onAuxClickCapture={stayInDocs}>
         <h1 className="pb-indents-x text-heading-h1">{current.label}</h1>
         {current.render()}
       </main>
