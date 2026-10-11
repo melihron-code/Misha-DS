@@ -3,6 +3,48 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.9 — Step 6, Part 2: Job description page (2026-10-11)
+
+### Summary
+Page 8 of 13: Job description on `/campaigns/new/job-description` (Figma `hiring-campaign-wizard`, node `357:59234`,
+with the popover from `hiring-campaign-wizard-viewport`; no mobile frame). A Header with the builder SubHeader, the
+page title and the new campaign's form: details, requirements and Publish. The form works on the page (fields,
+dropdowns, skills, the salary check, the "Head line" popover); nothing is saved yet. Checked in headless Chrome at
+1440, 1200, 1199, 768, 767 and 375 (no sideways scroll), with the mouse and the keyboard (Enter adds a skill without
+leaving the page; the popover opens on click or focus, Tab reaches it, Escape and an outside click close it,
+Generate fills the field), and the links both ways with the Homepage, New campaign and Campaign published.
+
+### Added
+- **Sections:**
+  - Header (`SiteHeader`), SubHeader builder: Back → New campaign (keeping `?team=`), Save and Deploy (no action yet).
+  - **PageTitle** (new organism): "New Campaign", heading/h1, centered.
+  - **CampaignForm** (new organism): a surface/card panel with a centered column (7/12 of the card ≈ Figma's 482px):
+    Details and Requirements (heading/h2, fields in 2 columns), then Publish (Button primary-lg, full width) →
+    Campaign published. The "Head line" popover (a non-modal dialog under Preferred qualifications: surface/card,
+    border/default, shadow, radius/L) with Generate.
+  - **SkillsInput** (new molecule): TextInput + Add + removable Tags; Enter adds; no empty or repeated skills.
+- **Layout:** `indents/M` under the Header and at the bottom (Figma), `indents/XXL (out)` between the title, the form
+  and its parts, `indents/L` inside sections, `indents/2XS` between paired fields.
+- **Behavior:** the salary shows Figma's error while it's under $40 000 (it starts at Figma's $34 500, so the error
+  shows at first); Generate fills Preferred qualifications with sample text from the head line.
+- **Data:** `data/campaignForm.js` (sections, fields, options, defaults, `generateQualifications`).
+- **Docs:** Page title and Campaign form (organisms), Skills input (molecules).
+- **Images:** none. Icons: the existing Tag remove icon and Dropdown arrow.
+
+### Differences from Figma
+- **Labels:** clearer than Figma's repeats: Position (Figma: "campaign name" again), Location ("e.g. Berlin"; Figma: a
+  "Select Department" placeholder), Interview rounds (Figma: "interview duration in minutes" again), "Preferred"
+  (Figma: "Preffered"). Dropdowns without a real value show a placeholder ("Choose …").
+- **Form column:** 7/12 of the card (484px; Figma: a raw 174px each side, 482px). Paired fields `indents/2XS` apart
+  everywhere (Figma: 4px in Details, 8px in Requirements).
+- **Popover:** opens under Preferred qualifications (Figma draws it as a separate screen, over the salary row); focus
+  stays in the field.
+- **Skill tags** are 32px tall (the Tag atom; Figma 24px). The error message fits its text (the atom; Figma: full width).
+- **Header:** 121px (Figma 88), as on the other Header pages.
+
+### Open questions
+- What Save and Deploy should do, and where the form's data should go.
+
 ## v0.6.8 — Step 6, Part 2: Team campaigns page (2026-10-11)
 
 ### Summary

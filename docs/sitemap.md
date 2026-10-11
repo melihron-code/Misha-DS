@@ -10,9 +10,9 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 **13 pages:** the Homepage, 11 pages from the design screens and the 404 page (plus /ds-dev/). The Homepage was
 added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that, All teams was on `/`.
 
-**Built: 7 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
-(v0.6.6), Person (v0.6.7: the profile view; the interview view is still a placeholder), Team campaigns (v0.6.8).
-The rest are placeholders.
+**Built: 8 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
+(v0.6.6), Person (v0.6.7: the profile view; the interview view is still a placeholder), Team campaigns (v0.6.8),
+Job description (v0.6.9). The rest are placeholders.
 
 **Page brief:** `docs/page-prompt.md` (the steps for building one page).
 
@@ -32,7 +32,7 @@ The rest are placeholders.
 | All templates | `/templates` | all-teams-templates | `TemplatesPage.jsx` | HeroSection (Figma: Header + HeroCard + background) | DocumentList (DocumentRow ×16); the hero toggle filters it by type. **Built** (v0.6.5). |
 | Campaign | `/campaigns/:campaignId` | hiring-campaign | `CampaignPage.jsx` | Header | HeroCard with-bg, StatCard ×3, CampaignCard, KanbanBoard |
 | New campaign | `/campaigns/new?team=` | hiring-campaign-add | `NewCampaignPage.jsx` | Header | HeroCard with-bg, TaskItem ×6 |
-| Job description | `/campaigns/new/job-description?team=` | hiring-campaign-wizard, hiring-campaign-wizard-viewport (popover) | `JobDescriptionPage.jsx` | Header, SubHeader builder | ⚠ page title without a hero; TextInput, Dropdown, TextArea, ErrorMessage; ⚠ skill input + tag list; Button primary-lg; ⚠ "Head line" popover |
+| Job description | `/campaigns/new/job-description?team=` | hiring-campaign-wizard, hiring-campaign-wizard-viewport (popover) | `JobDescriptionPage.jsx` | Header, SubHeader builder | PageTitle, CampaignForm (fields, SkillsInput, the salary error, the "Head line" popover, Publish). **Built** (v0.6.9). |
 | Campaign published | `/campaigns/new/published` | success | `CampaignPublishedPage.jsx` | Header without SubHeader | ⚠ full-screen backdrop, heading, Button primary-sm |
 | Person | `/people/:personId?campaign=`, `?from=employees` or `?team=` | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile (**built**, v0.6.7): HeroCard with-bg, TeamSummary, AchievementsCard, DevelopmentCard, RelationsCard. Interview (placeholder): HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
 | Negotiate | `/people/:personId/negotiate?campaign=` or `?team=` | negotiate | `NegotiatePage.jsx` | Header | HeroCard with-bg, AttemptCard ×3, ⚠ offer form, ⚠ prediction |
@@ -57,7 +57,8 @@ person's pages keep where they were opened from, so Back and the breadcrumbs lea
   (HeroSection: the Homepage and the all-teams family). The TopMenu is the same everywhere: the logo leads to the
   Homepage (`/`), the current tab comes from the URL (none on the Homepage, All templates under `/templates`,
   All teams elsewhere).
-- Overlays: only the "Head line" popover on Job description (opens from the Preferred qualifications field).
+- Overlays: only the "Head line" popover on Job description: under the Preferred qualifications field, opened by
+  clicking or focusing it; Escape or a click outside closes it; Generate fills the field.
 
 ## Connections
 
@@ -120,7 +121,8 @@ colors unchanged).
 - **All templates:** Add new template, Edit (the toggle filters the list, decided 2026-10-11; the rows have no link).
 - **Campaign:** Finish, Cancel.
 - **New campaign:** Review, Generate.
-- **Job description:** Save, Deploy, the skill "Add", the popover's Generate.
+- **Job description:** Save, Deploy. (The form works on the page: fields, skills, the popover; Generate fills Preferred
+  qualifications with sample text; nothing is saved yet.)
 - **Person:** Promote, Suspend, Fire, All achievements, More info, Org. chart, Hire, Reject, the ProfileCards under
   Reports to, Mentoring and Interview history.
 - **Negotiate:** Send offer.
@@ -133,7 +135,8 @@ Employees status chips and the All templates hero toggle filter their lists).
 Answered (2026-10-11): the elements with no destination stay without pages (tooltip + not-allowed cursor); the
 Employees ProfileCards open the person's page (prototype updated); the sample team names stay.
 
-1. **Popover:** how does the "Head line" popover close (outside click, Escape, Generate)? What does Generate do?
+1. **Popover** (answered 2026-10-11): it closes on Escape or an outside click; Generate fills Preferred qualifications
+   with sample text for now.
 2. **Success screen:** a full-screen backdrop; HeroSection has no full-height option (flagged in v0.5.0).
 3. **Not components yet** (needed in Part 2): filter bar, Notification with avatars, achievements list,
    "next level / prediction" block, assessment results, offer form and prediction, skill input with tags,

@@ -1,51 +1,29 @@
-import { useId, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Button, Tooltip } from '../components/atoms'
-import PagePlaceholder from '../site/PagePlaceholder'
+import { CampaignForm, PageTitle } from '../components/organisms'
+import { campaignForm, generateQualifications } from '../data/campaignForm'
 import { SiteHeader } from '../site/SiteHeader'
-import { NO_ACTION, paths } from '../site/site'
+import { NO_ACTION, SITE_NAME, paths } from '../site/site'
 
-// /campaigns/new/job-description — Figma: hiring-campaign-wizard, with the "Head line / Generate" popover
-// (hiring-campaign-wizard-viewport) opening from the Preferred qualifications field. Builder SubHeader.
+// /campaigns/new/job-description — Figma: hiring-campaign-wizard (357:59234), with the "Head line" popover
+// (hiring-campaign-wizard-viewport) under the Preferred qualifications field. Header with the builder SubHeader (Back →
+// the task list, Save and Deploy no action yet), then the page title and the form, indents/XXL (out) apart, the content
+// within indents/M of the Header and the page's bottom (Figma), the form within size/base-with. Publish → published.
 export default function JobDescriptionPage() {
   const team = useSearchParams()[0].get('team') ?? undefined
-  const [popover, setPopover] = useState(false)
-  const popoverId = useId()
   return (
     <>
+      <title>{`Job description · ${SITE_NAME}`}</title>
       <SiteHeader subHeader={{ variant: 'builder', backHref: paths.newCampaign(team), saveTooltip: NO_ACTION, deployTooltip: NO_ACTION }} />
-      <PagePlaceholder
-        name="Job description"
-        screens={['hiring-campaign-wizard', 'hiring-campaign-wizard-viewport']}
-        heading
-        contains={[
-          'Header (SubHeader builder: Back, Save, Deploy)',
-          '⚠ Page title “New Campaign” without a hero',
-          'Details: TextInput, Dropdown, TextArea, ErrorMessage',
-          'Requirements: ⚠ skill input with a tag list, Dropdown, TextArea',
-          'Button primary-lg “Publish”',
-          '⚠ Popover “Head line”: TextArea + Generate (overlay, not a component yet)',
-        ]}
-        links={[{ element: 'Button primary-lg', label: 'Publish', href: paths.published }]}
-        idle={['Add (skill)']}
-      >
-        <div className="flex flex-col gap-indents-xs">
-          <h2 className="text-text-caps text-text-secondary">Overlay</h2>
-          <div>
-            <Button variant="secondary" aria-expanded={popover} aria-controls={popoverId} onClick={() => setPopover(o => !o)}>
-              Preferred qualifications
-            </Button>
-          </div>
-          <div id={popoverId} hidden={!popover} className="rounded-radius-m bg-surface-card p-indents-m shadow-card">
-            <div className="flex flex-col items-start gap-indents-s-inner">
-              <p className="text-text-grotesk text-text-primary">Popover placeholder: “Head line” TextArea</p>
-              <Tooltip text={NO_ACTION} unavailable>
-                <Button variant="primary-sm">Generate</Button>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
-      </PagePlaceholder>
+      <main className="flex w-full flex-col items-center gap-indents-xxl-out p-indents-m">
+        <PageTitle title={campaignForm.title} />
+        <CampaignForm
+          label="Job description"
+          sections={campaignForm.sections}
+          submit={{ label: campaignForm.publishLabel, href: paths.published }}
+          onAssist={(name, headLine) => generateQualifications(headLine)}
+          className="max-w-size-base-with"
+        />
+      </main>
     </>
   )
 }

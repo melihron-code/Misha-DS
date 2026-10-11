@@ -1,5 +1,6 @@
 import {
   AchievementsCard,
+  CampaignForm,
   CampaignList,
   DevelopmentCard,
   DocumentList,
@@ -8,6 +9,7 @@ import {
   HeroSection,
   KanbanBoard,
   MetricGrid,
+  PageTitle,
   PeopleList,
   RelationsCard,
   SubHeader,
@@ -26,6 +28,7 @@ import { campaignsOf, teams } from '../../../data/teams'
 import { allEmployees, employeeFilters } from '../../../data/people'
 import { templateTypeByView, templates } from '../../../data/templates'
 import { personProfile } from '../../../data/profiles'
+import { campaignForm, generateQualifications } from '../../../data/campaignForm'
 import { number, ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
 
 // Docs for each organism (the format is described in ../docs/docHelpers.js). Organisms are shown in a
@@ -61,6 +64,8 @@ const U = {
   documentRow: { slug: 'document-row', label: 'DocumentRow' },
   notification: { group: 'molecules', slug: 'notification', label: 'Notification' },
   campaignCard: { group: 'molecules', slug: 'campaign-card', label: 'CampaignCard' },
+  textInput: { slug: 'input', label: 'TextInput' },
+  skillsInput: { group: 'molecules', slug: 'skills-input', label: 'SkillsInput' },
   stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
   topMenu: { group: 'organisms', slug: 'top-menu', label: 'TopMenu' },
   subHeader: { group: 'organisms', slug: 'sub-header', label: 'SubHeader' },
@@ -301,6 +306,31 @@ const CAMPAIGN_LIST = {
   frame: true,
 }
 
+const PAGE_TITLE = {
+  name: 'PageTitle',
+  label: 'Page title',
+  Component: PageTitle,
+  about: 'A page’s h1 when it has no hero: heading/h1, centered. New in v0.6.9 (Figma: the title on hiring-campaign-wizard).',
+  rows: [{ label: 'default', props: { title: 'New Campaign' } }],
+  columns: ONE,
+  controls: [text('title')],
+  initial: { title: 'New Campaign' },
+  frame: true,
+}
+const CAMPAIGN_FORM = {
+  name: 'CampaignForm',
+  label: 'Campaign form',
+  Component: CampaignForm,
+  about: 'A form card: sections of fields in 2 columns (text, dropdown, text area, skills), an error under a field with a minimum, a popover with Generate on a text area with assist, and a full-width submit button. Mobile: one column. New in v0.6.9 (Figma: the form on hiring-campaign-wizard).',
+  rows: [{ label: 'default', props: { sections: campaignForm.sections, submit: { label: 'Publish', href: '/campaigns/new/published' }, onAssist: (name, headLine) => generateQualifications(headLine) } }],
+  columns: ONE,
+  controls: [],
+  initial: {},
+  toProps: () => ({ sections: campaignForm.sections, submit: { label: 'Publish', href: '/campaigns/new/published' }, onAssist: (name, headLine) => generateQualifications(headLine) }),
+  snippetNames: { sections: 'campaignForm.sections', submit: 'submit', onAssist: 'onAssist' },
+  frame: true,
+}
+
 const DOCUMENT_LIST = {
   name: 'DocumentList',
   label: 'Document list',
@@ -347,6 +377,8 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'document-list', label: 'Document list', uses: [U.documentRow], parts: [DOCUMENT_LIST] },
   { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
   { slug: 'campaign-list', label: 'Campaign list', uses: [U.campaignCard], parts: [CAMPAIGN_LIST] },
+  { slug: 'page-title', label: 'Page title', parts: [PAGE_TITLE] },
+  { slug: 'campaign-form', label: 'Campaign form', uses: [U.textInput, U.dropdown, U.errorMessage, U.skillsInput, U.button], parts: [CAMPAIGN_FORM] },
   { slug: 'achievements-card', label: 'Achievements card', uses: [U.button], parts: [ACHIEVEMENTS_CARD] },
   { slug: 'development-card', label: 'Development card', uses: [U.stageProgress, U.button], parts: [DEVELOPMENT_CARD] },
   { slug: 'relations-card', label: 'Relations card', uses: [U.profileCard, U.button], parts: [RELATIONS_CARD] },

@@ -9,6 +9,7 @@ import {
   Notification,
   ProfileCard,
   ProjectCard,
+  SkillsInput,
   StageProgress,
   StatCard,
   TeamCard,
@@ -27,6 +28,7 @@ const longOnly = control => ({ ...control, enabled: p => p.variant === 'long' })
 
 // Atom pages a molecule uses, for its "Uses" line.
 const A = {
+  textInput: { slug: 'input', label: 'TextInput' },
   toggleButton: { slug: 'tabs', label: 'ToggleButton' },
   avatar: { slug: 'avatar', label: 'Avatar' },
   avatarGroup: { slug: 'avatar', label: 'AvatarGroup' },
@@ -172,6 +174,19 @@ const FILTER_CHIPS = {
   snippetNames: { options: 'options' },
 }
 
+const SKILLS_INPUT = {
+  name: 'SkillsInput',
+  label: 'Skills input',
+  Component: SkillsInput,
+  about: 'A text field with Add; the added skills show as Tags you can remove. Enter adds too; no empty or repeated skills. New in v0.6.9 (Figma: required skills on hiring-campaign-wizard).',
+  rows: [{ label: 'default', props: { value: ['Python', 'SQL', 'R', 'Java'], placeholder: 'e.g. Python, SQL, etc.' } }],
+  columns: ONE,
+  controls: [text('label'), text('placeholder')],
+  initial: { label: 'Required skills', placeholder: 'e.g. Python, SQL, etc.', value: ['Python', 'SQL', 'R', 'Java'] },
+  bind: (p, set) => ({ onChange: value => set({ ...p, value }) }),
+  width: 'w-7/12',
+}
+
 const STAT_CARD = {
   name: 'StatCard',
   label: 'Stat card',
@@ -261,4 +276,5 @@ export const MOLECULE_PAGES = withAbout([
   { slug: 'breadcrumbs', label: 'Breadcrumbs', uses: [A.textLink], parts: [BREADCRUMBS] },
   { slug: 'stage-progress', label: 'Stage progress', uses: [A.progressBar], parts: [STAGE_PROGRESS] },
   { slug: 'filter-chips', label: 'Filter chips', uses: [A.toggleButton], parts: [FILTER_CHIPS] },
+  { slug: 'skills-input', label: 'Skills input', uses: [A.textInput, A.button, A.tag], parts: [SKILLS_INPUT] },
 ])
