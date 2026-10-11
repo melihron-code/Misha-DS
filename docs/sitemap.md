@@ -10,12 +10,18 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 **13 pages:** the Homepage, 11 pages from the design screens and the 404 page (plus /ds-dev/). The Homepage was
 added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that, All teams was on `/`.
 
+**Built: 2 of 13** — Homepage (v0.6.2), All teams (v0.6.3). The rest are placeholders.
+
+**Breakpoints:** the page container is the window minus its scrollbar, so a desktop browser exactly 768px wide
+(753px of page) gets the mobile layout; tablets (no fixed scrollbar) get the tablet layout. Left as is (decided
+2026-10-11).
+
 ## Pages
 
 | Page | Route | Figma screen(s) | File | Top of the page | Content (organisms, molecules; ⚠ = not a component yet) |
 |---|---|---|---|---|---|
 | Homepage | `/` | Homepage | `HomePage.jsx` | HeroSection without SubHeader (decided 2026-10-11; Figma still shows one), no TopMenu tab selected | HeroCard `homepage` (title, subtitle, three large buttons). Nothing below the hero. **Built** (v0.6.2). |
-| All teams | `/teams` | all-teams | `AllTeamsPage.jsx` | HeroSection, SubHeader without Back | MetricCard ×4, TeamCard ×6 |
+| All teams | `/teams` | all-teams | `AllTeamsPage.jsx` | HeroSection, SubHeader without Back | MetricGrid (MetricCard ×4), TeamGrid (TeamCard ×6). **Built** (v0.6.3). |
 | Employees | `/employees` | all-teams-employees | `EmployeesPage.jsx` | HeroSection | ⚠ filter bar (Dropdowns), ProfileCard long ×10 |
 | Team | `/teams/:teamId` | all-teams-one | `TeamPage.jsx` | HeroSection | ⚠ Notification with Avatars, ProfileCard long ×10 |
 | Team campaigns | `/teams/:teamId/campaigns` | all-teams-campaigns | `TeamCampaignsPage.jsx` | HeroSection | Notification, CampaignCard ×4 |
@@ -76,6 +82,7 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 | hiring-campaign-add | TaskItem button "Job description" | hiring-campaign-wizard | `/campaigns/new/job-description` |
 | hiring-campaign-wizard | TextArea "Preferred qualifications" | hiring-campaign-wizard-viewport | popover on the same page (Figma: a separate screen) |
 | hiring-campaign-wizard | Button "Publish" | success | `/campaigns/new/published` |
+| success | Button "Homepage" (added 2026-10-11) | all-teams | `/teams` |
 
 ### Agreed (not in the prototype)
 
@@ -84,7 +91,6 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 | Back (every SubHeader) | the parent page: the previous breadcrumb (e.g. Employees and a team → All teams; All templates → the Homepage; a campaign → its team's campaigns; a person → the campaign, team or Employees they were opened from; Negotiate → the person; Job description → New campaign) |
 | Breadcrumbs | each crumb links to its page; the last one is the current page. They start with Home (`/`); the all-teams family adds All teams (`/teams`) |
 | Logo (every screen) | the Homepage, `/` (the prototype connects it on all-teams) |
-| Success "Homepage" | the Homepage, `/` |
 | 404 "Homepage" | the Homepage, `/` |
 
 ### Inferred (same control as a connected one) — to confirm in Part 3

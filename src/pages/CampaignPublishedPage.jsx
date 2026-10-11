@@ -2,7 +2,8 @@ import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHeader } from '../site/SiteHeader'
 import { paths } from '../site/site'
 
-// /campaigns/new/published — Figma: success. Header without SubHeader.
+// /campaigns/new/published — Figma: success. Header without SubHeader. "Homepage" leads to All teams (/teams), as
+// in the prototype.
 export default function CampaignPublishedPage() {
   return (
     <>
@@ -12,7 +13,7 @@ export default function CampaignPublishedPage() {
         screens={['success']}
         heading
         contains={['Header (no SubHeader)', '⚠ Full-screen backdrop (HeroSection has no full-height option yet)', '“All done, captain!”', 'Button primary-sm “Homepage”']}
-        links={[{ element: 'Button primary-sm', label: 'Homepage', href: paths.home }]}
+        links={[{ element: 'Button primary-sm', label: 'Homepage', href: paths.allTeams }]}
       />
     </>
   )

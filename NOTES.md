@@ -3,6 +3,45 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.3 — Step 6, Part 2: All teams page (2026-10-11)
+
+### Summary
+Page 2 of 13: All teams on `/teams` (Figma `all-teams`, node `6114:23930`; no mobile frame). A HeroSection, then the
+830px content column with the team metrics and the six teams; each team card opens its team page. Built in v0.6.2
+(`0e0424a`), checked and finished here. At 1440 it matches Figma to the pixel: the metrics start 8px under the
+hero, the cards are 205×201 and 413×233, 4px apart, and the page is 1664px tall. Checked in headless Chrome at
+1440, 1200, 1199, 768, 767 and 375 (no sideways scroll, no overlap), with the mouse (hover and pressed overlays on
+the cards) and the keyboard (focus rings, Enter on a card, arrow keys on the hero toggle), and the links both ways
+with the Homepage.
+
+### Added
+- **Sections:**
+  - HeroSection (`SiteHero`): breadcrumbs Home > All teams, no Back; hero "no-bg" with "Add team" (no action) and
+    the Overview / Employees / Report toggle (Employees → `/employees`, Report no action).
+  - **MetricGrid**: 4 MetricCards in their card colors (Health red, Productivity pink, Distribution violet,
+    Hiring yellow); 4 columns, 2 on mobile.
+  - **TeamGrid**: 6 TeamCards, each a link to `/teams/:teamId`; 2 columns, 1 on mobile.
+- **Layout** (all tokens, from Figma): `indents/XS` under the hero, `indents/2XS` between the metrics and the teams
+  and between cards, `indents/XXL` at the bottom, the content within `size/base-with`, `indents/M` at the sides.
+- **Data:** `data/metrics.js` (the four metrics), team card content in `data/teams.js` (Engineering as in Figma, the
+  other five teams sample content), `heroes.js` → `teamsHero`.
+- **Images:** the backdrop as WebP (768 / 1440 / 2880, `srcset`, `fetchpriority="high"`, width and height); the
+  avatars as WebP 1× / 2× (30×30, lazy). No icons.
+- **Connections:** logo → Homepage, "All templates" tab → `/templates`, Employees → `/employees`, team cards → team
+  pages; into this page: the Homepage's "All teams", the "All teams" tab, Overview and Back on Employees and teams.
+  New in the prototype: the success page's "Homepage" button → All teams (`/teams`); its placeholder now links there.
+
+### Differences from Figma
+- **Breadcrumbs:** "Home > All teams" instead of Figma's placeholder "Home • Something • Something".
+- **Hero subtitle:** one line at 1440 (Figma wraps it after "teams"; the font measures slightly narrower in the browser).
+- **Teams:** five sample team names and contents (Figma repeats "Engineering Team" six times); "15 Open Positions"
+  (Figma: "15 Open Position").
+- **Wider windows:** the backdrop fills the window; the content stays within 1440.
+
+### Open questions
+- None for this page. A desktop browser exactly 768px wide gets the mobile layout (the scrollbar leaves 753px);
+  left as is, see docs/sitemap.md.
+
 ## v0.6.2 — Homepage, large buttons, full-width backdrop; All teams page in progress (2026-10-11)
 
 ### Summary
