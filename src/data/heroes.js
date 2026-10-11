@@ -1,3 +1,5 @@
+import campaignPhoto768 from '../assets/hero/campaign-photo-768.webp'
+import campaignPhoto1536 from '../assets/hero/campaign-photo-1536.webp'
 import { nbsp } from '../lib/nbsp'
 
 // Hero content (Figma: HeroCard on the candidate, campaign and all-teams screens).
@@ -24,11 +26,14 @@ export const candidateHero = {
 }
 
 // HeroCard "with bg": a campaign (hiring-campaign).
+// The page sets the title (the campaign's name) and the subtitle (its status). Finish is the CTA. Its own photo
+// (Figma: a different one from the candidate's), WebP at 768 and 1536 (npm run images).
 export const campaignHero = {
   title: nbsp('Senior Frontend Developer Campaign'),
   subtitle: 'Active campaign',
-  labels: { start: 'Campaign', end: 'Access' },
-  actions: [{ label: 'Finish' }, { label: 'Cancel' }],
+  labels: { start: 'Docs', end: '' },
+  actions: [{ label: 'Finish', variant: 'primary-sm' }, { label: 'Cancel' }],
+  image: { src: campaignPhoto1536, srcSet: `${campaignPhoto768} 768w, ${campaignPhoto1536} 1536w`, width: 1536, height: 864 },
   tags: [{ label: 'Docs', value: 'Docs for designers', options: ['Docs for designers', 'Docs for developers'] }],
   endTags: [],
 }

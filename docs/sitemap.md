@@ -10,9 +10,12 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 **13 pages:** the Homepage, 11 pages from the design screens and the 404 page (plus /ds-dev/). The Homepage was
 added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that, All teams was on `/`.
 
-**Built: 8 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
+**Built: 9 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
 (v0.6.6), Person (v0.6.7: the profile view; the interview view is still a placeholder), Team campaigns (v0.6.8),
-Job description (v0.6.9). The rest are placeholders.
+Job description (v0.6.9), Campaign (v0.6.10). The rest are placeholders.
+
+**Hiring data:** every campaign has its own candidates (people.js); its Team campaigns card, its page's stat cards,
+funnel and Kanban, and the team's hiring summary all come from them (data/teams.js).
 
 **Page brief:** `docs/page-prompt.md` (the steps for building one page).
 
@@ -30,11 +33,11 @@ Job description (v0.6.9). The rest are placeholders.
 | Team | `/teams/:teamId` | all-teams-one | `TeamPage.jsx` | HeroSection | TeamSummary (Notification), PeopleList with the title "Team" (ProfileCard long). **Built** (v0.6.6). |
 | Team campaigns | `/teams/:teamId/campaigns` | all-teams-campaigns | `TeamCampaignsPage.jsx` | HeroSection | TeamSummary (hiring), CampaignList (CampaignCard ×4, each a link). **Built** (v0.6.8). |
 | All templates | `/templates` | all-teams-templates | `TemplatesPage.jsx` | HeroSection (Figma: Header + HeroCard + background) | DocumentList (DocumentRow ×16); the hero toggle filters it by type. **Built** (v0.6.5). |
-| Campaign | `/campaigns/:campaignId` | hiring-campaign | `CampaignPage.jsx` | Header | HeroCard with-bg, StatCard ×3, CampaignCard, KanbanBoard |
+| Campaign | `/campaigns/:campaignId` | hiring-campaign | `CampaignPage.jsx` | Header | HeroCard with-bg (the campaign's photo), StatGrid (StatCard ×3), CampaignList (the funnel), KanbanBoard (the campaign's candidates). **Built** (v0.6.10). |
 | New campaign | `/campaigns/new?team=` | hiring-campaign-add | `NewCampaignPage.jsx` | Header | HeroCard with-bg, TaskItem ×6 |
 | Job description | `/campaigns/new/job-description?team=` | hiring-campaign-wizard, hiring-campaign-wizard-viewport (popover) | `JobDescriptionPage.jsx` | Header, SubHeader builder | PageTitle, CampaignForm (fields, SkillsInput, the salary error, the "Head line" popover, Publish). **Built** (v0.6.9). |
 | Campaign published | `/campaigns/new/published` | success | `CampaignPublishedPage.jsx` | Header without SubHeader | ⚠ full-screen backdrop, heading, Button primary-sm |
-| Person | `/people/:personId?campaign=`, `?from=employees` or `?team=` | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile (**built**, v0.6.7): HeroCard with-bg, TeamSummary, AchievementsCard, DevelopmentCard, RelationsCard. Interview (placeholder): HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
+| Person | `/people/:personId?campaign=`, `?from=employees` or `?team=` (without one: a candidate's campaign, an employee's team) | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile (**built**, v0.6.7): HeroCard with-bg, TeamSummary, AchievementsCard, DevelopmentCard, RelationsCard. Interview (placeholder): HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
 | Negotiate | `/people/:personId/negotiate?campaign=` or `?team=` | negotiate | `NegotiatePage.jsx` | Header | HeroCard with-bg, AttemptCard ×3, ⚠ offer form, ⚠ prediction |
 | Not found | any other URL, or an unknown id | — | `NotFoundPage.jsx` | Header without SubHeader | heading, Button "Homepage" to `/` |
 | Design system | `/ds-dev/*` | — | `ds-dev/DsDevPage.jsx` | — | unchanged |

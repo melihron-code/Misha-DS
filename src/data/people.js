@@ -1,6 +1,7 @@
 // People (Figma: the Kanban on hiring-campaign, the team on all-teams-one, the list on all-teams-employees).
 // Each has a unique `id` (used in /people/:id): the name in kebab-case, plus -2, -3… for repeated names.
-// candidates: `stage` is their Kanban column (applied | screening | interview | offer).
+// candidates: `campaignId` is the campaign they applied to, `stage` their Kanban column (applied | screening |
+// interview | offer). Forward Architect has Figma's 14; the other campaigns have sample candidates (CAMPAIGN_PIPELINES).
 // employees: `teamId` is their team, `status` their ProfileCard status (the Status atom's keys: on-track | growth |
 // failing), `progress` their ProfileCard bar (Figma: the same for everyone).
 
@@ -19,7 +20,43 @@ const candidates = [
   ['Jessica Williams', 'UI/UX Designer', 'interview'],
   ['David Brown', 'Data Scientist', 'interview', 'dog'],
   ['Sophia Martinez', 'UX Designer', 'offer'],
-].map(([name, role, stage, image = 'katya']) => ({ kind: 'candidate', name, role, stage, image }))
+].map(([name, role, stage, image = 'katya']) => ({ kind: 'candidate', name, role, stage, image, campaignId: 'forward-architect' }))
+
+// Sample candidates for the other campaigns: how many in each stage [applied, screening, interview, offer], and the
+// roles they come from. Names are picked in order from the pools below, so every page shows the same people.
+const STAGES = ['applied', 'screening', 'interview', 'offer']
+const CAMPAIGN_PIPELINES = [
+  ['district-integration-engineer', [3, 2, 2, 1], ['Integration Engineer', 'Backend Developer', 'Solutions Engineer']],
+  ['dynamic-program-liaison', [2, 3, 1, 0], ['Program Manager', 'Project Coordinator', 'Operations Lead']],
+  ['product-tactics-manager', [4, 2, 1, 1], ['Product Manager', 'Product Analyst', 'Strategy Consultant']],
+  ['senior-product-designer', [3, 3, 2, 1], ['Product Designer', 'UX Designer', 'UI Designer']],
+  ['ux-researcher', [2, 2, 1, 0], ['UX Researcher', 'Research Assistant', 'Service Designer']],
+  ['group-product-manager', [2, 1, 1, 1], ['Senior Product Manager', 'Product Lead', 'Head of Product']],
+  ['analytics-engineer', [3, 2, 2, 1], ['Data Analyst', 'Analytics Engineer', 'BI Developer']],
+  ['ml-engineer', [4, 3, 2, 1], ['ML Engineer', 'Data Scientist', 'Research Engineer']],
+  ['growth-marketer', [3, 2, 1, 1], ['Growth Marketer', 'Performance Marketer', 'Marketing Analyst']],
+  ['content-lead', [2, 2, 1, 0], ['Content Writer', 'Editor', 'Content Strategist']],
+  ['people-partner', [2, 1, 1, 1], ['HR Generalist', 'People Partner', 'Recruiter']],
+]
+const FIRST = ['Anna', 'Ben', 'Clara', 'Diego', 'Elena', 'Felix', 'Greta', 'Hugo', 'Iris', 'Jonas', 'Kira', 'Liam', 'Mila', 'Nico', 'Olga', 'Pavel', 'Rosa', 'Simon', 'Tara', 'Viktor']
+const LAST = ['Novak', 'Weber', 'Costa', 'Hansen', 'Ivanova', 'Kowalski', 'Moreau', 'Silva', 'Becker', 'Lindqvist', 'Okafor', 'Rossi', 'Tanaka', 'Duarte', 'Schulz', 'Fischer', 'Popescu', 'Nyberg', 'Varga', 'Keller']
+const AVATARS = ['katya', 'petya', 'dog']
+let next = 0
+const sampleCandidates = CAMPAIGN_PIPELINES.flatMap(([campaignId, counts, roles]) =>
+  counts.flatMap((count, s) =>
+    Array.from({ length: count }, () => {
+      const n = next++
+      return {
+        kind: 'candidate',
+        name: `${FIRST[n % FIRST.length]} ${LAST[(n * 7 + Math.floor(n / FIRST.length) * 3) % LAST.length]}`,
+        role: roles[n % roles.length],
+        stage: STAGES[s],
+        image: AVATARS[n % AVATARS.length],
+        campaignId,
+      }
+    }),
+  ),
+)
 
 const employees = [
   ['Sarah Johnson', 'Senior Developer', 'on-track'],
@@ -50,14 +87,15 @@ const sampleMembers = Object.entries(teamMembers).flatMap(([teamId, list]) =>
 
 const slug = name => name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 const seen = {}
-export const people = [...candidates, ...employees, ...sampleMembers].map(p => {
+export const people = [...candidates, ...sampleCandidates, ...employees, ...sampleMembers].map(p => {
   const base = slug(p.name)
   seen[base] = (seen[base] ?? 0) + 1
   return { ...p, id: seen[base] === 1 ? base : `${base}-${seen[base]}` }
 })
 
 export const personById = id => people.find(p => p.id === id)
-export const candidatesIn = stage => people.filter(p => p.kind === 'candidate' && p.stage === stage)
+export const candidatesOf = campaignId => people.filter(p => p.kind === 'candidate' && p.campaignId === campaignId)
+export const candidatesIn = (stage, campaignId = 'forward-architect') => candidatesOf(campaignId).filter(p => p.stage === stage)
 export const membersOf = teamId => people.filter(p => p.kind === 'employee' && p.teamId === teamId)
 // The Employees page's list: Figma's ten (the sample members of the other teams aren't listed there).
 export const allEmployees = people.filter(p => p.kind === 'employee' && !p.sample)

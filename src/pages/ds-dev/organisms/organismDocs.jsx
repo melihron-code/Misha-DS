@@ -12,6 +12,7 @@ import {
   PageTitle,
   PeopleList,
   RelationsCard,
+  StatGrid,
   SubHeader,
   TaskItem,
   TeamGrid,
@@ -24,7 +25,7 @@ import { pipeline } from '../../../data/pipeline'
 import { careerStages } from '../../../data/stages'
 import { campaignTasks } from '../../../data/tasks'
 import { teamMetrics } from '../../../data/metrics'
-import { campaignsOf, teams } from '../../../data/teams'
+import { campaignById, campaignStatsOf, campaignsOf, teams } from '../../../data/teams'
 import { allEmployees, employeeFilters } from '../../../data/people'
 import { templateTypeByView, templates } from '../../../data/templates'
 import { personProfile } from '../../../data/profiles'
@@ -64,6 +65,7 @@ const U = {
   documentRow: { slug: 'document-row', label: 'DocumentRow' },
   notification: { group: 'molecules', slug: 'notification', label: 'Notification' },
   campaignCard: { group: 'molecules', slug: 'campaign-card', label: 'CampaignCard' },
+  statCard: { group: 'molecules', slug: 'stat-card', label: 'StatCard' },
   textInput: { slug: 'input', label: 'TextInput' },
   skillsInput: { group: 'molecules', slug: 'skills-input', label: 'SkillsInput' },
   stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
@@ -331,6 +333,21 @@ const CAMPAIGN_FORM = {
   frame: true,
 }
 
+const sampleStats = campaignStatsOf(campaignById('forward-architect'))
+const STAT_GRID = {
+  name: 'StatGrid',
+  label: 'Stat grid',
+  Component: StatGrid,
+  about: 'StatCards in equal columns (a campaign’s Applications, In progress and Conversion rate); 1 column on mobile. New in v0.6.10 (Figma: the stats row on hiring-campaign).',
+  rows: [{ label: 'default', props: { stats: sampleStats } }],
+  columns: ONE,
+  controls: [],
+  initial: {},
+  toProps: () => ({ stats: sampleStats }),
+  snippetNames: { stats: 'stats' },
+  frame: true,
+}
+
 const DOCUMENT_LIST = {
   name: 'DocumentList',
   label: 'Document list',
@@ -378,6 +395,7 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
   { slug: 'campaign-list', label: 'Campaign list', uses: [U.campaignCard], parts: [CAMPAIGN_LIST] },
   { slug: 'page-title', label: 'Page title', parts: [PAGE_TITLE] },
+  { slug: 'stat-grid', label: 'Stat grid', uses: [U.statCard], parts: [STAT_GRID] },
   { slug: 'campaign-form', label: 'Campaign form', uses: [U.textInput, U.dropdown, U.errorMessage, U.skillsInput, U.button], parts: [CAMPAIGN_FORM] },
   { slug: 'achievements-card', label: 'Achievements card', uses: [U.button], parts: [ACHIEVEMENTS_CARD] },
   { slug: 'development-card', label: 'Development card', uses: [U.stageProgress, U.button], parts: [DEVELOPMENT_CARD] },

@@ -3,6 +3,51 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.10 — Step 6, Part 2: Campaign page (2026-10-11)
+
+### Summary
+Page 9 of 13: Campaign on `/campaigns/:campaignId` (Figma `hiring-campaign`, node `357:58749`; no mobile frame), one
+page for every campaign. A Header, then the yellow hero with the campaign's own photo, the stat cards and the funnel
+in the 830px column, then the campaign's Kanban at page width. The hiring data is now connected: every campaign has
+its own candidates, and all its numbers come from them. At 1440 the hero, stat cards and funnel match Figma's sizes
+(480, 279, 277). Checked in headless Chrome at 1440, 1200, 1199, 768, 767 and 375 (no sideways scroll), with the
+mouse and the keyboard, and the links both ways with Team campaigns and the person and negotiate pages.
+
+### Added
+- **Sections:**
+  - Header (`SiteHeader`): Back → the team's campaigns; breadcrumbs Home > All teams > *team* > *campaign*.
+  - **HeroCard with-bg**: label "Docs", the campaign's name and status ("Active campaign"), the "docs" tag + Add,
+    Finish (the CTA) and Cancel (no action yet); the campaign photo (Figma's, exported; WebP 768 / 1536).
+  - **StatGrid** (new organism): StatCards in equal columns (1 on mobile): Applications, In progress, Conversion rate.
+  - **CampaignList** with one card, "Funnel": the campaign's five numbers, no status, no link.
+  - **KanbanBoard**: the campaign's candidates; cards → `/people/:id?campaign=` (negotiate for Offer).
+- **Layout:** `indents/XXL (out)` under the Header and before the Kanban, `indents/2XS` between the hero, stats and
+  funnel, the Kanban's own `indents/XXL` at the bottom.
+- **Connected data:**
+  - `people.js`: candidates have a `campaignId`; Forward Architect keeps Figma's 14, the other 11 campaigns have their
+    own sample candidates (5–10 each).
+  - `teams.js`: each campaign's funnel comes from its candidates and its `rejected` count: Applied = the Kanban +
+    rejected, In progress = Screening + Interview, Final round = Interview, Offers sent = Offer; Conversion rate =
+    (Interview + Offer) ÷ Applied. The Team campaigns cards, the stat cards and the team's hiring summary use the same
+    numbers.
+  - `pipeline.js`: `pipelineFor(campaignId)`.
+- **Person page:** a candidate opened without `?campaign=` leads back to their own campaign.
+- **Docs:** Stat grid (organisms).
+
+### Changed
+- **Team campaigns page:** its cards and hiring summary now show the connected numbers (Figma's were inconsistent,
+  e.g. 98 in progress out of 45 applicants).
+
+### Differences from Figma
+- **Numbers:** real counts from the candidates instead of Figma's samples (e.g. Forward Architect 23 / 9 / 9 / 3 / 1).
+- **Hero title:** the campaign's name ("Forward Architect"; Figma: "Senior Frontend Developer Campaign").
+- **"In progress", "Conversion rate", "Total received"** (Figma: "in Progress", "Conversion Rate", "Total recieved").
+- **Kanban:** 58px taller (the short ProfileCards, since step 5); the hero's dotted texture layer isn't drawn (since step 5).
+- **Header:** taller, as on the other Header pages.
+
+### Open questions
+- What Finish and Cancel should do.
+
 ## v0.6.8 update — Prototype connections updated (2026-10-11)
 
 All prototype connections re-read from Figma and compared with docs/sitemap.md: two screens changed, the other 17
