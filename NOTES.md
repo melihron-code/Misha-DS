@@ -35,7 +35,7 @@ teams page (`/teams`) is built but not yet checked; its own entry comes when it'
 
 ### Differences from Figma
 - The Homepage has no SubHeader and no selected tab (Figma still shows both; to be fixed in Figma).
-- The TopMenu divider line stops at the 1440 edges on wider windows.
+- The TopMenu divider line stops at the 1440 edges on wider windows (kept that way, decided 2026-10-11).
 
 ## v0.6.0 update — Homepage added to the site map (2026-10-11)
 
