@@ -221,10 +221,11 @@ const VIEWPORTS = [
   { value: 'mobile', label: 'Mobile 375', width: 'var(--size-viewport-mobile)' },
 ]
 
+// mt-indents-s-inner doubles the space after the controls (the section gap + the same again).
 function FramedPreview({ minHeight, children }) {
   const [viewport, setViewport] = useState('desktop')
   return (
-    <div className="flex flex-col items-start gap-indents-s-inner">
+    <div className="mt-indents-s-inner flex flex-col items-center gap-indents-s-inner">
       <ToggleButtonGroup label="Viewport" options={VIEWPORTS} value={viewport} onChange={setViewport} />
       <div className="w-full rounded-radius-m border border-border-default">
         <PageFrame width={VIEWPORTS.find(v => v.value === viewport).width} minHeight={minHeight}>

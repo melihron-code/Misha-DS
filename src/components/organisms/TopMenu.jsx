@@ -2,15 +2,15 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Button, Logo, NavTab, TextLink } from '../atoms'
 import { cx } from '../atoms/shared'
 
-// Figma: TopMenu. activeTab all-teams | templates | none (which tab is the current page).
-// The top bar of every page: Logo, "Generate report" (Button on-color), the NavTabs and the user's links,
+// Figma: Top menu (one component, no properties of its own). The current tab is set on the NavTabs
+// inside: each item of `tabs` has its own `selected` (Figma: the exposed NavTab property).
+// The top bar of every page: Logo, "Generate report" (Button secondary), the NavTabs and the user's links,
 // with a divider/inverse line under it, padded indents/M × indents/S (inner).
 // Responsive (container "page"): desktop as Figma; tablet tightens the gap after the logo (indents/X instead
 // of indents/XXL (out)); mobile shows the logo and a "Menu" button that opens a panel with everything else.
 // The panel (bg/default like the bar, so the white tab outline and button show) closes on Escape, a click
 // outside or choosing a link, and gives focus back to the button.
 export default function TopMenu({
-  activeTab = 'all-teams',
   tabs = [],
   links = [],
   logoHref = '/',
@@ -47,11 +47,11 @@ export default function TopMenu({
   }, [open])
 
   const report = (
-    <Button variant="on-color" onClick={onGenerateReport}>
+    <Button variant="secondary" onClick={onGenerateReport}>
       {reportLabel}
     </Button>
   )
-  const tabList = tabs.map(t => <NavTab key={t.id} label={t.label} href={t.href} selected={t.id === activeTab} />)
+  const tabList = tabs.map(t => <NavTab key={t.id ?? t.label} label={t.label} href={t.href} selected={!!t.selected} />)
   const linkList = links.map(l => (
     <TextLink key={l.label} href={l.href} onClick={l.onClick}>
       {l.label}

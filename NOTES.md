@@ -3,6 +3,36 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.5.1 — Step 5 refinements: TopMenu from Figma, organism playgrounds (2026-10-11)
+
+### Summary
+Review round after step 5. TopMenu follows the reworked Figma component: one component, no variants; the
+current tab is set on the NavTabs inside. The organism playgrounds got a centered viewport switcher, more space
+above it and single-row controls. Checked in headless Chrome: tab selection, switcher position, control rows.
+
+### Changed
+- **TopMenu** (Figma: `Top menu`, variants removed): `activeTab` is gone; each item of `tabs` has its own
+  `selected` (Figma: the exposed NavTab property). `tabsFor(id)` in `data/navigation.js` builds the list with
+  the current page's tab selected. "Generate report" is Button `secondary`, as in Figma (was `on-color`).
+- **/ds-dev/ Organisms:**
+  - The Desktop / Tablet / Mobile switcher is centered, with twice the space above it
+    (`indents/S (inner)` × 2).
+  - Top menu and Header playgrounds: a "selected tab" control (all-teams, templates, none); Top menu shows
+    one row in the grid instead of three variants.
+  - Hero section and Task item playgrounds: all controls in one row.
+  - Submenu order: Hero card before Hero section.
+
+### Differences from Figma
+- None new.
+
+### How to use
+```jsx
+import { tabsFor, userLinks } from './data/navigation'
+
+<TopMenu tabs={tabsFor('all-teams')} links={userLinks} />
+<TopMenu tabs={[{ label: 'All teams', href: '/teams', selected: true }, { label: 'All templates', href: '/templates' }]} />
+```
+
 ## v0.5.0 — Step 5: Organisms (2026-10-11)
 
 ### Summary
@@ -18,7 +48,7 @@ nothing overflows; menus, flags, dropdowns and links work with mouse and keyboar
 
 ### Added
 - **Organisms** (all exported from `src/components/organisms/index.js`):
-  - `TopMenu`: `activeTab` all-teams | templates | none, `tabs`, `links`, `logoHref`, `reportLabel`, `onGenerateReport`, `menuLabel`. Logo, "Generate report" (Button on-color), NavTabs, TextLinks; divider/inverse below. Tablet: tighter gap after the logo. Mobile: logo + "Menu" button opening a panel (focus moves in; Escape, outside click or a link close it and focus returns; fades and slides with `duration/base`). Uses Logo, Button, NavTab, TextLink.
+  - `TopMenu`: `tabs` [{ label, href, selected }], `links`, `logoHref`, `reportLabel`, `onGenerateReport`, `menuLabel`. One component in Figma (`Top menu`, no variants): the current tab is each NavTab's `selected` (`tabsFor(id)` in `data/navigation.js` builds the list). Logo, "Generate report" (Button secondary), NavTabs, TextLinks; divider/inverse below. Tablet: tighter gap after the logo. Mobile: logo + "Menu" button opening a panel (focus moves in; Escape, outside click or a link close it and focus returns; fades and slides with `duration/base`). Uses Logo, Button, NavTab, TextLink.
   - `SubHeader`: `variant` default | builder, `backLabel`, `backHref` / `onBack`, `breadcrumbs`, `saveLabel`, `deployLabel`, `onSave`, `onDeploy`. default: Back (Button on-color-outlined) + Breadcrumbs; builder: Back, Save, Deploy. Mobile: breadcrumbs show the current page only. Uses Button, Breadcrumbs.
   - `Header`: `showSubHeader`, `showProgress`, `topMenu`, `subHeader`, `progress` ({ stages, value }). TopMenu + SubHeader + StageProgress; no fill. Uses TopMenu, SubHeader, StageProgress.
   - `HeroSection` (new; in Figma as a component too): `showBackground`, `background`, `showSubHeader`, `showProgress`, `showActions`, `heroVariant`, `header`, `hero`. Header, then the hero at the bottom of a `size/hero` (660) area (Figma: Auto gap); `showBackground` adds the full-width backdrop fading into `bg/default`. Mobile: no minimum height. Uses Header, HeroCard.
@@ -66,13 +96,13 @@ nothing overflows; menus, flags, dropdowns and links work with mouse and keyboar
 ### How to use
 ```jsx
 import { Header, HeroCard, HeroSection, KanbanBoard, SubHeader, TaskItem, TopMenu } from './components/organisms'
-import { breadcrumbs, topMenuTabs, userLinks } from './data/navigation'
+import { breadcrumbs, tabsFor, userLinks } from './data/navigation'
 import { candidateHero, teamsHero } from './data/heroes'
 import { pipeline } from './data/pipeline'
 import { careerStages } from './data/stages'
 import { campaignTasks } from './data/tasks'
 
-const topMenu = { activeTab: 'all-teams', tabs: topMenuTabs, links: userLinks }
+const topMenu = { tabs: tabsFor('all-teams'), links: userLinks }
 
 <div className="@container/page">  {/* the page root (step 6) */}
   <TopMenu {...topMenu} onGenerateReport={report} />
@@ -564,7 +594,7 @@ The library components still exist in their source library; this file no longer 
 | AttemptCard | Property 1 → `attempt` | variant |
 | Notification | type → `variant`; Show btn → `showButton` | variant; boolean |
 | SubHeader | type → `variant` | variant |
-| TopMenu | Property 1 → `activeTab` | variant |
+| TopMenu | Property 1 → `activeTab` (v0.5.0: removed in Figma; the NavTabs' `selected` sets the current tab, code: `tabs[].selected`) | variant |
 | Header | type → `variant`; Show second-row → `showSubHeader`; Show bar → `showProgress` | variant; boolean; boolean |
 | TaskItem | Property 1 → `state`; Show btn → `showButton`; Show error → `showError` | variant; boolean; boolean |
 | HeroCard | Property 1 → `variant`; Show btns group → `showActions` | variant; boolean |
@@ -591,7 +621,7 @@ The library components still exist in their source library; this file no longer 
 | ProfileCard.variant | long, short, short-outlined (unchanged) |
 | AttemptCard.attempt | Default → `first`, Variant2 → `next` |
 | SubHeader.variant | Default → `default`, builider → `builder` |
-| TopMenu.activeTab | all → `all-teams`, templates → `templates`, off → `none` |
+| TopMenu.activeTab | all → `all-teams`, templates → `templates`, off → `none` (removed in v0.5.0, see Properties) |
 | TaskItem.state | Default → `default`, Variant2 → `active` |
 | HeroCard.variant | Default → `default`, Variant2 → `image`; (2026-10-11) renamed in Figma to with bg → `with-bg`, no bg → `no-bg` |
 | Button.variant | (v0.5.0, code first) + `on-color-outlined`, `accent` |

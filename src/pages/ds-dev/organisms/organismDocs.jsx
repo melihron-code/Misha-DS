@@ -1,5 +1,5 @@
 import { Header, HeroCard, HeroSection, KanbanBoard, SubHeader, TaskItem, TopMenu } from '../../../components/organisms'
-import { breadcrumbs, topMenuTabs, userLinks } from '../../../data/navigation'
+import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
 import { candidateHero, teamsHero } from '../../../data/heroes'
 import { pipeline } from '../../../data/pipeline'
 import { careerStages } from '../../../data/stages'
@@ -9,9 +9,11 @@ import { ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
 // Docs for each organism (the format is described in ../docs/docHelpers.js). Organisms are shown in a
 // page frame (`frame`): desktop in the grid, Desktop / Tablet / Mobile in the playground. Content comes
 // from src/data, as the site will pass it.
-const topMenu = { tabs: topMenuTabs, links: userLinks }
-const header = activeTab => ({
-  topMenu: { ...topMenu, activeTab },
+// The selected tab is a control here (TAB_OPTIONS); on the site the page sets it.
+const TAB_OPTIONS = ['all-teams', 'templates', 'none']
+const topMenu = tab => ({ tabs: tabsFor(tab), links: userLinks })
+const header = tab => ({
+  topMenu: topMenu(tab),
   subHeader: { breadcrumbs: breadcrumbs.candidate },
   progress: { stages: careerStages, value: 45 },
 })
@@ -42,14 +44,13 @@ const TOP_MENU = {
   name: 'TopMenu',
   label: 'Top menu',
   Component: TopMenu,
-  about: 'The top bar: logo, Generate report, the tabs (the current page outlined) and the user’s links. Tablet: tighter gaps. Mobile: the logo and a Menu button opening a panel (closes on Escape, a click outside or a link).',
-  rows: ['all-teams', 'templates', 'none'].map(t => ({ label: `activeTab ${t}`, props: { ...topMenu, activeTab: t } })),
+  about: 'The top bar: logo, Generate report, the tabs and the user’s links. One component; the current tab is set on its NavTab (each tab’s selected). Tablet: tighter gaps. Mobile: the logo and a Menu button opening a panel (closes on Escape, a click outside or a link).',
+  rows: [{ label: 'default (All teams selected)', props: topMenu('all-teams') }],
   columns: ONE,
-  controls: [select('activeTab', ['all-teams', 'templates', 'none'])],
-  initial: { activeTab: 'all-teams' },
-  toProps: p => ({ ...p, ...topMenu }),
-  defaults: { activeTab: 'all-teams' },
-  snippetNames: { tabs: 'topMenuTabs', links: 'userLinks' },
+  controls: [select('selectedTab', TAB_OPTIONS, 'selected tab')],
+  initial: { selectedTab: 'all-teams' },
+  toProps: ({ selectedTab }) => topMenu(selectedTab),
+  snippetNames: { tabs: 'tabs', links: 'userLinks' },
   frame: true,
   frameMinHeight: MENU_ROOM,
 }
@@ -80,9 +81,9 @@ const HEADER = {
     { label: 'showSubHeader false · showProgress false', props: { ...header('all-teams'), showSubHeader: false, showProgress: false } },
   ],
   columns: ONE,
-  controls: [toggle('showSubHeader'), toggle('showProgress'), select('activeTab', ['all-teams', 'templates', 'none'])],
-  initial: { showSubHeader: true, showProgress: true, activeTab: 'all-teams' },
-  toProps: ({ activeTab, ...p }) => ({ ...p, ...header(activeTab) }),
+  controls: [toggle('showSubHeader'), toggle('showProgress'), select('selectedTab', TAB_OPTIONS, 'selected tab')],
+  initial: { showSubHeader: true, showProgress: true, selectedTab: 'all-teams' },
+  toProps: ({ selectedTab, ...p }) => ({ ...p, ...header(selectedTab) }),
   defaults: { showSubHeader: true, showProgress: true },
   snippetNames: { topMenu: 'topMenu', subHeader: 'subHeader', progress: 'progress' },
   frame: true,
@@ -103,10 +104,7 @@ const HERO_SECTION = {
     { label: 'showBackground false · with-bg hero', props: { showBackground: false, heroVariant: 'with-bg', header: header('none'), hero: candidateHero } },
   ],
   columns: ONE,
-  controls: [
-    [toggle('showBackground'), select('heroVariant', ['no-bg', 'with-bg']), toggle('showActions')],
-    [toggle('showSubHeader'), toggle('showProgress')],
-  ],
+  controls: [toggle('showBackground'), select('heroVariant', ['no-bg', 'with-bg']), toggle('showActions'), toggle('showSubHeader'), toggle('showProgress')],
   initial: { showBackground: true, heroVariant: 'no-bg', showActions: true, showSubHeader: true, showProgress: false },
   toProps: p => ({ ...p, header: header(HERO_TAB[p.heroVariant]), hero: HERO_CONTENT[p.heroVariant] }),
   defaults: { showBackground: true, heroVariant: 'no-bg', showActions: true, showSubHeader: true, showProgress: true },
@@ -158,7 +156,7 @@ const TASK_ITEM = {
     { label: 'active (to do)', props: { ...campaignTasks[1], state: 'active' } },
   ],
   columns: ONE,
-  controls: [[select('state', ['default', 'active']), toggle('showButton'), toggle('showError')], [{ ...text('title'), double: true }]],
+  controls: [select('state', ['default', 'active']), toggle('showButton'), toggle('showError'), text('title')],
   initial: { state: 'active', showButton: true, showError: true, title: campaignTasks[1].title },
   toProps: p => ({ ...campaignTasks[1], ...p }),
   bind: (p, set) => ({ onToggle: state => set({ ...p, state }) }),
@@ -166,13 +164,13 @@ const TASK_ITEM = {
   frame: true,
 }
 
-// Pages under /ds-dev/organisms/<slug>, in the order of the Figma organisms frame (then HeroSection).
+// Pages under /ds-dev/organisms/<slug>, in the order of the Figma organisms frame, HeroCard before HeroSection.
 export const ORGANISM_PAGES = withAbout([
   { slug: 'top-menu', label: 'Top menu', uses: [U.logo, U.button, U.navTab, U.textLink], parts: [TOP_MENU] },
   { slug: 'sub-header', label: 'Subheader', uses: [U.button, U.breadcrumbs], parts: [SUB_HEADER] },
   { slug: 'header', label: 'Header', uses: [U.topMenu, U.subHeader, U.stageProgress], parts: [HEADER] },
-  { slug: 'hero-section', label: 'Hero section', uses: [U.header, U.heroCard], parts: [HERO_SECTION] },
   { slug: 'hero-card', label: 'Hero card', uses: [U.button, U.dropdown, U.toggleGroup], parts: [HERO_CARD] },
+  { slug: 'hero-section', label: 'Hero section', uses: [U.header, U.heroCard], parts: [HERO_SECTION] },
   { slug: 'kanban-board', label: 'Kanban board', uses: [U.profileCard], parts: [KANBAN_BOARD] },
   { slug: 'task-item', label: 'Task item', uses: [U.flag, U.errorMessage, U.button], parts: [TASK_ITEM] },
 ])

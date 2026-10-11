@@ -1,10 +1,13 @@
 // Navigation content (Figma: TopMenu, SubHeader). Organisms get it through props.
 
-// TopMenu tabs; `id` is what TopMenu's activeTab refers to.
+// TopMenu tabs. A page marks its own tab with `selected: true` (see tabsFor).
 export const topMenuTabs = [
   { id: 'all-teams', label: 'All teams', href: '/teams' },
   { id: 'templates', label: 'All templates', href: '/templates' },
 ]
+
+// The tabs with one of them selected (the current page); an unknown id selects none.
+export const tabsFor = id => topMenuTabs.map(t => ({ ...t, selected: t.id === id }))
 
 // TopMenu's links on the right.
 export const userLinks = [
