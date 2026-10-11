@@ -15,7 +15,7 @@ const withQuery = (path, params = {}) => {
 }
 
 // Every route of the site (docs/sitemap.md). `from` keeps where a person was opened from
-// ({ campaign } or { team }), so Back and the breadcrumbs lead there.
+// ({ campaign }, { team } or { from: 'employees' }), so Back and the breadcrumbs lead there.
 export const paths = {
   home: '/',
   employees: '/employees',
@@ -42,12 +42,13 @@ export const topMenuFor = pathname => ({
 
 export const HOME_CRUMB = { label: 'Home', href: paths.home }
 
-// Where a person's page was opened from (?campaign= or ?team=; an employee defaults to their team):
+// Where a person's page was opened from (?campaign=, ?from=employees or ?team=; an employee defaults to their team):
 // `from` for links that keep it, and `parent` ({ label, href }) for Back and the breadcrumbs.
 export const personContext = (person, params) => {
   const campaign = campaignById(params.get('campaign'))
   const team = campaign ? undefined : (teamById(params.get('team')) ?? (person.kind === 'employee' ? teamById(person.teamId) : undefined))
   if (campaign) return { from: { campaign: campaign.id }, parent: { label: campaign.title, href: paths.campaign(campaign.id) } }
+  if (params.get('from') === 'employees') return { from: { from: 'employees' }, parent: { label: 'Employees', href: paths.employees } }
   if (team) return { from: { team: team.id }, parent: { label: team.name, href: paths.team(team.id) } }
   return { from: undefined, parent: undefined }
 }

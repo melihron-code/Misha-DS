@@ -6,7 +6,8 @@ import { Breadcrumbs } from '../molecules'
 // default: "Back" (Button on-color-outlined) and the Breadcrumbs, indents/XXL apart (Figma: a raw 60px).
 // builder: "Back" (secondary) on the left; "Save" (secondary) and "Deploy" (primary-sm) on the right.
 // Back is a link with `backHref`, otherwise a button calling `onBack`. In a mobile page the breadcrumbs
-// show only the current page and the gap shrinks to indents/M. `saveTooltip` / `deployTooltip` show a Tooltip.
+// show only the current page and the gap shrinks to indents/M. `saveTooltip` / `deployTooltip`: no action yet
+// (the Tooltip, marked unavailable).
 const BACK_VARIANT = { default: 'on-color-outlined', builder: 'secondary' }
 
 export default function SubHeader({
@@ -42,12 +43,12 @@ export default function SubHeader({
       )}
       {builder ? (
         <div className="ml-auto flex items-center gap-indents-xs">
-          <Tooltip text={saveTooltip}>
+          <Tooltip text={saveTooltip} unavailable>
             <Button variant="secondary" onClick={onSave}>
               {saveLabel}
             </Button>
           </Tooltip>
-          <Tooltip text={deployTooltip} align="end">
+          <Tooltip text={deployTooltip} align="end" unavailable>
             <Button variant="primary-sm" onClick={onDeploy}>
               {deployLabel}
             </Button>

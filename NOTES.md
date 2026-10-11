@@ -3,6 +3,32 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.1 — Step 6, Part 1 refinements: unavailable elements, Employees connections (2026-10-11)
+
+### Summary
+Answers to the Part 1 open questions. Elements with no destination stay without pages: besides the "No action
+for now" tooltip they now show the not-allowed cursor. The Employees list opens each person's page (new prototype
+connections). The sample team names stay. Checked in headless Chrome: cursor, no hover overlay, tooltip by mouse
+and keyboard on every no-action element; Employees → person → Back.
+
+### Changed
+- **Tooltip:** `unavailable` marks the wrapped element as having no action: `aria-disabled` (still focusable, so
+  the tooltip shows on keyboard focus; screen readers announce it as unavailable), the not-allowed cursor, no hover
+  overlay. Its colors don't change (it isn't the disabled state).
+- **PRESSABLE:** `aria-disabled:cursor-not-allowed`, so every pressable atom shows the not-allowed cursor when marked
+  unavailable.
+- **TopMenu, SubHeader, HeroCard, ToggleButtonGroup:** an item with a `tooltip` is marked unavailable.
+- **Employees** (`/employees`): the 10 ProfileCards open `/people/:personId?from=employees`; Back and the
+  breadcrumbs on that page lead back to Employees.
+- **docs/sitemap.md:** the new connections; the answered questions; CLAUDE.md rule 10 updated.
+
+### Differences from Figma
+- The "unavailable" look (cursor) and the Tooltip are code only.
+
+### Open questions
+- The popover (how it closes, what Generate does), the success screen's full-height backdrop, the parts that
+  aren't components yet, the stray layers: see [docs/sitemap.md](docs/sitemap.md#open-questions).
+
 ## v0.6.0 — Step 6, Part 1: Site map and skeleton (2026-10-11)
 
 ### Summary

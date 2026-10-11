@@ -21,5 +21,6 @@ export const STATES = ['default', 'hover', 'pressed', 'focus', 'disabled']
 // data-state attribute for a forced state (none for "default").
 export const stateAttr = state => (state && state !== 'default' ? state : undefined)
 
-// Classes every pressable atom shares: overlay on hover/pressed, focus ring, transitions.
-export const PRESSABLE = 'state-overlay focus-ring transition-state cursor-pointer disabled:cursor-not-allowed'
+// Classes every pressable atom shares: overlay on hover/pressed, focus ring, transitions. Disabled, or marked
+// unavailable (aria-disabled, e.g. by Tooltip's `unavailable`): the not-allowed cursor and no overlay.
+export const PRESSABLE = 'state-overlay focus-ring transition-state cursor-pointer disabled:cursor-not-allowed aria-disabled:cursor-not-allowed'

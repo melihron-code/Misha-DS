@@ -20,7 +20,7 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 | New campaign | `/campaigns/new?team=` | hiring-campaign-add | `NewCampaignPage.jsx` | Header | HeroCard with-bg, TaskItem ×6 |
 | Job description | `/campaigns/new/job-description?team=` | hiring-campaign-wizard, hiring-campaign-wizard-viewport (popover) | `JobDescriptionPage.jsx` | Header, SubHeader builder | ⚠ page title without a hero; TextInput, Dropdown, TextArea, ErrorMessage; ⚠ skill input + tag list; Button primary-lg; ⚠ "Head line" popover |
 | Campaign published | `/campaigns/new/published` | success | `CampaignPublishedPage.jsx` | Header without SubHeader | ⚠ full-screen backdrop, heading, Button primary-sm |
-| Person | `/people/:personId?campaign=` or `?team=` | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile: HeroCard with-bg, Notification, ⚠ achievements, StageProgress, ⚠ next level, ProfileCard short ×6. Interview: HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
+| Person | `/people/:personId?campaign=`, `?from=employees` or `?team=` | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile: HeroCard with-bg, Notification, ⚠ achievements, StageProgress, ⚠ next level, ProfileCard short ×6. Interview: HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
 | Negotiate | `/people/:personId/negotiate?campaign=` or `?team=` | negotiate | `NegotiatePage.jsx` | Header | HeroCard with-bg, AttemptCard ×3, ⚠ offer form, ⚠ prediction |
 | Not found | any other URL, or an unknown id | — | `NotFoundPage.jsx` | Header without SubHeader | heading, Button to `/` |
 | Design system | `/ds-dev/*` | — | `ds-dev/DsDevPage.jsx` | — | unchanged |
@@ -30,8 +30,8 @@ campaign (`/campaigns/:campaignId`), a person (`/people/:personId`, `/people/:pe
 Figma screens `candidate` and `candidate-interviewed` are one page: candidates in the Interview stage get the
 interview content, everyone else the profile content.
 
-**Query parameters:** `?team=` on the new-campaign pages and `?campaign=` / `?team=` on a person's pages keep
-where they were opened from, so Back and the breadcrumbs lead there.
+**Query parameters:** `?team=` on the new-campaign pages and `?campaign=` / `?from=employees` / `?team=` on a
+person's pages keep where they were opened from, so Back and the breadcrumbs lead there.
 
 ## Shared layout
 
@@ -55,6 +55,7 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 | all-teams | Hero toggle "Employees" | all-teams-employees | `/employees` |
 | all-teams | TeamCard ×6 | all-teams-one | `/teams/:teamId` |
 | all-teams-one | Hero toggle "Campaigns" | all-teams-campaigns | `/teams/:teamId/campaigns` |
+| all-teams-employees | ProfileCard long ×10 (added 2026-10-11) | candidate | `/people/:personId?from=employees` |
 | all-teams-one | ProfileCard long ×10 (team members) | candidate | `/people/:personId?team=` |
 | all-teams-campaigns | Hero button "Add campaign" | hiring-campaign-add | `/campaigns/new?team=` |
 | all-teams-campaigns | CampaignCard ×3 (Forward Architect, District Integration Engineer, Product Tactics Manager) | hiring-campaign | `/campaigns/:campaignId` |
@@ -84,11 +85,15 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 | Hero toggle "Team" (Team campaigns) | `/teams/:teamId` | same toggle as Team → Campaigns |
 | Hero button "Negotiate" on the interview content | negotiate | the same hero on the same (now one) candidate page |
 
-### No action yet ("No action for now" tooltip on hover and keyboard focus)
+### No action yet
+
+These stay without a page (decided 2026-10-11). Each shows the tooltip "No action for now" on hover and keyboard
+focus and is marked unavailable: the not-allowed cursor, no hover overlay, `aria-disabled` (still focusable, its
+colors unchanged).
 
 - **Every page:** Generate report, Profile, Log out.
 - **All teams:** Add team, hero toggle "Report".
-- **Employees:** Add employee, hero toggle "Report", the 10 ProfileCards.
+- **Employees:** Add employee, hero toggle "Report".
 - **Team / Team campaigns:** hero toggle "Access", CampaignCard "Dynamic Program Liaison" (the 4th card), "More info".
 - **All templates:** Add new template, hero toggles Automations / Documents / Access, the document rows, Edit.
 - **Campaign:** Finish, Cancel.
@@ -102,15 +107,12 @@ Controls that work on the page itself (no navigation): hero tag dropdowns and "A
 
 ## Open questions
 
-1. **Pages with no screens:** Report, Access, Profile, a template's page, the Automations / Documents views of
-   templates: should any of them become pages?
-2. **Employees list:** its ProfileCards have no connection (the same people on the Team page open their page).
-   Should they open the person's page?
-3. **Teams:** Figma shows six identical "Engineering Team" cards and one team screen; the other five names are
-   samples, and only Engineering has members and campaigns.
-4. **Popover:** how does the "Head line" popover close (outside click, Escape, Generate)? What does Generate do?
-5. **Success screen:** a full-screen backdrop; HeroSection has no full-height option (flagged in v0.5.0).
-6. **Not components yet** (needed in Part 2): filter bar, Notification with avatars, achievements list,
+Answered (2026-10-11): the elements with no destination stay without pages (tooltip + not-allowed cursor); the
+Employees ProfileCards open the person's page (prototype updated); the sample team names stay.
+
+1. **Popover:** how does the "Head line" popover close (outside click, Escape, Generate)? What does Generate do?
+2. **Success screen:** a full-screen backdrop; HeroSection has no full-height option (flagged in v0.5.0).
+3. **Not components yet** (needed in Part 2): filter bar, Notification with avatars, achievements list,
    "next level / prediction" block, assessment results, offer form and prediction, skill input with tags,
    the popover, the page title without a hero, and the white content section with a heading that most pages use.
-7. **Stray layers** in the `design` section: `Ellipse 12` and `Frame 1` ("asdasd").
+4. **Stray layers** in the `design` section: `Ellipse 12` and `Frame 1` ("asdasd").

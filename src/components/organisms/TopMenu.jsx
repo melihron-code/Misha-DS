@@ -8,8 +8,8 @@ import { cx } from '../atoms/shared'
 // with a divider/inverse line under it, padded indents/M × indents/S (inner).
 // Responsive (container "page"): desktop as Figma; tablet tightens the gap after the logo (indents/X instead
 // of indents/XXL (out)); mobile shows the logo and a "Menu" button that opens a panel with everything else.
-// `reportTooltip` and each link's `tooltip` show a Tooltip (e.g. "No action for now"); a link without `href`
-// is a button.
+// `reportTooltip` and each link's `tooltip`: no action yet; they show the Tooltip (e.g. "No action for now") and
+// are marked unavailable (not-allowed cursor). A link without `href` is a button.
 // The panel (bg/default like the bar, so the white tab outline and button show) closes on Escape, a click
 // outside or choosing a link, and gives focus back to the button.
 export default function TopMenu({
@@ -50,7 +50,7 @@ export default function TopMenu({
   }, [open])
 
   const report = (
-    <Tooltip text={reportTooltip}>
+    <Tooltip text={reportTooltip} unavailable>
       <Button variant="secondary" onClick={onGenerateReport}>
         {reportLabel}
       </Button>
@@ -60,7 +60,7 @@ export default function TopMenu({
   // At the right edge of the bar the tooltips line up with the link's end; in the mobile panel, its start.
   const linkList = align =>
     links.map(l => (
-      <Tooltip key={l.label} text={l.tooltip} align={align}>
+      <Tooltip key={l.label} text={l.tooltip} align={align} unavailable>
         <TextLink href={l.href} onClick={l.onClick}>
           {l.label}
         </TextLink>

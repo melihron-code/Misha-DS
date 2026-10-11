@@ -7,18 +7,21 @@ import { cx } from './shared'
 // text/grotesk, radius/S, padded indents/2XS × indents/XS, indents/XS under the control. `align`: which
 // edges line up (start | center | end), so a tooltip at the page edge stays inside the page. Shown and
 // hidden at once (no animation: opacity isn't one of the animated properties). `open` forces it (docs).
+// `unavailable`: the element has no action (yet). It's marked aria-disabled: it stays focusable (so the tooltip
+// shows on keyboard focus) and screen readers announce it as unavailable; the cursor is not-allowed and there's
+// no hover overlay (PRESSABLE). Its colors don't change.
 const ALIGN = {
   start: 'left-0',
   center: 'left-1/2 -translate-x-1/2',
   end: 'right-0',
 }
 
-export default function Tooltip({ text, align = 'center', open = false, children, className }) {
+export default function Tooltip({ text, align = 'center', open = false, unavailable = false, children, className }) {
   const id = useId()
   if (!text) return children
   return (
     <span className={cx('group/tooltip relative inline-flex', className)}>
-      {cloneElement(children, { 'aria-describedby': id })}
+      {cloneElement(children, { 'aria-describedby': id, ...(unavailable && { 'aria-disabled': true }) })}
       <span
         role="tooltip"
         id={id}

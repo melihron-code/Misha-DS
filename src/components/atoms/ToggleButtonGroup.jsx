@@ -4,7 +4,8 @@ import Tooltip from './Tooltip'
 
 // Figma: ToggleButtonGroup (lg ToggleButtons on accent/highlight). In code it's a
 // single-choice radio group: one option is selected; arrow keys move the selection.
-// An option with `tooltip` shows it on hover and keyboard focus (e.g. "No action for now").
+// An option with `tooltip` has no action yet: it shows the tooltip on hover and keyboard focus (e.g. "No action
+// for now") and is marked unavailable (not-allowed cursor).
 // Figma's default: three visible buttons, all labelled "Team".
 const DEFAULT_OPTIONS = [
   { value: 'team-1', label: 'Team' },
@@ -37,7 +38,7 @@ export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, on
       className={`inline-flex items-center gap-indents-3xs rounded-radius-m bg-accent-highlight p-indents-2xs ${className ?? ''}`}
     >
       {items.map((o, i) => (
-        <Tooltip key={i} text={o.tooltip}>
+        <Tooltip key={i} text={o.tooltip} unavailable>
           <ToggleButton
             ref={el => (refs.current[i] = el)}
             role="radio"

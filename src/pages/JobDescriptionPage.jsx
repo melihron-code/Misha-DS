@@ -39,7 +39,7 @@ export default function JobDescriptionPage() {
           <div id={popoverId} hidden={!popover} className="rounded-radius-m bg-surface-card p-indents-m shadow-card">
             <div className="flex flex-col items-start gap-indents-s-inner">
               <p className="text-text-grotesk text-text-primary">Popover placeholder: “Head line” TextArea</p>
-              <Tooltip text={NO_ACTION}>
+              <Tooltip text={NO_ACTION} unavailable>
                 <Button variant="primary-sm">Generate</Button>
               </Tooltip>
             </div>

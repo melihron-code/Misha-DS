@@ -17,7 +17,7 @@ export default function EmployeesPage() {
         name="Employees"
         screens={['all-teams-employees']}
         contains={['HeroSection: Header + hero with Overview / Employees / Report', '⚠ Filter bar (Dropdowns; not a component yet)', `ProfileCard long ×${allEmployees.length}`]}
-        idle={allEmployees.map(p => p.name)}
+        links={allEmployees.map(p => ({ element: 'ProfileCard', label: p.name, href: paths.person(p.id, { from: 'employees' }) }))}
       />
     </>
   )

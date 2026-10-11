@@ -52,7 +52,7 @@ export default function PagePlaceholder({ name, screens = [], heading = false, c
           <Block title="No action yet">
             <div className="flex flex-wrap gap-indents-xs">
               {idle.map(label => (
-                <Tooltip key={label} text={NO_ACTION}>
+                <Tooltip key={label} text={NO_ACTION} unavailable>
                   <Button variant="secondary">{label}</Button>
                 </Tooltip>
               ))}

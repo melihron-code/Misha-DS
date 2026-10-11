@@ -268,12 +268,12 @@ const TOOLTIP = {
   name: 'Tooltip',
   label: 'Tooltip',
   Component: TooltipOnButton,
-  about: 'A short note under a control, shown on hover and keyboard focus; the site puts "No action for now" on buttons and links that don’t lead anywhere yet. Wraps one focusable element (here a Button). align: which edges line up, so it stays inside the page. New in v0.6.0, not in Figma yet.',
-  rows: ['start', 'center', 'end'].map(a => ({ label: `align ${a}`, props: { align: a, open: true, text: 'No action for now', children: 'Generate report' } })),
+  about: 'A short note under a control, shown on hover and keyboard focus; the site puts "No action for now" on buttons and links that don’t lead anywhere yet. Wraps one focusable element (here a Button). unavailable: the element has no action (aria-disabled, not-allowed cursor, no hover overlay; still focusable). align: which edges line up, so it stays inside the page. New in v0.6.0, not in Figma yet.',
+  rows: ['start', 'center', 'end'].map(a => ({ label: `align ${a}`, props: { align: a, open: true, unavailable: true, text: 'No action for now', children: 'Generate report' } })),
   columns: ONE,
-  controls: [select('align', ['start', 'center', 'end']), text('text')],
-  initial: { align: 'center', text: 'No action for now', children: 'Generate report' },
-  defaults: { align: 'center' },
+  controls: [select('align', ['start', 'center', 'end']), toggle('unavailable'), text('text')],
+  initial: { align: 'center', unavailable: true, text: 'No action for now', children: 'Generate report' },
+  defaults: { align: 'center', unavailable: false },
 }
 
 const LOGO = {

@@ -59,7 +59,7 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
    - Max widths: `size/page` (1440) for the page, `size/base-with` (830) for the content column; organisms fill what they're given up to their max (HeroCard: 830).
    - Side padding: `indents/M` at every breakpoint, so organisms line up when stacked.
    - CSS can't use variables in media or container conditions, so breakpoints are the one literal (rem) value; everything else stays a token.
-10. **Site navigation.** Links use `paths` from `src/site/site.js`; ids come from `src/data/`. A button or link with no destination yet gets the `NO_ACTION` tooltip ("No action for now", the `Tooltip` atom), never `href="#"` or a guessed page. When a connection changes, update `docs/sitemap.md`.
+10. **Site navigation.** Links use `paths` from `src/site/site.js`; ids come from `src/data/`. A button or link with no destination yet gets the `NO_ACTION` tooltip and is marked unavailable (`Tooltip` with `unavailable`: not-allowed cursor, no hover overlay, `aria-disabled`; still focusable), never `href="#"` or a guessed page. Organisms do this for any item with a `tooltip`. When a connection changes, update `docs/sitemap.md`.
 11. **After each step, add a release-notes entry to the top of `NOTES.md`** in the same format (Summary / Added or Changed / Differences from Figma / How to use), and commit.
 
 ## Figma notes
