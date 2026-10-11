@@ -2,7 +2,7 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { AchievementsCard, DevelopmentCard, HeroCard, RelationsCard, TeamSummary } from '../components/organisms'
 import { candidateHero } from '../data/heroes'
 import { personById } from '../data/people'
-import { personProfile } from '../data/profiles'
+import { achievementsFor, personProfile } from '../data/profiles'
 import { careerStages } from '../data/stages'
 import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHeader } from '../site/SiteHeader'
@@ -50,7 +50,7 @@ function Profile({ person, negotiateHref }) {
       <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
         <HeroCard variant="with-bg" {...hero} />
         <TeamSummary label="Summary" message={summary} />
-        <AchievementsCard title={achievements.title} achievements={achievements.items} action={{ label: achievements.actionLabel, tooltip: NO_ACTION }} />
+        <AchievementsCard title={achievements.title} achievements={achievementsFor(person.id)} action={{ label: achievements.actionLabel, tooltip: NO_ACTION }} />
         <DevelopmentCard
           title={development.title}
           stages={development.stages}

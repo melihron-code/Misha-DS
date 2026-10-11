@@ -36,7 +36,8 @@ achievements 239, development 318).
   - HeroCard: each action can set its `variant` (the candidate's Promote: primary-sm); the photo is WebP (768 /
     1536, `srcset`, width and height, `fetchpriority="high"`).
 - **Data:** `data/profiles.js` (Figma's profile content, used for everyone; the hero shows each person's name and
-  role); `candidateHero` marks Promote as the CTA.
+  role), with sample achievements per person: `achievementsFor(id)` picks four from a pool of twelve (Figma's four
+  among them), always the same four for a person; `candidateHero` marks Promote as the CTA.
 - **Images:** the hero photo as WebP (7 and 20 KB, from an 87 KB JPEG); `npm run images` makes it.
 - **Docs:** Achievements, Development and Relations cards (organisms); ProfileCard colors; Button on-yellow.
 - **`docs/page-prompt.md`:** the page brief, for the next runs.
@@ -44,6 +45,7 @@ achievements 239, development 318).
 ### Differences from Figma
 - **Header:** 148px tall (Figma 114). Figma's Top menu and SubHeader keep 14px padding but are only 45 and 43px tall,
   so their 32px buttons overflow; the code keeps the padding and the buttons (since step 5, every Header page).
+  Kept as is, Figma unchanged (decided 2026-10-11).
 - **Hero tags:** the left group takes four lines (Figma two); the code's Dropdown is wider than Figma's (since step 5).
 - **Relations:** 8px taller (each short ProfileCard is 63px; Figma 59).
 - **Development stages:** the labels sit in equal columns ("Ready" isn't pushed to the right edge as in Figma).
@@ -54,8 +56,8 @@ achievements 239, development 318).
 ### Open questions
 - **Interview view** (`candidate-interviewed`): its own run; it needs experience, skills, projects, assessment
   results, interview history and Hire / Reject.
-- **Profile content per person:** everyone shows Figma's achievements, development and relations for now.
-- **Header height:** keep the code's padding, or match Figma's 45 / 43px bars (an organism change)?
+- **Profile content per person:** achievements differ per person (sample); the development and relations cards
+  show Figma's content for everyone.
 
 ## v0.6.6 — Step 6, Part 2: Team page (2026-10-11)
 
