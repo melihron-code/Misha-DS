@@ -1,7 +1,7 @@
 # Misha DS
 
 React version of the Figma design system (file `dPIEJfY3Ma8tiCOcO9LXJO`), built in 6 steps:
-1 Figma cleanup ✓ · 2 styles and variables ✓ · 3 atoms ✓ · 4 molecules · 5 organisms · 6 site.
+1 Figma cleanup ✓ · 2 styles and variables ✓ · 3 atoms ✓ · 4 molecules ✓ · 5 organisms · 6 site.
 
 Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/vite`), react-router-dom. No TypeScript, no UI libraries. Windows / PowerShell.
 
@@ -17,8 +17,9 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 - `src/styles/tokens.css`: generated. Primitives, alias tokens, the Tailwind theme, text-style utilities and fonts.
 - `src/styles/interaction.css`: `state-overlay`, `focus-ring`, `focus-ring-within`, `transition-state` and reduced motion. `src/styles/text.css`: `trim-letter-spacing`.
 - `src/components/atoms/`: one file per atom, all exported from `index.js`. `shared.js` holds `cx`, `SIZE` (sizes built from tokens with `calc()`), `PRESSABLE` and `stateAttr`.
+- `src/components/molecules/`: one file per molecule, all exported from `index.js`, built only from atoms.
 - `src/components/icons/`: generated icon components (`<PlayIcon size={16} />`) and `ICONS` (Figma name → component). TEMPORARY: these are Apple SF Symbols; replace them before the site is public.
-- `src/pages/ds-dev/`: the /ds-dev/ page. Foundations are at `/ds-dev/<name>`, atoms at `/ds-dev/atoms/<atom>`. Each atom's docs (grid and playground) are configured in `atoms/atomDocs.jsx`, so add an entry there for every new component.
+- `src/pages/ds-dev/`: the /ds-dev/ page. Foundations are at `/ds-dev/<name>`; atoms and molecules are scrolling pages at `/ds-dev/atoms/<atom>` and `/ds-dev/molecules/<molecule>`. Each component's docs (grid, playground, "Uses") are configured in `atoms/atomDocs.jsx` or `molecules/moleculeDocs.jsx` (format in `docs/docHelpers.js`), so add an entry there for every new component. `docs/` holds the shared page, overview and doc renderer.
 - `src/lib/nbsp.js`: `nbsp(text)` binds short words to the next word.
 - `NOTES.md`: release notes and the Figma rename reference.
 
@@ -36,10 +37,18 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 2. **Names in code match Figma names.** Components, props and variant values follow the "Rename reference" in `NOTES.md` (e.g. `Button` with `variant="primary-sm"`). Tokens follow the Figma variable names (see `foundations.js` for the exact mapping).
 3. **Interactive components: the whole visible box, including padding, is the hit area.** Put padding on the `<button>`/`<a>` itself, not on a wrapper. Every interactive element gets a visible `focus-visible` state: use the `focus-ring` utility (or `PRESSABLE` from `atoms/shared.js`), and never `outline-none` without a replacement. Use the proper element (`<button>`, `<a>`, `<input>`, `<label htmlFor>`), support the keyboard and set the right aria.
 4. **No hanging short words.** Bind short words (1–3 letters: a, to, the, &, numbers) to the next word with a non-breaking space. Use `nbsp()` for any UI copy.
-5. **States.** Hover and pressed lay an overlay over the control (`state-overlay`: `overlay/hover` is 15% black, `overlay/pressed` 25%). Never darken a color by hand. Disabled uses `bg-bg-disabled-bg text-text-disabled`. Every interactive component takes a `state` prop (`hover | pressed | focus | disabled`, rendered as `data-state`) that forces a state. It's for docs only.
+5. **States: every interactive part works like the Button atom** (`atoms/Button.jsx`), at every level (atoms, molecules, organisms, site), including list items, tabs, rows and clickable areas that aren't atoms:
+   - Hover, pressed, focus and disabled work for real in the browser, with the colors and styles from Figma.
+   - Hover and pressed lay an overlay over the control (`state-overlay`: `overlay/hover` is 15% black, `overlay/pressed` 25%). Never darken a color by hand. Pressed has no extra shadow or movement, same as the Button.
+   - Focus: the `focus-ring` utility (`border/focus`, `indents/3XS` wide and offset), only on keyboard focus (`:focus-visible`), never hidden by or overlapping a shadow.
+   - Disabled: `bg-bg-disabled-bg text-text-disabled` (labels too), the same for every variant; no hover or pressed, `cursor-not-allowed`, not clickable or focusable. Never let a variant color and the disabled color both apply: pick one (`isDisabled ? DISABLED : COLOR[variant]`).
+   - Every interactive component takes a `state` prop (`hover | pressed | focus | disabled`, rendered as `data-state`) that forces a state. It's for docs only.
+   - `PRESSABLE` in `atoms/shared.js` bundles the overlay, focus ring, transition and cursors.
+   - If Figma shows a hover or pressed look for a part that doesn't fit these rules, ask instead of inventing a style.
 6. **Motion.** Use `transition-state`, or `var(--duration-fast)` / `var(--duration-base)` with `var(--ease-out)`. Animate only color, background, border, outline, shadow and transform, never layout (width, height, margin, padding, top/left). Transitions are switched off under `prefers-reduced-motion`; keep it that way.
 7. **Labels inside controls get `trim-letter-spacing`**, so their width matches Figma. CSS adds letter spacing after the last character; Figma doesn't.
-8. **After each step, add a release-notes entry to the top of `NOTES.md`** in the same format (Summary / Added or Changed / Differences from Figma / How to use), and commit.
+8. **Each level is built only from the level below:** molecules from atoms, organisms from molecules and atoms, the site from organisms. Never copy or restyle a component inside another; if one needs a change to fit, ask, and change it at its own level (in code and Figma).
+9. **After each step, add a release-notes entry to the top of `NOTES.md`** in the same format (Summary / Added or Changed / Differences from Figma / How to use), and commit.
 
 ## Figma notes
 - Akkurat LL Cyr TT and Pixform are custom fonts. They're installed locally and in `src/assets/fonts/`, but the Figma MCP (`use_figma`) can't load them, so text edits on those layers need the local plugin in `figma-plugin-text-styles/`.

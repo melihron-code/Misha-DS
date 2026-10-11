@@ -3,6 +3,71 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.4.0 — Step 4: Molecules (2026-10-11)
+
+### Summary
+The 10 molecules of the Figma `ds-molecules` frame are React components in `src/components/molecules/`,
+built only from atoms. They fill their container (no fixed widths), take their Figma texts as props, and use
+tokens only. None has states of its own in Figma; the only interactive parts are Button atoms, which keep
+the Button's hover, pressed, focus and disabled. Three atoms were changed first, with approval, in code and
+Figma: ProgressBar `tone`, Tag colors and height, MiniChart's overlay bars. /ds-dev/ has a Molecules section
+like Atoms. The plan is now 6 steps (5 organisms, 6 site).
+
+### Added
+- **Molecules** (all exported from `src/components/molecules/index.js`):
+  - `ProfileCard`: `variant` long | short | short-outlined, `name`, `role`, `image` / `src`, `status`, `statusLabel`, `progress`. long is a list row (divider underneath) with status and an accent progress bar; short (`surface/tag-red`) and short-outlined (`surface/tag-neutral`) are chips that hug their content, avatar multiplied onto the fill. Name and role stay on one line (ellipsis). Uses Avatar, Status, ProgressBar.
+  - `AutomationNode`: `title`, `event`. A flow step on `surface/card-red` with play and more icons (decorative for now) and two 10px ports (`icon/secondary` in, `icon/primary` out). Uses Icon.
+  - `CampaignCard`: `title`, `status`, `statusLabel`, `showStatus`, `showButton`, `buttonLabel`, `onMoreInfo`, `stats` [{ value, label }]. Numbers in equal columns as `<dt>`/`<dd>`. Title on one line. Uses Status, Button (secondary).
+  - `ProjectCard`: `description`, `tags`, `tagColor` yellow | green. Description wraps at 3/5 of the width; tags wrap. Uses Tag (static).
+  - `ExperienceItem`: `period`, `title`, `company`, `description`. Divider on top; texts wrap.
+  - `TeamCard`: `name`, `people`, `productivity`, `highlight`, `members`. "+N more" = people − members shown. Uses ProgressBar (accent), AvatarGroup.
+  - `MetricCard`: `title`, `values`, `summary`. On `surface/card-green`. Uses MiniChart.
+  - `StatCard`: `title`, `value`, `label`.
+  - `AttemptCard`: `attempt` first | next, `title`, `start` / `end` { amount, perks }, `status`, `statusLabel`. first shows the Status ("Failed") between the offers; next has `$?` amounts. Uses Status.
+  - `Notification`: `message`, `showButton`, `buttonLabel`, `onAction`. `text/description` in `status/success` on `status/success-bg`. Uses Button (on-color).
+- **Atom changes (approved):**
+  - `ProgressBar`: `tone` default | accent (`data/bar-filled-accent` + `data/bar-empty-accent`). Figma: new `tone` property, 4 accent variants; the bars inside ProfileCard and TeamCard now use `tone=accent`.
+  - `Tag`: static is yellow (`surface/tag-yellow-bright`, yellow/200) or green (`surface/tag-green`, green/100) via `color`; red is gone. Every tag is 32px high (control tags grew from 24px). Figma: new `color` property (control = neutral, static = yellow), both variants 32px.
+  - `MiniChart`: bars in `overlay/pressed` (25% black, multiplied), as in the Figma component. MetricCard's instance no longer overrides them with `data/chart-muted`.
+- **/ds-dev/:**
+  - Molecules: one scrolling page like Atoms (`/ds-dev/molecules/<molecule>`), with overview cards, a grid of variants, a playground with realistic content, and a "Uses" line linking to the atom pages. No code snippet (as for atoms).
+  - The sidebar shows only the open section's submenu; the closed ones keep their width, so nothing shifts between sections.
+  - The shared docs code moved to `src/pages/ds-dev/docs/` (page, overview, renderer, `docHelpers.js`).
+- **CLAUDE.md:** the state rules (rule 5) now apply to every level; new rule 8: each level is built only from the level below.
+
+### Flagged for step 5
+- Nothing in the molecules frame is an organism. The organisms are elsewhere in the file: `Header`, `SubHeader`, `TopMenu`, `TaskItem`, `HeroCard`, `NavTab`, `KanbanBoard`.
+- Cards will become links or clickable later, when screens need them (e.g. a profile card opening a candidate); then they follow rule 5.
+- AutomationNode's play and more icons are decorative; making them buttons needs an icon-button atom (not in Figma yet).
+
+### Differences from Figma
+- **Widths:** molecules fill their container instead of Figma's fixed widths (701, 696, 462, 280, 274, 190, 830); inner fixed widths became fractions (ProjectCard description 3/5, TeamCard highlight 3/5, AttemptCard offers 3/8). On /ds-dev/ they're shown at about their Figma width.
+- **ProfileCard short:** hugs its content (63px) instead of Figma's fixed 59px.
+- **Raw values in Figma, tokens in code:** ExperienceItem's 8px gap → `indents/XS`; AutomationNode's port colors #979797 / black → `icon/secondary` / `icon/primary`; port size 10px → `indents/XS` + `indents/3XS`.
+- **Typos fixed in sample content** (Figma unchanged): "recieved" → "received" (AutomationNode, StatCard), "in pgoress" → "in progress" (CampaignCard).
+- **MetricCard chart:** darker than before (25% overlay instead of the muted multiply), as decided.
+- **Single-line texts** (ProfileCard name and role, CampaignCard and TeamCard titles) end in an ellipsis when too long.
+- **Not done in Figma yet:** the green Tag variant (`variant=static, color=green`). The Figma tools can't load Pixform, so duplicating the variant failed; it needs to be duplicated by hand (or with the local plugin). The 5 green tags on the `design` page still use the yellow variant with a green fill override, so they look right.
+
+### How to use
+```jsx
+import { AttemptCard, AutomationNode, CampaignCard, ExperienceItem, MetricCard, Notification,
+  ProfileCard, ProjectCard, StatCard, TeamCard } from './components/molecules'
+
+<ProfileCard name="Sarah Johnson" role="Senior Developer" status="on-track" progress={86} />
+<ProfileCard variant="short" name="Sarah Johnson" role="Senior Developer" />
+<AutomationNode title="Start Trigger" event="New application received" />
+<CampaignCard title="Senior DevOps" onMoreInfo={open} stats={[{ value: '142', label: 'Applied' }]} />
+<ProjectCard description="Full-stack e-commerce solution" tags={['React', 'Node.js']} tagColor="green" />
+<ExperienceItem period="Jan 2022 — Present" title="Senior Frontend Developer" company="TechCorp Solutions" />
+<TeamCard name="Engineering Team" people={24} productivity={89} members={['katya', 'petya', 'dog']} />
+<MetricCard title="Health" values={[100, 58]} summary="Overall: Good" />
+<StatCard title="Applications" value="142" label="Total received" />
+<AttemptCard attempt="first" start={{ amount: '$8 750', perks: ['Lead role'] }} end={{ amount: '$12 750', perks: ['Gym'] }} />
+<Notification message="Sarah finalized the UX flows." showButton onAction={open} />
+```
+Docs: `/ds-dev/molecules`, or `/ds-dev/molecules/<molecule>`, e.g. `/ds-dev/molecules/team-card`.
+
 ## v0.3.1 — Step 3 refinements: atoms docs and disabled states (2026-10-11)
 
 ### Summary
@@ -338,13 +403,13 @@ The library components still exist in their source library; this file no longer 
 #### Properties
 | Component | Old → New | Type |
 |---|---|---|
-| ProgressBar | Property 1 → `size`; length → `value` | variant; variant |
+| ProgressBar | Property 1 → `size`; length → `value`; (new in v0.4.0) `tone` default \| accent | variant; variant; variant |
 | Avatar | Property 1 → `image` | variant |
 | Status | Property 1 → `status` | variant |
 | Icon | Property 1 → `name` | variant |
 | ToggleButton | switch → `selected`; size → `size`; name → `label` | variant; variant; text |
 | Flag | Property 1 → `checked` | variant |
-| Tag | Property 1 → `variant`; Show icon → `showIcon`; Text → `label` | variant; boolean; text |
+| Tag | Property 1 → `variant`; Show icon → `showIcon`; Text → `label`; (new in v0.4.0) `color` neutral (control) \| yellow \| green (static) | variant; boolean; text; variant |
 | ErrorMessage | Property 1 → `variant`; Text → `message` | variant; text |
 | AvatarGroup | Property 1 → `variant` | variant |
 | DocumentRow | Property 1 → `variant`; name → `title`; created by → `author`; date → `date` | variant; text; text; text |

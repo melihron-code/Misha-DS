@@ -1,6 +1,7 @@
 import { cx, SIZE } from './shared'
 
-// Figma: MiniChart. Bars side by side (indents/3XS gap), bottom-aligned, in data/chart.
+// Figma: MiniChart. Bars side by side (indents/3XS gap), bottom-aligned, filled with
+// overlay/pressed (25% black, multiplied), so they tint whatever card they sit on.
 // `values` are 0–100 (% of the 82px chart height). Figma: 100 and 58.
 export default function MiniChart({ values = [100, 58], label = 'Chart', className, ...rest }) {
   return (
@@ -12,7 +13,7 @@ export default function MiniChart({ values = [100, 58], label = 'Chart', classNa
       {...rest}
     >
       {values.map((v, i) => (
-        <span key={i} className="flex-1 rounded-radius-s bg-data-chart" style={{ height: `${Math.min(100, Math.max(0, v))}%` }} />
+        <span key={i} className="flex-1 rounded-radius-s bg-overlay-pressed mix-blend-multiply" style={{ height: `${Math.min(100, Math.max(0, v))}%` }} />
       ))}
     </div>
   )

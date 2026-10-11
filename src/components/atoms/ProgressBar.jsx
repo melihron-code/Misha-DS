@@ -3,7 +3,12 @@ import { cx, SIZE } from './shared'
 
 // Figma: ProgressBar. size sm (one row of dots) | lg (two rows), value 0–100.
 // 5px dots, indents/3XS (2px) apart, filling the available width; the first
-// `value` % of them are data/bar-filled, the rest data/bar-empty.
+// `value` % of them are filled, the rest empty. tone default: data/bar-filled + data/bar-empty;
+// accent: data/bar-filled-accent + data/bar-empty-accent (greens).
+const TONE = {
+  default: { filled: 'bg-data-bar-filled', empty: 'bg-data-bar-empty' },
+  accent: { filled: 'bg-data-bar-filled-accent', empty: 'bg-data-bar-empty-accent' },
+}
 // px per dot (dot + gap), read from the tokens; only used to count how many dots fit.
 const dotStep = () => {
   const cs = getComputedStyle(document.documentElement)
@@ -11,7 +16,7 @@ const dotStep = () => {
   return { dot: px('--indents-2xs') - px('--indents-neg-4xs'), gap: px('--indents-3xs') }
 }
 
-export default function ProgressBar({ size = 'sm', value = 75, label = 'Progress', className, ...rest }) {
+export default function ProgressBar({ size = 'sm', tone = 'default', value = 75, label = 'Progress', className, ...rest }) {
   const ref = useRef(null)
   const [count, setCount] = useState(0)
 
@@ -29,7 +34,7 @@ export default function ProgressBar({ size = 'sm', value = 75, label = 'Progress
   const pct = Math.min(100, Math.max(0, value))
   const filled = Math.round((count * pct) / 100)
   const dot = filled => (
-    <span className={cx('shrink-0 rounded-radius-over', filled ? 'bg-data-bar-filled' : 'bg-data-bar-empty')} style={{ width: SIZE.dot, height: SIZE.dot }} />
+    <span className={cx('shrink-0 rounded-radius-over', filled ? TONE[tone].filled : TONE[tone].empty)} style={{ width: SIZE.dot, height: SIZE.dot }} />
   )
 
   return (

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Dropdown, TextInput } from '../../../components/atoms'
 import { SIZE } from '../../../components/atoms/shared'
 import { nbsp } from '../../../lib/nbsp'
@@ -22,7 +23,7 @@ function Section({ title, level = 2, aside, className = '', children }) {
 // 1. Every variant × state, labelled: state names head the columns, each
 // variant's name sits on its own line above its row (so five states fit the width).
 function Grid({ doc }) {
-  const { Component, rows, columns, wide, narrow } = doc
+  const { Component, rows, columns } = doc
   return (
     <table className="w-full table-fixed border-collapse">
       <thead>
@@ -42,7 +43,7 @@ function Grid({ doc }) {
           <tr>
             {columns.map(c => (
               <td key={c.label} className="pr-indents-xs pb-indents-m align-middle">
-                <div className={wide ? 'w-full' : narrow ? 'w-1/2' : ''}>
+                <div className={doc.width ?? (doc.wide ? 'w-full' : doc.narrow ? 'w-1/2' : '')}>
                   <Component {...r.props} {...c.props} />
                 </div>
               </td>
@@ -137,7 +138,7 @@ function Playground({ doc, level }) {
       <div className="flex min-h-indents-xxl-out items-center justify-center rounded-radius-m border border-border-default p-indents-x">
         <SizedBy
           ghosts={doc.rows.map(r => <Component key={r.label} {...r.props} />)}
-          className={doc.wide ? 'w-full items-center' : doc.narrow ? 'w-1/3 items-center' : 'place-items-center'}
+          className={doc.width ? `${doc.width} items-center` : doc.wide ? 'w-full items-center' : doc.narrow ? 'w-1/3 items-center' : 'place-items-center'}
         >
           <Component {...live} {...bound} />
         </SizedBy>
@@ -163,9 +164,26 @@ function ComponentDocs({ doc, level }) {
 // The page description sits half a section gap (indents/XXL ÷ 2) above the content.
 const ABOUT_GAP = 'calc(var(--indents-xxl) / 2)'
 
-// One atom's docs, under its h2 title on the Atoms page: a custom render, one component,
-// or several (each under its own h3).
-export default function AtomPage({ page }) {
+// "Uses: Button, Status": the atoms inside a molecule, linking to their pages.
+function Uses({ uses }) {
+  return (
+    <p className="text-text-grotesk text-text-secondary">
+      Uses:{' '}
+      {uses.map((u, i) => (
+        <span key={u.slug}>
+          {i > 0 && ', '}
+          <Link to={`/ds-dev/atoms/${u.slug}`} className="rounded-radius-s text-text-primary underline focus-ring transition-state hover:text-text-secondary">
+            {u.label}
+          </Link>
+        </span>
+      ))}
+    </p>
+  )
+}
+
+// One component page's docs, under its h2 title on the Atoms or Molecules page: a custom
+// render, one component, or several (each under its own h3). `uses` lists the atoms inside.
+export default function DocPage({ page }) {
   let content
   if (page.render) content = page.render()
   else if (page.parts.length === 1) content = <ComponentDocs doc={page.parts[0]} level={3} />
@@ -181,9 +199,10 @@ export default function AtomPage({ page }) {
     ))
   return (
     <div className="flex flex-col">
-      <p className="text-text-grotesk text-text-secondary" style={{ paddingBottom: ABOUT_GAP }}>
-        {nbsp(page.about)}
-      </p>
+      <div className="flex flex-col gap-indents-xs" style={{ paddingBottom: ABOUT_GAP }}>
+        <p className="text-text-grotesk text-text-secondary">{nbsp(page.about)}</p>
+        {page.uses?.length > 0 && <Uses uses={page.uses} />}
+      </div>
       <div className="flex flex-col gap-indents-xxl">{content}</div>
     </div>
   )

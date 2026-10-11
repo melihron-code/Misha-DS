@@ -27,7 +27,7 @@ export default function DsDevPage() {
     if (current && !current.children) window.scrollTo(0, 0)
   }, [current])
 
-  if (!current) return <Navigate to={`/ds-dev/${path.startsWith('atoms') ? 'atoms' : NAV[0].path}`} replace />
+  if (!current) return <Navigate to={`/ds-dev/${NAV.find(i => i.children && path.startsWith(`${i.path}/`))?.path ?? NAV[0].path}`} replace />
 
   return (
     <div className="flex min-h-screen">
@@ -37,12 +37,19 @@ export default function DsDevPage() {
         <nav aria-label="Design system">
           <ul className="flex flex-col gap-indents-2xs">
             {NAV.map(i => (
-              <li key={i.path} className="flex flex-col gap-indents-2xs">
+              <li key={i.path} className="flex flex-col">
                 <NavLink to={`/ds-dev/${i.path}`} end className={({ isActive }) => linkClass(isActive, 'py-indents-xs text-heading-h4')}>
                   {i.label}
                 </NavLink>
+                {/* Only the open section shows its submenu. The others stay in the layout,
+                    invisible and zero-height, so the sidebar keeps one width (the widest label)
+                    and the page doesn't shift when you switch sections. */}
                 {i.children && (
-                  <ul className="ml-indents-s-inner flex flex-col gap-indents-2xs border-l border-border-default pl-indents-xs">
+                  <ul
+                    className={`ml-indents-s-inner flex flex-col gap-indents-2xs border-l border-border-default pl-indents-xs ${
+                      current === i ? 'mt-indents-2xs' : 'invisible h-0 overflow-hidden'
+                    }`}
+                  >
                     {i.children.map(c => (
                       <li key={c.path}>
                         <NavLink to={`/ds-dev/${c.path}`} end className={({ isActive }) => linkClass(isActive, 'py-indents-2xs text-text-grotesk')}>

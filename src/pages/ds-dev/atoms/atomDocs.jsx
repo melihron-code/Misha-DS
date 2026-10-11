@@ -15,21 +15,10 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from '../../../components/atoms'
+import { ONE, STATES, STATES_NO_DISABLED, select, text, toggle, withAbout } from '../docs/docHelpers'
 import IconGallery from './IconGallery'
 
-// Docs for each component.
-// name:     the component's name in code; label: its name in the docs.
-// grid:     rows (variants) × columns (states or cases); each cell renders <Component {...row} {...column} />.
-// controls: the playground's controls (shown beside its title); `enabled(props)` disables one when false;
-//           `double` makes a text field twice as wide; `initial` its starting props.
-// bind:     wires the playground so the atom really responds (toggles, selections, typing).
-// wide:     the atom fills its container (shown at full width).
-const STATES = ['default', 'hover', 'pressed', 'focus', 'disabled'].map(s => ({ label: s, props: { state: s } }))
-const STATES_NO_DISABLED = STATES.filter(c => c.label !== 'disabled')
-const ONE = [{ label: 'default', props: {} }]
-const select = (prop, options) => ({ prop, type: 'select', options })
-const toggle = prop => ({ prop, type: 'boolean' })
-const text = (prop, label) => ({ prop, type: 'text', label })
+// Docs for each atom (the format is described in ../docs/docHelpers.js).
 // Disabled in the playground unless the node variant is chosen (the sublabel exists only there).
 const nodeOnly = control => ({ ...control, enabled: p => p.variant === 'node' })
 
@@ -79,16 +68,22 @@ const TAG = {
   name: 'Tag',
   label: 'Tag',
   Component: Tag,
-  about: 'control is clickable (with showIcon it reads "Remove <label>"); static is display-only.',
+  about: 'control is clickable (with showIcon it reads "Remove <label>"); static is display-only, in yellow or green. 32px high.',
   rows: [
     { label: 'control', props: { variant: 'control' } },
     { label: 'control · showIcon', props: { variant: 'control', showIcon: true } },
-    { label: 'static', props: { variant: 'static' } },
-    { label: 'static · showIcon', props: { variant: 'static', showIcon: true } },
+    { label: 'static · yellow', props: { variant: 'static', color: 'yellow' } },
+    { label: 'static · green', props: { variant: 'static', color: 'green' } },
+    { label: 'static · yellow · showIcon', props: { variant: 'static', color: 'yellow', showIcon: true } },
   ],
   columns: STATES_NO_DISABLED,
-  controls: [select('variant', ['control', 'static']), text('label'), toggle('showIcon')],
-  initial: { variant: 'control', label: 'React', showIcon: false },
+  controls: [
+    select('variant', ['control', 'static']),
+    { ...select('color', ['yellow', 'green']), enabled: p => p.variant === 'static' },
+    text('label'),
+    toggle('showIcon'),
+  ],
+  initial: { variant: 'control', color: 'yellow', label: 'React', showIcon: false },
 }
 
 const FLAG = {
@@ -213,7 +208,7 @@ const MINI_CHART = {
   name: 'MiniChart',
   label: 'Mini chart',
   Component: MiniChart,
-  about: 'Small bar chart; values are 0–100 (% of the chart height).',
+  about: 'Small bar chart; values are 0–100 (% of the chart height). The bars are overlay/pressed (25% black), so they tint the card they sit on.',
   rows: [{ label: 'default', props: {} }],
   columns: ONE,
   controls: [{ prop: 'first', type: 'number', label: 'bar 1 (0–100)' }, { prop: 'second', type: 'number', label: 'bar 2 (0–100)' }],
@@ -226,22 +221,24 @@ const PROGRESS_BAR = {
   name: 'ProgressBar',
   label: 'Progress bar',
   Component: ProgressBar,
-  about: 'Dotted progress; fills the width of its container.',
+  about: 'Dotted progress; fills the width of its container. tone accent uses the green data/bar-*-accent colors.',
   rows: [
     { label: 'sm · 75', props: { size: 'sm', value: 75 } },
     { label: 'sm · 20', props: { size: 'sm', value: 20 } },
     { label: 'lg · 75', props: { size: 'lg', value: 75 } },
     { label: 'lg · 20', props: { size: 'lg', value: 20 } },
+    { label: 'accent · sm · 75', props: { tone: 'accent', size: 'sm', value: 75 } },
+    { label: 'accent · lg · 75', props: { tone: 'accent', size: 'lg', value: 75 } },
   ],
   columns: ONE,
-  controls: [select('size', ['sm', 'lg']), { prop: 'value', type: 'number', label: 'value (0–100)' }],
-  initial: { size: 'sm', value: 75 },
+  controls: [select('tone', ['default', 'accent']), select('size', ['sm', 'lg']), { prop: 'value', type: 'number', label: 'value (0–100)' }],
+  initial: { tone: 'default', size: 'sm', value: 75 },
   wide: true,
 }
 
 // Pages under /ds-dev/atoms/<slug>, in sidebar order. A page shows one or more
 // components (`parts`) or a custom `render`.
-export const ATOM_PAGES = [
+export const ATOM_PAGES = withAbout([
   { slug: 'button', label: 'Button', parts: [BUTTON] },
   { slug: 'input', label: 'Input', about: 'Text fields with a label: one line or several.', parts: [TEXT_INPUT, TEXT_AREA] },
   { slug: 'dropdown', label: 'Dropdown', parts: [DROPDOWN] },
@@ -260,4 +257,4 @@ export const ATOM_PAGES = [
   { slug: 'tag', label: 'Tag', parts: [TAG] },
   { slug: 'avatar', label: 'Avatar', about: 'Several round photos overlapping, or one on its own.', parts: [AVATAR_GROUP, AVATAR] },
   { slug: 'document-row', label: 'Document row', parts: [DOCUMENT_ROW] },
-].map(page => ({ ...page, about: page.about ?? page.parts[0].about }))
+])
