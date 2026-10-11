@@ -1,9 +1,9 @@
-import { DocumentRow } from '../atoms'
-import { cx } from '../atoms/shared'
+import { DocumentRow } from '../../components/atoms'
+import { cx } from '../../components/atoms/shared'
 
-// DocumentList (v0.6.5, code first; Figma: the "document-list" card on all-teams-templates). A surface/card panel
-// (radius/L, indents/X at the sides; the rows bring their own top and bottom space) with DocumentRows, indents/3XS
-// apart. It fills the width it's given.
+// DocumentList (v0.6.5; a site part since v0.6.13, not in the design system; Figma: the "document-list" card on
+// all-teams-templates). A surface/card panel (radius/L, indents/X at the sides; the rows bring their own top and
+// bottom space) with DocumentRows, indents/3XS apart. It fills the width it's given.
 // - `documents`: [{ id, title, type, author, date }].
 // - `editTooltip`: the rows' edit buttons have no action yet (DocumentRow's Tooltip, marked unavailable).
 // - `emptyText`: shown when there's nothing (e.g. a filter with no matches).

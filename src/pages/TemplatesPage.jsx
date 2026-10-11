@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { DocumentList } from '../components/organisms'
 import { templatesHero } from '../data/heroes'
 import { templateTypeByView, templates } from '../data/templates'
 import { SiteHero } from '../site/SiteHeader'
+import DocumentList from '../site/parts/DocumentList'
 import { HOME_CRUMB, NO_ACTION, SITE_NAME, paths } from '../site/site'
 
 // /templates — Figma: all-teams-templates (357:58972; built there from Header + HeroCard + background, here a

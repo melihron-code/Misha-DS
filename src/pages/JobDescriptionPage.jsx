@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
-import { PageTitle } from '../components/organisms'
 import CampaignForm from '../site/parts/CampaignForm'
+import PageTitle from '../site/parts/PageTitle'
 import { campaignForm, generateQualifications } from '../data/campaignForm'
 import { SiteHeader } from '../site/SiteHeader'
 import { NO_ACTION, SITE_NAME, paths } from '../site/site'

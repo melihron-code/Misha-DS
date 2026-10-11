@@ -1,13 +1,9 @@
 import {
   CardGrid,
-  AchievementsCard,
-  DevelopmentCard,
-  DocumentList,
   Header,
   HeroCard,
   HeroSection,
   KanbanBoard,
-  PageTitle,
   PeopleList,
   SubHeader,
   TeamSummary,
@@ -20,9 +16,7 @@ import { careerStages } from '../../../data/stages'
 import { teamMetrics } from '../../../data/metrics'
 import { campaignById, campaignStatsOf, campaignsOf, teams } from '../../../data/teams'
 import { allEmployees, employeeFilters } from '../../../data/people'
-import { templateTypeByView, templates } from '../../../data/templates'
-import { personProfile } from '../../../data/profiles'
-import { number, ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
+import { ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
 
 // Docs for each organism (the format is described in ../docs/docHelpers.js). Organisms are shown in a
 // page frame (`frame`): desktop in the grid, Desktop / Tablet / Mobile in the playground. Content comes
@@ -177,7 +171,6 @@ const KANBAN_BOARD = {
   frame: true,
 }
 
-
 // The site links each card to its team page; here they link to the site too.
 const linkedTeams = teams.map(t => ({ id: t.id, name: t.name, people: t.people, productivity: t.productivity, highlight: t.highlight, members: t.members, href: `/teams/${t.id}` }))
 
@@ -216,63 +209,10 @@ const TEAM_SUMMARY = {
   frame: true,
 }
 
-const NO_ACTION_DOC = 'No action for now'
-const ACHIEVEMENTS_CARD = {
-  name: 'AchievementsCard',
-  label: 'Achievements card',
-  Component: AchievementsCard,
-  about: 'A yellow card: title, the achievements spread across the width (2 × 2 on mobile) and a Button on-yellow. New in v0.6.7 (Figma: achievements on the candidate screen).',
-  rows: [{ label: 'default', props: { achievements: personProfile.achievements.items, action: { label: 'All achievements', tooltip: NO_ACTION_DOC } } }],
-  columns: ONE,
-  controls: [text('title')],
-  initial: { title: 'Achievements' },
-  toProps: p => ({ ...p, achievements: personProfile.achievements.items, action: { label: 'All achievements', tooltip: NO_ACTION_DOC } }),
-  snippetNames: { achievements: 'achievements', action: 'action' },
-  frame: true,
-}
-const DEVELOPMENT_CARD = {
-  name: 'DevelopmentCard',
-  label: 'Development card',
-  Component: DevelopmentCard,
-  about: 'A white card: title, the stages (StageProgress), the next level, the prediction and a Button secondary. New in v0.6.7 (Figma: development on the candidate screen).',
-  rows: [{ label: 'default', props: { title: personProfile.development.title, stages: personProfile.development.stages, value: personProfile.development.value, nextLevel: personProfile.development.nextLevel, prediction: personProfile.development.prediction, action: { label: 'More info', tooltip: NO_ACTION_DOC } } }],
-  columns: ONE,
-  controls: [number('value', 'value (0–100)'), text('nextLevel'), text('prediction')],
-  initial: { value: 75, nextLevel: 'Lead Software Engineer', prediction: 'February 2026' },
-  toProps: p => ({ ...p, stages: personProfile.development.stages, action: { label: 'More info', tooltip: NO_ACTION_DOC } }),
-  snippetNames: { stages: 'developmentStages', action: 'action' },
-  frame: true,
-}
 const listedCampaigns = campaignsOf('engineering').map(c => ({ id: c.id, title: c.title, status: c.status, statusLabel: c.statusLabel, stats: c.stats, href: `/campaigns/${c.id}` }))
 
-const PAGE_TITLE = {
-  name: 'PageTitle',
-  label: 'Page title',
-  Component: PageTitle,
-  about: 'A page’s h1 when it has no hero: heading/h1, centered. New in v0.6.9 (Figma: the title on hiring-campaign-wizard).',
-  rows: [{ label: 'default', props: { title: 'New Campaign' } }],
-  columns: ONE,
-  controls: [text('title')],
-  initial: { title: 'New Campaign' },
-  frame: true,
-}
 const sampleStats = campaignStatsOf(campaignById('forward-architect'))
 
-const DOCUMENT_LIST = {
-  name: 'DocumentList',
-  label: 'Document list',
-  Component: DocumentList,
-  about: 'A card of DocumentRows (the templates list); editTooltip: the edit buttons have no action yet. Mobile: two-line rows. New in v0.6.5 (Figma: the document-list card on all-teams-templates).',
-  rows: [{ label: 'default', props: { documents: templates.slice(0, 8), editTooltip: 'No action for now' } }],
-  columns: ONE,
-  controls: [select('type', ['all', 'automations', 'documents', 'access'])],
-  initial: { type: 'all' },
-  toProps: ({ type }) => ({ documents: templates.slice(0, 8).filter(t => !templateTypeByView[type] || t.type === templateTypeByView[type]), editTooltip: 'No action for now' }),
-  snippetNames: { documents: 'templates' },
-  frame: true,
-}
-
-// Pages under /ds-dev/organisms/<slug>, in the order of the Figma organisms frame, HeroCard before HeroSection.
 const CARD_ITEMS = { metric: teamMetrics, stat: sampleStats, team: linkedTeams, campaign: listedCampaigns }
 const CARD_GRID = {
   name: 'CardGrid',
@@ -293,6 +233,7 @@ const CARD_GRID = {
   frame: true,
 }
 
+// Pages under /ds-dev/organisms/<slug>, in the order of the Figma organisms frame, HeroCard before HeroSection.
 export const ORGANISM_PAGES = withAbout([
   { slug: 'top-menu', label: 'Top menu', uses: [U.logo, U.button, U.navTab, U.textLink], parts: [TOP_MENU] },
   { slug: 'sub-header', label: 'Subheader', uses: [U.button, U.breadcrumbs], parts: [SUB_HEADER] },
@@ -302,9 +243,5 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'kanban-board', label: 'Kanban board', uses: [U.profileCard], parts: [KANBAN_BOARD] },
   { slug: 'card-grid', label: 'Card grid', uses: [U.metricCard, U.statCard, U.teamCard, U.campaignCard], parts: [CARD_GRID] },
   { slug: 'people-list', label: 'People list', uses: [U.toggleGroup, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
-  { slug: 'document-list', label: 'Document list', uses: [U.documentRow], parts: [DOCUMENT_LIST] },
   { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
-  { slug: 'page-title', label: 'Page title', parts: [PAGE_TITLE] },
-  { slug: 'achievements-card', label: 'Achievements card', uses: [U.button], parts: [ACHIEVEMENTS_CARD] },
-  { slug: 'development-card', label: 'Development card', uses: [U.stageProgress, U.button], parts: [DEVELOPMENT_CARD] },
 ])

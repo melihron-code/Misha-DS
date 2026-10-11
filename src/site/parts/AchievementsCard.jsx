@@ -1,13 +1,14 @@
 import { useId } from 'react'
-import { Button } from '../atoms'
-import Tooltip from '../support/Tooltip'
-import { cx } from '../atoms/shared'
+import { Button } from '../../components/atoms'
+import Tooltip from '../../components/support/Tooltip'
+import { cx } from '../../components/atoms/shared'
 
-// AchievementsCard (v0.6.7, code first; Figma: "achievements" on the candidate screen). A surface/card-yellow panel
-// (radius/L, padding indents/X, indents/L inside) in text/on-yellow: a title (heading/h2), the achievements in a row
-// spread across the width (title heading/h3, date text/pixel, indents/XS apart; indents/S (inner) above and below)
-// and a Button on-yellow. `achievements`: [{ title, date }]; `action`: { label, href, onClick, tooltip } (with
-// `tooltip` it has no action yet). Responsive (container "page"): 2 × 2 in a mobile page.
+// AchievementsCard (v0.6.7; a site part since v0.6.13, not in the design system; Figma: "achievements" on the
+// candidate screen). A surface/card-yellow panel (radius/L, padding indents/X, indents/L inside) in text/on-yellow: a
+// title (heading/h2), the achievements in a row spread across the width (title heading/h3, date text/pixel,
+// indents/XS apart; indents/S (inner) above and below) and a Button on-yellow. `achievements`: [{ title, date }];
+// `action`: { label, href, onClick, tooltip } (with `tooltip` it has no action yet). Responsive (container "page"): 2
+// × 2 in a mobile page.
 export default function AchievementsCard({ title = 'Achievements', achievements = [], action, className, ...rest }) {
   const titleId = useId()
   return (
