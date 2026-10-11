@@ -39,13 +39,11 @@ const PROFILE_CARD = {
   rows: ['long', 'short', 'short-outlined'].map(v => ({ label: v, props: { variant: v } })),
   columns: ONE,
   controls: [
-    select('variant', ['long', 'short', 'short-outlined']),
-    text('name'),
-    text('role'),
-    longOnly(select('status', STATUSES)),
-    longOnly(number('progress', 'progress (0–100)')),
+    [select('variant', ['long', 'short', 'short-outlined']), text('name'), text('role')],
+    [longOnly(select('status', STATUSES)), longOnly(number('progress', 'progress (0–100)'))],
   ],
   initial: { variant: 'long', name: 'Sarah Johnson', role: 'Senior Developer', status: 'on-track', progress: 86 },
+  controlGrid: 3, // controls on 3 equal columns, edges lined up across rows
   width: 'w-5/6',
 }
 
@@ -66,11 +64,7 @@ const CAMPAIGN_CARD = {
   label: 'Campaign card',
   Component: CampaignCard,
   about: 'A hiring campaign: title, status and a More info button, then its numbers in equal columns.',
-  rows: [
-    { label: 'default', props: {} },
-    { label: 'showStatus false', props: { showStatus: false } },
-    { label: 'showButton false', props: { showButton: false } },
-  ],
+  rows: ONE,
   columns: ONE,
   controls: [text('title'), select('status', STATUSES), toggle('showStatus'), toggle('showButton')],
   initial: { title: 'Senior DevOps', status: 'on-track', showStatus: true, showButton: true },
@@ -87,13 +81,21 @@ const PROJECT_CARD = {
     { label: 'green tags', props: { tagColor: 'green' } },
   ],
   columns: ONE,
-  controls: [double(text('description')), text('tags', 'tags (comma-separated)'), select('tagColor', ['yellow', 'green'])],
+  controls: [
+    [double(text('description')), select('tagColor', ['yellow', 'green'], 'tag color')],
+    [text('tag1', 'tag 1'), text('tag2', 'tag 2'), text('tag3', 'tag 3'), text('tag4', 'tag 4')],
+  ],
   initial: {
     description: 'Full-stack e-commerce solution with React frontend and Node.js backend',
-    tags: 'React, Node.js, MongoDB, WebSocket',
+    tag1: 'React',
+    tag2: 'Node.js',
+    tag3: 'MongoDB',
+    tag4: 'WebSocket',
     tagColor: 'yellow',
   },
-  toProps: p => ({ ...p, tags: p.tags.split(',').map(t => t.trim()).filter(Boolean) }),
+  controlGrid: 4, // controls on 4 equal columns: description = tag 1–2, tag color = tag 3
+  // Empty tag fields are left out.
+  toProps: ({ tag1, tag2, tag3, tag4, ...p }) => ({ ...p, tags: [tag1, tag2, tag3, tag4].map(t => t.trim()).filter(Boolean) }),
   width: 'w-5/6',
 }
 
@@ -104,7 +106,9 @@ const EXPERIENCE_ITEM = {
   about: 'A job in a CV: period, role, company and what was done.',
   rows: ONE,
   columns: ONE,
-  controls: [text('period'), text('title'), text('company'), double(text('description'))],
+  controls: [[text('period'), text('title'), text('company')], [{ ...double(text('description')), span: 3 }]],
+  controlGrid: 3, // 3 equal columns filling the space after the title; description spans all 3
+  controlFill: true,
   initial: {
     period: 'Jan 2022 — Present (3 years)',
     title: 'Senior Frontend Developer',
@@ -121,7 +125,7 @@ const TEAM_CARD = {
   about: 'A team: size, productivity, the week’s highlight and its members ("+N more" counts the rest).',
   rows: ONE,
   columns: ONE,
-  controls: [text('name'), number('people'), number('productivity', 'productivity (0–100)'), double(text('highlight'))],
+  controls: [text('name'), number('people'), number('productivity', 'productivity %'), double(text('highlight'))],
   initial: { name: 'Engineering Team', people: 24, productivity: 89, highlight: 'Petya was drinking too much tea this week' },
   width: 'w-5/9',
 }

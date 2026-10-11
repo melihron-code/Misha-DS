@@ -15,7 +15,7 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 ## Where things live
 - `src/ds/foundations.js`: every foundation as read from Figma (names, aliases, values). Edit here, then run `npm run tokens`. Never edit `tokens.css` by hand.
 - `src/styles/tokens.css`: generated. Primitives, alias tokens, the Tailwind theme, text-style utilities and fonts.
-- `src/styles/interaction.css`: `state-overlay`, `focus-ring`, `focus-ring-within`, `transition-state` and reduced motion. `src/styles/text.css`: `trim-letter-spacing`.
+- `src/styles/interaction.css`: `state-overlay`, `focus-ring`, `focus-ring-within`, `transition-state`, `collapsible` (expand / collapse), `scrollbar-stable` and reduced motion. `src/styles/text.css`: `trim-letter-spacing`.
 - `src/components/atoms/`: one file per atom, all exported from `index.js`. `shared.js` holds `cx`, `SIZE` (sizes built from tokens with `calc()`), `PRESSABLE` and `stateAttr`.
 - `src/components/molecules/`: one file per molecule, all exported from `index.js`, built only from atoms.
 - `src/components/icons/`: generated icon components (`<PlayIcon size={16} />`) and `ICONS` (Figma name → component). TEMPORARY: these are Apple SF Symbols; replace them before the site is public.
@@ -45,7 +45,7 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
    - Every interactive component takes a `state` prop (`hover | pressed | focus | disabled`, rendered as `data-state`) that forces a state. It's for docs only.
    - `PRESSABLE` in `atoms/shared.js` bundles the overlay, focus ring, transition and cursors.
    - If Figma shows a hover or pressed look for a part that doesn't fit these rules, ask instead of inventing a style.
-6. **Motion.** Use `transition-state`, or `var(--duration-fast)` / `var(--duration-base)` with `var(--ease-out)`. Animate only color, background, border, outline, shadow and transform, never layout (width, height, margin, padding, top/left). Transitions are switched off under `prefers-reduced-motion`; keep it that way.
+6. **Motion.** Use `transition-state`, or `var(--duration-fast)` / `var(--duration-base)` with `var(--ease-out)`. Animate only color, background, border, outline, shadow and transform, never layout (width, height, margin, padding, top/left). One exception: expand / collapse uses the `collapsible` utility (height via grid rows, plus opacity, `--duration-base`). Transitions are switched off under `prefers-reduced-motion`; keep it that way.
 7. **Labels inside controls get `trim-letter-spacing`**, so their width matches Figma. CSS adds letter spacing after the last character; Figma doesn't.
 8. **Each level is built only from the level below:** molecules from atoms, organisms from molecules and atoms, the site from organisms. Never copy or restyle a component inside another; if one needs a change to fit, ask, and change it at its own level (in code and Figma).
 9. **After each step, add a release-notes entry to the top of `NOTES.md`** in the same format (Summary / Added or Changed / Differences from Figma / How to use), and commit.

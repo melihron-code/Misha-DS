@@ -8,7 +8,8 @@
    - focus-ring: visible keyboard focus in border/focus. data-state="focus" forces it. */
 
 @utility transition-state {
-  transition-property: color, background-color, border-color, outline-color, box-shadow, transform;
+  /* rotate / scale / translate: Tailwind 4 sets these as their own properties, not transform. */
+  transition-property: color, background-color, border-color, outline-color, box-shadow, transform, rotate, scale, translate;
   transition-duration: var(--duration-fast);
   transition-timing-function: var(--ease-out);
 }
@@ -77,5 +78,41 @@
     *::after {
       transition: none !important;
     }
+  }
+}
+
+/* Scrolling panels (the /ds-dev/ sidebar): always keep the scrollbar's space, so the panel
+   keeps one width whether it scrolls or not (opening or closing a submenu shifts nothing). */
+@utility scrollbar-stable {
+  scrollbar-gutter: stable;
+}
+
+/* Expand / collapse (the /ds-dev/ sidebar submenus): height and opacity animate together with
+   the motion tokens (duration/base, ease-out); off under prefers-reduced-motion like every
+   transition. Put data-open on it when open. Its one child clips the content while it grows;
+   the child's padding (cancelled by a negative margin) leaves room for focus rings. */
+@utility collapsible {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition-property: grid-template-rows, opacity, visibility;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-out);
+
+  & > * {
+    min-height: 0;
+    overflow: hidden;
+    margin: calc(var(--indents-2xs) * -1);
+    padding: var(--indents-2xs);
+  }
+  &[data-open] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+  }
+  /* data-slow: closing because another one opened — twice as long (2 × duration/base). */
+  &[data-slow]:not([data-open]) {
+    transition-duration: calc(var(--duration-base) * 2);
   }
 }

@@ -17,8 +17,8 @@ export default function ProjectCard({
       <p className="w-3/5 text-heading-h3 text-text-primary">{nbsp(description)}</p>
       {tags.length > 0 && (
         <ul className="flex flex-wrap gap-indents-3xs" aria-label="Technologies">
-          {tags.map(t => (
-            <li key={t} className="flex">
+          {tags.map((t, i) => (
+            <li key={`${i}-${t}`} className="flex">
               <Tag variant="static" color={tagColor} label={t} />
             </li>
           ))}

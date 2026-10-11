@@ -74,7 +74,6 @@ const TAG = {
     { label: 'control · showIcon', props: { variant: 'control', showIcon: true } },
     { label: 'static · yellow', props: { variant: 'static', color: 'yellow' } },
     { label: 'static · green', props: { variant: 'static', color: 'green' } },
-    { label: 'static · yellow · showIcon', props: { variant: 'static', color: 'yellow', showIcon: true } },
   ],
   columns: STATES_NO_DISABLED,
   controls: [
@@ -214,7 +213,7 @@ const MINI_CHART = {
   controls: [{ prop: 'first', type: 'number', label: 'bar 1 (0–100)' }, { prop: 'second', type: 'number', label: 'bar 2 (0–100)' }],
   initial: { first: 100, second: 58 },
   toProps: p => ({ values: [p.first, p.second] }),
-  narrow: true,
+  width: 'w-1/6', // about Figma's 143px (MetricCard's chart is ~124px); the atom fills its container
 }
 
 const PROGRESS_BAR = {

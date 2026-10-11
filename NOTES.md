@@ -3,6 +3,49 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.4.1 — Step 4 refinements: Tag padding, playground layout, sidebar menu (2026-10-11)
+
+### Summary
+Review round after step 4. Tag got 20px side padding (code and Figma). The playgrounds got their code
+snippets back, control rows, and a column grid on three panels. The /ds-dev/ sidebar got collapsible groups
+with arrows, a fixed width and smooth expand / collapse. Checked in headless Chrome at 1400, 1200, 900, 700,
+480 and 330px window sizes: alignment, baselines, menu behavior, scrolling, no sideways shift.
+
+### Changed
+- **Tag** (code and Figma): `indents/M` (20px) side padding. Figma: both variants and the set hug their
+  content; the 9 tags with a fixed width on the `design` page and in ProjectCard now hug (labels fit).
+- **/ds-dev/ sidebar:**
+  - Atoms and Molecules are collapsible groups. The arrow (down when closed, up when open, the same icon
+    turned 180°) and the title both open and close a group; opening by the title also goes to its page.
+  - Opening a group closes the others, except the active one (holding the current page). A group closed that
+    way collapses in 2 × `duration/base`; opening takes `duration/base`. Height and opacity animate (the new
+    `collapsible` utility); nothing animates under `prefers-reduced-motion`.
+  - After a group opens, the sidebar (not the page) scrolls so the whole group is visible, or its title sits
+    at the top when it's taller than the sidebar; no scroll if it's already visible. On load, the active item
+    is scrolled into view.
+  - The selected fill covers the whole row (title and arrow); the arrow takes the title's light color.
+  - **Sideways shift fixed.** Cause: the sidebar was as wide as its content, so its own scrollbar (appearing
+    when the open submenus didn't fit the window) changed its width from 180 to 195px and moved the centered
+    layout. Now it's a fixed 200px (`indents/M` × 10) with the scrollbar space always reserved
+    (`scrollbar-stable`). The page already reserved its own scrollbar space.
+- **Playgrounds:**
+  - The JSX snippet is back under the preview, styled like the CSS variables on Colors and Spacing
+    (`text/grotesk`, `text/secondary`); click to copy. Off switches, empty fields and props of disabled
+    controls are left out.
+  - Controls can come in rows (rows left-aligned with each other); the title shares the first row's value
+    baseline.
+  - Project card, Profile card and Experience item put their controls on a column grid (4, 3, 3 equal
+    columns), so field edges line up across rows; Experience item's grid fills the width after the title.
+    Under a 1280px window (Tailwind `xl`) they use 2 columns.
+  - Project card: 4 separate tag fields; Team card: one row; Campaign card and Tag: fewer grid rows.
+- **Uses lines:** `text/grotesk-bold` in `status/info` (purple/500).
+- **MiniChart docs:** shown at 1/6 of the column (~138px, Figma 143px) instead of half.
+- **`transition-state`** also animates `rotate` / `scale` / `translate` (Tailwind 4 sets them as their own properties).
+- **`npm run check:classes`** now understands class names with `@`.
+
+### Differences from Figma
+- Still to do by hand in Figma: the green Tag variant (`variant=static, color=green`); see v0.4.0.
+
 ## v0.4.0 — Step 4: Molecules (2026-10-11)
 
 ### Summary

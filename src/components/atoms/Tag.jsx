@@ -5,12 +5,12 @@ import { cx, PRESSABLE, SIZE, stateAttr } from './shared'
 // control is interactive (a button; with showIcon it reads "Remove <label>");
 // static is display-only, in color yellow (surface/tag-yellow-bright, yellow/200) or green
 // (surface/tag-green, green/100); control is always neutral (Figma: color=neutral). 32px high,
-// like the controls. No disabled state.
+// like the controls, with indents/M (20px) side padding. No disabled state.
 const BG = { control: 'bg-surface-control', yellow: 'bg-surface-tag-yellow-bright', green: 'bg-surface-tag-green' }
 
 export default function Tag({ variant = 'control', color = 'yellow', label = 'React', showIcon = false, state, onClick, className, style, ...rest }) {
   const classes = cx(
-    'inline-flex shrink-0 items-center whitespace-nowrap rounded-radius-s px-indents-xs text-text-pixel text-text-primary',
+    'inline-flex shrink-0 items-center whitespace-nowrap rounded-radius-s px-indents-m text-text-pixel text-text-primary',
     BG[variant === 'static' ? color : 'control'],
     className,
   )

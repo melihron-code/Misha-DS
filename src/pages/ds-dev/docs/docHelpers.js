@@ -6,6 +6,8 @@
 // controls: the playground's controls (shown beside its title); `enabled(props)` disables one when false;
 //           `double` makes a text field twice as wide; `initial` its starting props; `toProps` maps them.
 // bind:     wires the playground so the component really responds (toggles, selections, typing).
+// controlGrid: a column count (3 or 4): the playground controls sit on equal columns, edges lined up;
+//           a control spans 1 column (`double`: 2, or `span`). controlFill: the grid fills the width after the title.
 // width:    a width class for the grid and the preview (components that fill their container);
 //           wide / narrow are the older shorthands (full, half).
 //
