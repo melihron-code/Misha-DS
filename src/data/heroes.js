@@ -44,3 +44,35 @@ export const teamsHero = {
   ],
   team: 'overview',
 }
+
+// The all-teams screens share one hero; each page selects its own view.
+export const employeesHero = { ...teamsHero, actions: [{ label: 'Add employee' }], team: 'employees' }
+
+// HeroCard "no bg" for one team (all-teams-one, all-teams-campaigns): the title is the team's name.
+const teamViews = [
+  { value: 'team', label: 'Team' },
+  { value: 'campaigns', label: 'Campaigns' },
+  { value: 'access', label: 'Access' },
+]
+export const teamHero = name => ({
+  title: name,
+  subtitle: nbsp('Detailed team overview and performance metrics'),
+  actions: [],
+  teams: teamViews,
+  team: 'team',
+})
+export const teamCampaignsHero = name => ({ ...teamHero(name), actions: [{ label: 'Add campaign' }], team: 'campaigns' })
+
+// HeroCard "no bg" on all-teams-templates.
+export const templatesHero = {
+  title: 'All templates',
+  subtitle: nbsp('Here you’ll find all templates'),
+  actions: [{ label: 'Add new template' }],
+  teams: [
+    { value: 'all', label: 'All' },
+    { value: 'automations', label: 'Automations' },
+    { value: 'documents', label: 'Documents' },
+    { value: 'access', label: 'Access' },
+  ],
+  team: 'all',
+}

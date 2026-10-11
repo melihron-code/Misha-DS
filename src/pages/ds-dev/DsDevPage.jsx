@@ -137,6 +137,7 @@ export default function DsDevPage() {
 
   return (
     <div className="flex min-h-screen">
+      <title>Misha DS</title>
       <div className="flex-1 bg-surface-card" aria-hidden="true" />
       <aside
         ref={asideRef}

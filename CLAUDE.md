@@ -6,7 +6,7 @@ React version of the Figma design system (file `dPIEJfY3Ma8tiCOcO9LXJO`), built 
 Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/vite`), react-router-dom. No TypeScript, no UI libraries. Windows / PowerShell.
 
 ## Commands
-- `npm run dev`: dev server at http://localhost:5173 (`/` → `/ds-dev/`)
+- `npm run dev`: dev server at http://localhost:5173 (the site at `/`, the design system docs at `/ds-dev/`)
 - `npm run build` / `npm run lint`
 - `npm run tokens`: regenerates `src/styles/tokens.css` from `src/ds/foundations.js`
 - `npm run icons`: regenerates `src/components/icons/` from `scripts/icons.figma.json` (the SVG export from Figma)
@@ -19,10 +19,12 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 - `src/components/atoms/`: one file per atom, all exported from `index.js`. `shared.js` holds `cx`, `SIZE` (sizes built from tokens with `calc()`), `PRESSABLE` and `stateAttr`.
 - `src/components/molecules/`: one file per molecule, all exported from `index.js`, built only from atoms.
 - `src/components/organisms/`: one file per organism, all exported from `index.js`, built from molecules and atoms (and other organisms: Header nests TopMenu and SubHeader).
-- `src/data/`: sample content, one file per topic (navigation, stages, pipeline, tasks, heroes). Components never import it; pages and docs pass it in as props.
+- `src/data/`: sample content, one file per topic (navigation, stages, people, pipeline, teams, tasks, heroes). Components never import it; pages and docs pass it in as props.
 - `src/assets/hero/`: the hero images (JPEG, the backdrop at 2× the page width).
 - `src/components/icons/`: generated icon components (`<PlayIcon size={16} />`) and `ICONS` (Figma name → component). TEMPORARY: these are Apple SF Symbols; replace them before the site is public.
 - `src/pages/ds-dev/`: the /ds-dev/ page. Foundations are at `/ds-dev/<name>`; atoms, molecules and organisms are scrolling pages at `/ds-dev/atoms/<atom>`, `/ds-dev/molecules/<molecule>` and `/ds-dev/organisms/<organism>`. Each component's docs (grid, playground, snippet, "Uses") are configured in `atoms/atomDocs.jsx`, `molecules/moleculeDocs.jsx` or `organisms/organismDocs.jsx` (format in `docs/docHelpers.js`), so add an entry there for every new component. `docs/` holds the shared page, overview and doc renderer.
+- `src/pages/` (except `ds-dev/`): the site, one file per page (`HomePage.jsx`…); routes in `src/App.jsx`. `docs/sitemap.md` is the site map: every page, route, Figma screen and connection; keep it up to date.
+- `src/site/`: what all site pages share: `SiteLayout.jsx` (the page root with `@container/page`, client-side links, scroll to top), `SiteHeader.jsx` (`SiteHeader` / `SiteHero`: the top of every page, the TopMenu built in one place), `site.js` (`paths` for every route, `NO_ACTION`), `PagePlaceholder.jsx` (a page not built yet).
 - `src/lib/nbsp.js`: `nbsp(text)` binds short words to the next word.
 - `NOTES.md`: release notes and the Figma rename reference.
 
@@ -53,11 +55,12 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 8. **Each level is built only from the level below:** molecules from atoms, organisms from molecules and atoms, the site from organisms. Never copy or restyle a component inside another; if one needs a change to fit, ask, and change it at its own level (in code and Figma).
 9. **Responsive: breakpoints and widths are tokens.**
    - Breakpoints (`foundations.js` → `breakpoints`): mobile < 768, tablet 768–1199, desktop ≥ 1200. Tailwind's defaults are switched off; use `tablet:`, `desktop:`, `max-tablet:`, `max-desktop:` for the window and `@max-tablet/page:`, `@max-desktop/page:` inside components.
-   - Components respond to the **page container**, not the window: a container named `page` (`@container/page`). The site's page root must have `@container/page` (step 6); the /ds-dev/ previews put one around each organism (`docs/PageFrame.jsx`), which is how the Desktop / Tablet / Mobile switcher works. h1, h2 and description shrink in a mobile page (mobile text styles in `foundations.js`).
+   - Components respond to the **page container**, not the window: a container named `page` (`@container/page`). The site's page root has it (`src/site/SiteLayout.jsx`); the /ds-dev/ previews put one around each organism (`docs/PageFrame.jsx`), which is how the Desktop / Tablet / Mobile switcher works. h1, h2 and description shrink in a mobile page (mobile text styles in `foundations.js`).
    - Max widths: `size/page` (1440) for the page, `size/base-with` (830) for the content column; organisms fill what they're given up to their max (HeroCard: 830).
    - Side padding: `indents/M` at every breakpoint, so organisms line up when stacked.
    - CSS can't use variables in media or container conditions, so breakpoints are the one literal (rem) value; everything else stays a token.
-10. **After each step, add a release-notes entry to the top of `NOTES.md`** in the same format (Summary / Added or Changed / Differences from Figma / How to use), and commit.
+10. **Site navigation.** Links use `paths` from `src/site/site.js`; ids come from `src/data/`. A button or link with no destination yet gets the `NO_ACTION` tooltip ("No action for now", the `Tooltip` atom), never `href="#"` or a guessed page. When a connection changes, update `docs/sitemap.md`.
+11. **After each step, add a release-notes entry to the top of `NOTES.md`** in the same format (Summary / Added or Changed / Differences from Figma / How to use), and commit.
 
 ## Figma notes
 - Akkurat LL Cyr TT and Pixform are custom fonts. They're installed locally and in `src/assets/fonts/`, but the Figma MCP (`use_figma`) can't load them, so text edits on those layers need the local plugin in `figma-plugin-text-styles/`.

@@ -20,6 +20,7 @@ import {
 } from '../../../components/atoms'
 import { ONE, STATES, STATES_NO_DISABLED, select, text, toggle, withAbout } from '../docs/docHelpers'
 import IconGallery from './IconGallery'
+import TooltipOnButton from './TooltipOnButton'
 
 // Docs for each atom (the format is described in ../docs/docHelpers.js).
 // Disabled in the playground unless the node variant is chosen (the sublabel exists only there).
@@ -263,6 +264,18 @@ const TEXT_LINK = {
   initial: { children: 'Profile', current: false },
 }
 
+const TOOLTIP = {
+  name: 'Tooltip',
+  label: 'Tooltip',
+  Component: TooltipOnButton,
+  about: 'A short note under a control, shown on hover and keyboard focus; the site puts "No action for now" on buttons and links that don’t lead anywhere yet. Wraps one focusable element (here a Button). align: which edges line up, so it stays inside the page. New in v0.6.0, not in Figma yet.',
+  rows: ['start', 'center', 'end'].map(a => ({ label: `align ${a}`, props: { align: a, open: true, text: 'No action for now', children: 'Generate report' } })),
+  columns: ONE,
+  controls: [select('align', ['start', 'center', 'end']), text('text')],
+  initial: { align: 'center', text: 'No action for now', children: 'Generate report' },
+  defaults: { align: 'center' },
+}
+
 const LOGO = {
   name: 'Logo',
   label: 'Logo',
@@ -295,6 +308,7 @@ export const ATOM_PAGES = withAbout([
   { slug: 'nav-tab', label: 'Nav tab', parts: [NAV_TAB] },
   { slug: 'text-link', label: 'Text link', parts: [TEXT_LINK] },
   { slug: 'logo', label: 'Logo', parts: [LOGO] },
+  { slug: 'tooltip', label: 'Tooltip', parts: [TOOLTIP] },
   { slug: 'avatar', label: 'Avatar', about: 'Several round photos overlapping, or one on its own.', parts: [AVATAR_GROUP, AVATAR] },
   { slug: 'document-row', label: 'Document row', parts: [DOCUMENT_ROW] },
 ])

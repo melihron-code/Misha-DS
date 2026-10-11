@@ -3,6 +3,64 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.0 — Step 6, Part 1: Site map and skeleton (2026-10-11)
+
+### Summary
+The site's skeleton: every page of the Figma `design` section has a route, a page file and the real top of the
+page (TopMenu, SubHeader, progress or HeroSection) built from one shared place. All navigation from the prototype
+works, plus Back, the breadcrumbs, the logo and the success page's "Homepage". The page content is a placeholder
+for now: the page name, its Figma screen(s), what it will contain, where its elements lead (working links), and
+the elements with no action yet. Every button or link that doesn't lead anywhere shows the tooltip "No action
+for now" on hover and keyboard focus. The site map is in **[docs/sitemap.md](docs/sitemap.md)**: pages, routes,
+screens, organisms and the full connection list. Checked in headless Chrome: every route, the 404 page, client-side
+navigation (no reloads), scroll to top, tab titles, Back and breadcrumbs, tooltips by mouse and keyboard, no
+sideways scroll at 1440 and 375, /ds-dev/ unchanged.
+
+### Added
+- **Pages and routes** (`src/pages/`, `src/App.jsx`):
+  - `/` All teams (home), `/employees`, `/teams/:teamId`, `/teams/:teamId/campaigns`, `/templates`
+  - `/campaigns/:campaignId`, `/campaigns/new`, `/campaigns/new/job-description`, `/campaigns/new/published`
+  - `/people/:personId` (Figma: both `candidate` screens and `candidate-interviewed`: one template, the content
+    depends on the stage), `/people/:personId/negotiate`
+  - `?team=` / `?campaign=` keep where a page was opened from, for Back and the breadcrumbs.
+  - The redirect from `/` to `/ds-dev/` is gone; /ds-dev/ stays at its URL.
+- **Shared layout** (`src/site/`): `SiteLayout` (the page root: `@container/page`, up to `size/page`, client-side
+  links, scroll to top on every page change), `SiteHeader` / `SiteHero` (the top of every page; one TopMenu, its
+  current tab from the URL), `site.js` (`paths` for every route, `NO_ACTION`), `PagePlaceholder`. Each page sets
+  its tab title ("Page · Hired & Wired"; React 19 `<title>`).
+- **Navigation:** 14 prototype connections (41 elements) wired; Back to the parent page; breadcrumbs per page;
+  logo and "Homepage" to `/`. Four inferred ones (same control as a connected one, listed in the site map):
+  the All teams tab, the hero toggles Overview and Team back, Negotiate on the interview content.
+- **Overlay:** the "Head line / Generate" popover on Job description (placeholder; opens from Preferred qualifications).
+- **404:** a "Page not found" page for unknown URLs and unknown ids (`/teams/nope`).
+- **Atom `Tooltip`** (code first, not in Figma): wraps one focusable element; accent/primary with text/on-accent,
+  text/grotesk, radius/S; shown on hover and keyboard focus (`aria-describedby`); `align` start | center | end.
+- **Data:** `people.js` (candidates and employees with unique ids), `teams.js` (teams and campaigns); page heroes
+  in `heroes.js`; `pipeline.js` now built from `people.js`.
+
+### Changed
+- **SubHeader:** `showBack` (Figma "Show back"; off on the home page); `saveTooltip`, `deployTooltip`.
+- **TopMenu:** `reportTooltip`; each link can have a `tooltip`, and a link without `href` is a button.
+- **HeroCard:** each action can have a `tooltip`. **ToggleButtonGroup:** each option can have a `tooltip`.
+- **TextLink:** without `href` it's a button (was a link to `#`).
+- **Data:** the TopMenu tabs link to `/` and `/templates`; the user links (Profile, Log out) have no `href` yet.
+- **Tab title:** set per page (removed from `index.html`; /ds-dev/ keeps "Misha DS").
+- **CLAUDE.md:** the site files, rule 10 (site navigation); the page root rule now points at `SiteLayout`.
+
+### Open questions
+See [docs/sitemap.md → Open questions](docs/sitemap.md#open-questions). In short:
+- **Missing connections and pages:** Report, Access, Profile, Log out, Generate report, the template views and
+  rows, Add team / employee / template, and the candidate actions all show "No action for now". Should any of
+  them get a page?
+- **Employees list:** its ProfileCards have no connection; should they open the person's page?
+- **Teams:** six identical "Engineering Team" cards in Figma; five sample names added, only Engineering has
+  members and campaigns.
+- **Popover:** how it closes, and what Generate does.
+- **Missing organisms** (for Part 2): filter bar, Notification with avatars, achievements, next level /
+  prediction, assessment results, offer form, skill input with tags, the popover, a title-only page header, the
+  content section with a heading, and a full-height HeroSection for the success page.
+- **Figma:** the Tooltip atom isn't in Figma yet; stray layers `Ellipse 12` and `Frame 1` in the design section.
+
 ## v0.5.1 — Step 5 refinements: TopMenu from Figma, organism playgrounds (2026-10-11)
 
 ### Summary
@@ -561,6 +619,7 @@ The library components still exist in their source library; this file no longer 
 | (new, v0.5.0, code first) | Logo | atoms |
 | (new, v0.5.0, code first) | Breadcrumbs | molecules |
 | (new, v0.5.0, code first) | StageProgress | molecules |
+| (new, v0.6.0, code first) | Tooltip | atoms |
 | canban | KanbanBoard | organisms (single component, no props) |
 | indents | SpacingScale | styles (docs only, 0 instances) |
 
@@ -622,6 +681,7 @@ The library components still exist in their source library; this file no longer 
 | AttemptCard.attempt | Default → `first`, Variant2 → `next` |
 | SubHeader.variant | Default → `default`, builider → `builder` |
 | TopMenu.activeTab | all → `all-teams`, templates → `templates`, off → `none` (removed in v0.5.0, see Properties) |
+| SubHeader | Show back → `showBack` (v0.6.0) |
 | TaskItem.state | Default → `default`, Variant2 → `active` |
 | HeroCard.variant | Default → `default`, Variant2 → `image`; (2026-10-11) renamed in Figma to with bg → `with-bg`, no bg → `no-bg` |
 | Button.variant | (v0.5.0, code first) + `on-color-outlined`, `accent` |

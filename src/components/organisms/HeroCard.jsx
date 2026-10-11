@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import photo from '../../assets/hero/photo.jpg'
-import { Button, Dropdown, ToggleButtonGroup } from '../atoms'
+import { Button, Dropdown, ToggleButtonGroup, Tooltip } from '../atoms'
 import { cx } from '../atoms/shared'
 import { nbsp } from '../../lib/nbsp'
 
@@ -12,6 +12,7 @@ import { nbsp } from '../../lib/nbsp'
 //   Dropdown to pick a value). Actions are Button on-color; the subtitle and labels are text/accent.
 // no-bg: no fill (it sits on HeroSection's backdrop); actions are Button primary-sm; the team switcher
 //   (ToggleButtonGroup) sits at the bottom, indents/M × 8 under the content (Figma: 160px).
+// An action or team option with `tooltip` shows it (e.g. "No action for now").
 // Fills its container up to size/base-with (830px), centered. Responsive (container "page"): in a mobile page the gaps shrink, the minimum height goes, the tag groups
 // stack; buttons and tags wrap at every size.
 const MIN_HEIGHT = 'calc(var(--indents-m) * 24)' // 480px
@@ -91,9 +92,11 @@ export default function HeroCard({
       {showActions && actions.length > 0 && (
         <div className="flex flex-wrap justify-center gap-indents-3xs">
           {actions.map(a => (
-            <Button key={a.label} variant={ACTION_VARIANT[variant]} href={a.href} onClick={a.onClick}>
-              {a.label}
-            </Button>
+            <Tooltip key={a.label} text={a.tooltip}>
+              <Button variant={ACTION_VARIANT[variant]} href={a.href} onClick={a.onClick}>
+                {a.label}
+              </Button>
+            </Tooltip>
           ))}
         </div>
       )}

@@ -2,33 +2,27 @@
 
 // TopMenu tabs. A page marks its own tab with `selected: true` (see tabsFor).
 export const topMenuTabs = [
-  { id: 'all-teams', label: 'All teams', href: '/teams' },
+  { id: 'all-teams', label: 'All teams', href: '/' },
   { id: 'templates', label: 'All templates', href: '/templates' },
 ]
 
 // The tabs with one of them selected (the current page); an unknown id selects none.
 export const tabsFor = id => topMenuTabs.map(t => ({ ...t, selected: t.id === id }))
 
-// TopMenu's links on the right.
-export const userLinks = [
-  { label: 'Profile', href: '/profile' },
-  { label: 'Log out', href: '/logout' },
-]
+// TopMenu's links on the right. No pages for them yet, so no `href` (they're buttons; the site adds a tooltip).
+export const userLinks = [{ label: 'Profile' }, { label: 'Log out' }]
 
-// SubHeader breadcrumbs, the last one is the current page.
+// Sample breadcrumbs for the docs (the site builds its own per page), the last one is the current page.
 export const breadcrumbs = {
   candidate: [
     { label: 'Home', href: '/' },
-    { label: 'All teams', href: '/teams' },
-    { label: 'Sarah Mitchell', href: '/candidates/sarah-mitchell' },
+    { label: 'Forward Architect', href: '/campaigns/forward-architect' },
+    { label: 'Sarah Mitchell', href: '/people/sarah-johnson' },
   ],
   campaign: [
     { label: 'Home', href: '/' },
-    { label: 'Campaigns', href: '/campaigns' },
-    { label: 'Senior Frontend Developer', href: '/campaigns/senior-frontend' },
+    { label: 'Engineering Team', href: '/teams/engineering' },
+    { label: 'Forward Architect', href: '/campaigns/forward-architect' },
   ],
-  teams: [
-    { label: 'Home', href: '/' },
-    { label: 'All teams', href: '/teams' },
-  ],
+  teams: [{ label: 'Home', href: '/' }],
 }
