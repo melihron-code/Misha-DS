@@ -1,7 +1,7 @@
 # Misha DS
 
-React version of the Figma design system (file `dPIEJfY3Ma8tiCOcO9LXJO`), built in 5 steps:
-1 Figma cleanup ✓ · 2 styles and variables ✓ · 3 atoms ✓ · 4 molecules · 5 site.
+React version of the Figma design system (file `dPIEJfY3Ma8tiCOcO9LXJO`), built in 6 steps:
+1 Figma cleanup ✓ · 2 styles and variables ✓ · 3 atoms ✓ · 4 molecules · 5 organisms · 6 site.
 
 Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/vite`), react-router-dom. No TypeScript, no UI libraries. Windows / PowerShell.
 
