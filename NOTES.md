@@ -3,6 +3,18 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.8 update — Prototype connections updated (2026-10-11)
+
+All prototype connections re-read from Figma and compared with docs/sitemap.md: two screens changed, the other 17
+connection groups are the same.
+- **all-teams-campaigns:** "Add campaign" lost its connection (it led to hiring-campaign-add). On the Team campaigns
+  page (built) it now has no action: the "No action for now" tooltip and the not-allowed cursor.
+- **success:** the button is now "View campaign" → hiring-campaign-add (`/campaigns/new`); it was "Homepage" → All
+  teams. Campaign published isn't built yet: the site map has the new connection; its placeholder updates when it's
+  built.
+- New campaign is now reached from the success page, without `?team=`, so its Back leads to the Homepage.
+- docs/sitemap.md: the connection table and the no-action list updated.
+
 ## v0.6.9 — Step 6, Part 2: Job description page (2026-10-11)
 
 ### Summary

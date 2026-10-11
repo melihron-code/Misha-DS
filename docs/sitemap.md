@@ -78,7 +78,6 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 | all-teams-one | Hero toggle "Campaigns" | all-teams-campaigns | `/teams/:teamId/campaigns` |
 | all-teams-employees | ProfileCard long ×10 (added 2026-10-11) | candidate | `/people/:personId?from=employees` |
 | all-teams-one | ProfileCard long ×10 (team members) | candidate | `/people/:personId?team=` |
-| all-teams-campaigns | Hero button "Add campaign" | hiring-campaign-add | `/campaigns/new?team=` |
 | all-teams-campaigns | CampaignCard ×3 (Forward Architect, District Integration Engineer, Product Tactics Manager) | hiring-campaign | `/campaigns/:campaignId` |
 | hiring-campaign | Kanban cards: Applied ×4, Screening ×6 | candidate | `/people/:personId?campaign=` |
 | hiring-campaign | Kanban cards: Interview ×3 | candidate-interviewed | `/people/:personId?campaign=` |
@@ -87,7 +86,7 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 | hiring-campaign-add | TaskItem button "Job description" | hiring-campaign-wizard | `/campaigns/new/job-description` |
 | hiring-campaign-wizard | TextArea "Preferred qualifications" | hiring-campaign-wizard-viewport | popover on the same page (Figma: a separate screen) |
 | hiring-campaign-wizard | Button "Publish" | success | `/campaigns/new/published` |
-| success | Button "Homepage" (added 2026-10-11) | all-teams | `/teams` |
+| success | Button "View campaign" (changed 2026-10-11; was "Homepage" → all-teams) | hiring-campaign-add | `/campaigns/new` |
 
 ### Agreed (not in the prototype)
 
@@ -117,7 +116,8 @@ colors unchanged).
 - **Every page:** Generate report, Profile, Log out.
 - **All teams:** Add team, hero toggle "Report".
 - **Employees:** Add employee, hero toggle "Report", the "Choose curator" dropdown.
-- **Team / Team campaigns:** hero toggle "Access", "More info" on the campaign cards.
+- **Team / Team campaigns:** hero toggle "Access", "More info" on the campaign cards, "Add campaign" (its prototype
+  link was removed on 2026-10-11).
 - **All templates:** Add new template, Edit (the toggle filters the list, decided 2026-10-11; the rows have no link).
 - **Campaign:** Finish, Cancel.
 - **New campaign:** Review, Generate.
