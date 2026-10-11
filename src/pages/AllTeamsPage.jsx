@@ -1,24 +1,31 @@
+import { MetricGrid, TeamGrid } from '../components/organisms'
 import { teamsHero } from '../data/heroes'
+import { teamMetrics } from '../data/metrics'
 import { teams } from '../data/teams'
-import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHero } from '../site/SiteHeader'
-import { ALL_TEAMS_CRUMB, HOME_CRUMB, paths } from '../site/site'
+import { ALL_TEAMS_CRUMB, HOME_CRUMB, SITE_NAME, paths } from '../site/site'
 
-// /teams — Figma: all-teams. No Back (Figma: SubHeader showBack off).
+// /teams — Figma: all-teams (6114:23930). HeroSection (no Back, as in Figma), then the 830px content column
+// (size/base-with) with the metrics and the teams, indents/2XS apart; indents/XS under the hero and
+// indents/XXL at the bottom (Figma: the screen's gap and bottom padding), indents/M at the sides.
+// Each team card opens its team page.
+const linkedTeams = teams.map(t => ({ ...t, href: paths.team(t.id) }))
+
 export default function AllTeamsPage() {
   return (
     <>
+      <title>{`All teams · ${SITE_NAME}`}</title>
       <SiteHero
         subHeader={{ showBack: false, breadcrumbs: [HOME_CRUMB, ALL_TEAMS_CRUMB] }}
         hero={teamsHero}
         views={{ overview: paths.allTeams, employees: paths.employees }}
       />
-      <PagePlaceholder
-        name="All teams"
-        screens={['all-teams']}
-        contains={['HeroSection: Header (no Back) + hero with Overview / Employees / Report', 'MetricCard ×4', 'TeamCard ×6']}
-        links={teams.map(t => ({ element: 'TeamCard', label: t.name, href: paths.team(t.id) }))}
-      />
+      <main className="flex w-full justify-center px-indents-m pt-indents-xs pb-indents-xxl">
+        <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
+          <MetricGrid metrics={teamMetrics} label="Team metrics" />
+          <TeamGrid teams={linkedTeams} />
+        </div>
+      </main>
     </>
   )
 }

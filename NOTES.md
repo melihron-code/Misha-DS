@@ -3,6 +3,38 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.2 — Homepage, large buttons, full-width backdrop; All teams page in progress (2026-10-11)
+
+### Summary
+The Homepage is built: a HeroSection with the new `homepage` hero (title, subtitle and three large buttons, centered
+as in Figma), no SubHeader. The large Button (`primary-lg`) is now yellow with black text, in code and Figma. On wide
+windows the HeroSection backdrop fills the whole width (e.g. 1920) while the content stays within 1440. The All
+teams page (`/teams`) is built but not yet checked; its own entry comes when it's done.
+
+### Added
+- **HeroCard `homepage`** (Figma: variant "Homepage"): no fill, at least 480px, the content centered; actions are
+  Button primary-lg, `indents/XS` apart; no team switcher. In the docs (Hero card, Hero section).
+- **Homepage** (`/`): `SiteHero` with the `homepage` hero; All teams → `/teams`, All templates → `/templates`, New
+  campaign → `/campaigns/new/job-description`.
+- **All teams page, in progress** (`/teams`): `MetricGrid` and `TeamGrid` (new organisms, in the docs), MetricCard
+  `color` (red | pink | violet | yellow | green), metrics in `data/metrics.js`, team card content in `data/teams.js`.
+  Still to do: the checks against Figma, its NOTES entry and the site map status.
+- **Images:** `npm run images` (sharp, a dev dependency) makes WebP versions: the backdrop at 768 / 1440 / 2880
+  (`srcset`, `fetchpriority="high"`, width and height), the avatars at 1× / 2× (width and height 30, lazy).
+
+### Changed
+- **Button primary-lg** (code and Figma): `accent/highlight` (yellow-400) with `text/primary` (black); was
+  `accent/primary` (black) with `text/on-accent`.
+- **Width:** the site's page root spans the window; each section keeps its content within `size/page` (1440),
+  centered. HeroSection: the backdrop spans the full width, the Header and hero sit in an inner 1440 column.
+  Header-only pages: the Header is centered within 1440. CLAUDE.md rule 9 updated.
+- **SiteHero:** no SubHeader when none is given (the Homepage).
+- **check:classes:** escapes parentheses, so `min-h-(--size-hero)` written in a `className` is found.
+
+### Differences from Figma
+- The Homepage has no SubHeader and no selected tab (Figma still shows both; to be fixed in Figma).
+- The TopMenu divider line stops at the 1440 edges on wider windows.
+
 ## v0.6.0 update — Homepage added to the site map (2026-10-11)
 
 A Homepage screen was added in Figma (`Homepage`, node `357:59066`): a HeroSection with three buttons. The site now
@@ -727,7 +759,7 @@ The library components still exist in their source library; this file no longer 
 | TopMenu.activeTab | all → `all-teams`, templates → `templates`, off → `none` (removed in v0.5.0, see Properties) |
 | SubHeader | Show back → `showBack` (v0.6.0) |
 | TaskItem.state | Default → `default`, Variant2 → `active` |
-| HeroCard.variant | Default → `default`, Variant2 → `image`; (2026-10-11) renamed in Figma to with bg → `with-bg`, no bg → `no-bg` |
+| HeroCard.variant | Default → `default`, Variant2 → `image`; (2026-10-11) renamed in Figma to with bg → `with-bg`, no bg → `no-bg`; (2026-10-11) + Homepage → `homepage` |
 | Button.variant | (v0.5.0, code first) + `on-color-outlined`, `accent` |
 | TaskItem.state | `default` = done, `active` = to do (from the screens) |
 | NavTab.selected | on → `true`, off → `false` |

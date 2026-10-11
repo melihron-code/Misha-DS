@@ -14,7 +14,7 @@ added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that,
 
 | Page | Route | Figma screen(s) | File | Top of the page | Content (organisms, molecules; ⚠ = not a component yet) |
 |---|---|---|---|---|---|
-| Homepage | `/` | Homepage | `HomePage.jsx` | HeroSection, SubHeader without Back, no TopMenu tab selected | ⚠ HeroCard variant "Homepage" (title, subtitle, three primary-lg buttons; not in code yet). Nothing below the hero. |
+| Homepage | `/` | Homepage | `HomePage.jsx` | HeroSection without SubHeader (decided 2026-10-11; Figma still shows one), no TopMenu tab selected | HeroCard `homepage` (title, subtitle, three large buttons). Nothing below the hero. **Built** (v0.6.2). |
 | All teams | `/teams` | all-teams | `AllTeamsPage.jsx` | HeroSection, SubHeader without Back | MetricCard ×4, TeamCard ×6 |
 | Employees | `/employees` | all-teams-employees | `EmployeesPage.jsx` | HeroSection | ⚠ filter bar (Dropdowns), ProfileCard long ×10 |
 | Team | `/teams/:teamId` | all-teams-one | `TeamPage.jsx` | HeroSection | ⚠ Notification with Avatars, ProfileCard long ×10 |
@@ -39,8 +39,9 @@ person's pages keep where they were opened from, so Back and the breadcrumbs lea
 
 ## Shared layout
 
-- `src/site/SiteLayout.jsx`: the page root of every site page: the container named `page`, up to `size/page`
-  (1440) wide on `bg/default`; client-side links (the components render `<a href>`, the layout routes the
+- `src/site/SiteLayout.jsx`: the page root of every site page: the container named `page`, as wide as the window,
+  on `bg/default`; each section keeps its content within `size/page` (1440), centered, and only the HeroSection
+  backdrop spans the whole window (e.g. 1920); client-side links (the components render `<a href>`, the layout routes the
   clicks); scroll to the top on every page change. Each page sets its tab title (`<title>`, "Page · Hired & Wired").
 - `src/site/SiteHeader.jsx`: the top of every page, from one place. `SiteHeader` (Header) or `SiteHero`
   (HeroSection: the Homepage and the all-teams family). The TopMenu is the same everywhere: the logo leads to the
@@ -126,6 +127,5 @@ Employees ProfileCards open the person's page (prototype updated); the sample te
    "next level / prediction" block, assessment results, offer form and prediction, skill input with tags,
    the popover, the page title without a hero, and the white content section with a heading that most pages use.
 4. **Stray layers** in the `design` section: `Ellipse 12` and `Frame 1` ("asdasd").
-5. **Homepage hero:** Figma's new HeroCard variant "Homepage" (three primary-lg buttons, no team switcher) isn't in
-   code; it's needed when the Homepage is built. In Figma the Homepage's TopMenu still shows "All teams" selected
-   (a mistake; the code selects no tab there; to be fixed in Figma).
+5. **Homepage in Figma:** the TopMenu still shows "All teams" selected and the SubHeader is still there; the code
+   has neither (to be fixed in Figma).

@@ -1,9 +1,11 @@
-import { Header, HeroCard, HeroSection, KanbanBoard, SubHeader, TaskItem, TopMenu } from '../../../components/organisms'
+import { Header, HeroCard, HeroSection, KanbanBoard, MetricGrid, SubHeader, TaskItem, TeamGrid, TopMenu } from '../../../components/organisms'
 import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
-import { candidateHero, teamsHero } from '../../../data/heroes'
+import { candidateHero, homeHero, teamsHero } from '../../../data/heroes'
 import { pipeline } from '../../../data/pipeline'
 import { careerStages } from '../../../data/stages'
 import { campaignTasks } from '../../../data/tasks'
+import { teamMetrics } from '../../../data/metrics'
+import { teams } from '../../../data/teams'
 import { ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
 
 // Docs for each organism (the format is described in ../docs/docHelpers.js). Organisms are shown in a
@@ -33,6 +35,8 @@ const U = {
   toggleGroup: { slug: 'tabs', label: 'ToggleButtonGroup' },
   breadcrumbs: { group: 'molecules', slug: 'breadcrumbs', label: 'Breadcrumbs' },
   profileCard: { group: 'molecules', slug: 'profile-card', label: 'ProfileCard' },
+  metricCard: { group: 'molecules', slug: 'metric-card', label: 'MetricCard' },
+  teamCard: { group: 'molecules', slug: 'team-card', label: 'TeamCard' },
   stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
   topMenu: { group: 'organisms', slug: 'top-menu', label: 'TopMenu' },
   subHeader: { group: 'organisms', slug: 'sub-header', label: 'SubHeader' },
@@ -94,8 +98,8 @@ const HEADER = {
 }
 
 // The all-teams pages (backdrop, no-bg hero) and the candidate pages (with-bg hero).
-const HERO_TAB = { 'no-bg': 'all-teams', 'with-bg': 'none' }
-const HERO_CONTENT = { 'no-bg': teamsHero, 'with-bg': candidateHero }
+const HERO_TAB = { 'no-bg': 'all-teams', 'with-bg': 'none', homepage: 'none' }
+const HERO_CONTENT = { 'no-bg': teamsHero, 'with-bg': candidateHero, homepage: homeHero }
 
 const HERO_SECTION = {
   name: 'HeroSection',
@@ -105,9 +109,10 @@ const HERO_SECTION = {
   rows: [
     { label: 'showBackground · no-bg hero', props: { header: header('all-teams'), hero: teamsHero, showProgress: false } },
     { label: 'showBackground false · with-bg hero', props: { showBackground: false, heroVariant: 'with-bg', header: header('none'), hero: candidateHero } },
+    { label: 'showBackground · homepage hero', props: { heroVariant: 'homepage', header: { ...header('none'), subHeader: { showBack: false, breadcrumbs: [{ label: 'Home', href: '/' }] } }, hero: homeHero, showProgress: false } },
   ],
   columns: ONE,
-  controls: [toggle('showBackground'), select('heroVariant', ['no-bg', 'with-bg']), toggle('showActions'), toggle('showSubHeader'), toggle('showProgress')],
+  controls: [toggle('showBackground'), select('heroVariant', ['no-bg', 'with-bg', 'homepage']), toggle('showActions'), toggle('showSubHeader'), toggle('showProgress')],
   initial: { showBackground: true, heroVariant: 'no-bg', showActions: true, showSubHeader: true, showProgress: false },
   toProps: p => ({ ...p, header: header(HERO_TAB[p.heroVariant]), hero: HERO_CONTENT[p.heroVariant] }),
   defaults: { showBackground: true, heroVariant: 'no-bg', showActions: true, showSubHeader: true, showProgress: true },
@@ -119,13 +124,14 @@ const HERO_CARD = {
   name: 'HeroCard',
   label: 'Hero card',
   Component: HeroCard,
-  about: 'The hero: title (the page’s h1), subtitle and actions. with-bg: the yellow photo card with editable tags ("Add" adds a dropdown); no-bg: transparent, with the team switcher, for HeroSection’s backdrop.',
+  about: 'The hero: title (the page’s h1), subtitle and actions. with-bg: the yellow photo card with editable tags ("Add" adds a dropdown); no-bg: transparent, with the team switcher, for HeroSection’s backdrop; homepage: transparent, the content centered, large buttons (the Homepage).',
   rows: [
     { label: 'with-bg', props: { variant: 'with-bg', ...candidateHero } },
     { label: 'no-bg', props: { variant: 'no-bg', ...teamsHero } },
+    { label: 'homepage', props: { variant: 'homepage', ...homeHero } },
   ],
   columns: ONE,
-  controls: [select('variant', ['with-bg', 'no-bg']), toggle('showActions'), text('title'), text('subtitle')],
+  controls: [select('variant', ['with-bg', 'no-bg', 'homepage']), toggle('showActions'), text('title'), text('subtitle')],
   initial: { variant: 'with-bg', showActions: true, title: candidateHero.title, subtitle: candidateHero.subtitle },
   toProps: p => ({ ...HERO_CONTENT[p.variant], ...p }),
   bind: (p, set) => (p.variant === 'no-bg' ? { onTeamChange: team => set({ ...p, team }) } : {}),
@@ -146,6 +152,36 @@ const KANBAN_BOARD = {
   toProps: p => ({ ...p, columns: pipeline }),
   defaults: { title: 'Pipeline' },
   snippetNames: { columns: 'pipeline' },
+  frame: true,
+}
+
+const METRIC_GRID = {
+  name: 'MetricGrid',
+  label: 'Metric grid',
+  Component: MetricGrid,
+  about: 'MetricCards in equal columns (the all-teams metrics), each in its card color. 4 columns, 2 on mobile. New in v0.6.2 (Figma: the metrics frame on all-teams).',
+  rows: [{ label: 'default', props: { metrics: teamMetrics } }],
+  columns: ONE,
+  controls: [],
+  initial: {},
+  toProps: () => ({ metrics: teamMetrics }),
+  snippetNames: { metrics: 'teamMetrics' },
+  frame: true,
+}
+
+// The site links each card to its team page; here they link to the site too.
+const linkedTeams = teams.map(t => ({ ...t, href: `/teams/${t.id}` }))
+const TEAM_GRID = {
+  name: 'TeamGrid',
+  label: 'Team grid',
+  Component: TeamGrid,
+  about: 'TeamCards in 2 columns, 1 on mobile; with href each card is a link to its team (overlay on hover and pressed, focus ring). New in v0.6.2 (Figma: the team-list frame on all-teams).',
+  rows: [{ label: 'default', props: { teams: linkedTeams } }],
+  columns: ONE,
+  controls: [],
+  initial: {},
+  toProps: () => ({ teams: linkedTeams }),
+  snippetNames: { teams: 'teams' },
   frame: true,
 }
 
@@ -175,5 +211,7 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'hero-card', label: 'Hero card', uses: [U.button, U.dropdown, U.toggleGroup], parts: [HERO_CARD] },
   { slug: 'hero-section', label: 'Hero section', uses: [U.header, U.heroCard], parts: [HERO_SECTION] },
   { slug: 'kanban-board', label: 'Kanban board', uses: [U.profileCard], parts: [KANBAN_BOARD] },
+  { slug: 'metric-grid', label: 'Metric grid', uses: [U.metricCard], parts: [METRIC_GRID] },
+  { slug: 'team-grid', label: 'Team grid', uses: [U.teamCard], parts: [TEAM_GRID] },
   { slug: 'task-item', label: 'Task item', uses: [U.flag, U.errorMessage, U.button], parts: [TASK_ITEM] },
 ])

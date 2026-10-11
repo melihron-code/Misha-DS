@@ -31,7 +31,7 @@ for (const f of files) {
   for (const m of src.matchAll(/\? '([^']*)' : '([^']*)'/g)) for (const c of (m[1] + ' ' + m[2]).split(/\s+/)) if (c.includes('-')) used.set(c, path.relative(root, f))
 }
 
-const selector = c => '.' + c.replace(/[:/@]/g, ch => '\\' + ch)
+const selector = c => '.' + c.replace(/[:/@()]/g, ch => '\\' + ch)
 const missing = [...used].filter(([c]) => !css.includes(selector(c) + '{') && !css.includes(selector(c) + ':') && !css.includes(selector(c) + ','))
 console.log(`checked ${used.size} classes`)
 console.log(missing.length ? 'MISSING:\n' + missing.map(([c, f]) => `  ${c}  (${f})`).join('\n') : 'missing: none')

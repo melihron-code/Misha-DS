@@ -16,7 +16,7 @@ const SHAPE = {
   node: 'flex-col items-start gap-indents-xs rounded-radius-s p-indents-s-inner',
 }
 const COLOR = {
-  'primary-lg': 'bg-accent-primary text-text-on-accent',
+  'primary-lg': 'bg-accent-highlight text-text-primary', // (2026-10-11) yellow-400 with black text, as in Figma
   'primary-sm': 'bg-accent-primary text-text-on-accent',
   secondary: 'bg-surface-control text-text-primary',
   'on-color': 'bg-surface-control-on-color text-text-primary',

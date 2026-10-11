@@ -4,7 +4,7 @@ import { Button, Dropdown, ToggleButtonGroup, Tooltip } from '../atoms'
 import { cx } from '../atoms/shared'
 import { nbsp } from '../../lib/nbsp'
 
-// Figma: HeroCard. variant with-bg | no-bg, showActions. The hero of a page: a title (heading/h1, the page's
+// Figma: HeroCard. variant with-bg | no-bg | homepage, showActions. The hero of a page: a title (heading/h1, the page's
 // h1), a subtitle (text/description) and actions, centered in an 830px-wide area (size/base-with).
 // with-bg: a card (radius/L, padding indents/X, at least 480px = indents/M × 24) on a photo turned yellow
 //   (accent/primary in "color" blend, then surface/hero-tint in "hard light"), with labels on top, and at the
@@ -12,13 +12,16 @@ import { nbsp } from '../../lib/nbsp'
 //   Dropdown to pick a value). Actions are Button on-color; the subtitle and labels are text/accent.
 // no-bg: no fill (it sits on HeroSection's backdrop); actions are Button primary-sm; the team switcher
 //   (ToggleButtonGroup) sits at the bottom, indents/M × 8 under the content (Figma: 160px).
+// homepage (Figma: "Homepage"): no fill, at least 480px like with-bg, the content centered in it; actions are
+//   Button primary-lg, indents/XS apart; no team switcher.
 // An action or team option with `tooltip` has no action yet: it shows the Tooltip (e.g. "No action for now") and
 // is marked unavailable (not-allowed cursor).
 // Fills its container up to size/base-with (830px), centered. Responsive (container "page"): in a mobile page the gaps shrink, the minimum height goes, the tag groups
 // stack; buttons and tags wrap at every size.
 const MIN_HEIGHT = 'calc(var(--indents-m) * 24)' // 480px
 const GAP = 'calc(var(--indents-m) * 8)' // 160px
-const ACTION_VARIANT = { 'with-bg': 'on-color', 'no-bg': 'primary-sm' }
+const ACTION_VARIANT = { 'with-bg': 'on-color', 'no-bg': 'primary-sm', homepage: 'primary-lg' }
+const ACTION_GAP = { 'with-bg': 'gap-indents-3xs', 'no-bg': 'gap-indents-3xs', homepage: 'gap-indents-xs' }
 // One shared empty list, so a missing tags prop is the same value on every render.
 const NONE = []
 
@@ -91,7 +94,7 @@ export default function HeroCard({
         {subtitle && <p className={cx('text-text-description', withBg ? 'text-text-accent' : 'text-text-primary')}>{nbsp(subtitle)}</p>}
       </div>
       {showActions && actions.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-indents-3xs">
+        <div className={cx('flex flex-wrap justify-center', ACTION_GAP[variant])}>
           {actions.map(a => (
             <Tooltip key={a.label} text={a.tooltip} unavailable>
               <Button variant={ACTION_VARIANT[variant]} href={a.href} onClick={a.onClick}>
@@ -103,6 +106,18 @@ export default function HeroCard({
       )}
     </div>
   )
+
+  if (variant === 'homepage') {
+    return (
+      <div
+        className={cx('mx-auto flex min-h-(--hero-min) w-full max-w-size-base-with flex-col items-center justify-center p-indents-x @max-tablet/page:min-h-0 @max-tablet/page:px-0', className)}
+        style={{ '--hero-min': MIN_HEIGHT, ...style }}
+        {...rest}
+      >
+        {heading}
+      </div>
+    )
+  }
 
   if (!withBg) {
     return (

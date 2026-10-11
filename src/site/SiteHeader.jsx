@@ -4,13 +4,14 @@ import { NO_ACTION, noAction, topMenuFor } from './site'
 
 // The top of every site page, built in one place: the TopMenu (same everywhere, current tab from the URL)
 // plus the page's SubHeader and progress. A page uses one of these:
-// - SiteHeader: Header (TopMenu + optional SubHeader + optional StageProgress).
+// - SiteHeader: Header (TopMenu + optional SubHeader + optional StageProgress), up to size/page wide, centered.
 // - SiteHero: HeroSection (backdrop, Header, the "no-bg" hero) for the all-teams family of pages.
 
 export function SiteHeader({ subHeader, progress }) {
   const { pathname } = useLocation()
   return (
     <Header
+      className="mx-auto max-w-size-page"
       topMenu={topMenuFor(pathname)}
       showSubHeader={!!subHeader}
       subHeader={subHeader}
@@ -20,10 +21,11 @@ export function SiteHeader({ subHeader, progress }) {
   )
 }
 
-// hero: HeroCard content. `views`: { [view value]: path } for the hero's toggle (choosing a view opens its
-// page); views without a path get the "no action" tooltip. `actions`: { [label]: path } likewise for the
-// hero's buttons.
-export function SiteHero({ subHeader, hero, views = {}, actions = {} }) {
+// subHeader: the SubHeader's props (none: no SubHeader). hero: HeroCard content; heroVariant: no-bg (default) or
+// homepage. `views`: { [view value]: path } for the
+// hero's toggle (choosing a view opens its page); views without a path get the "no action" tooltip.
+// `actions`: { [label]: path } likewise for the hero's buttons.
+export function SiteHero({ subHeader, hero, heroVariant = 'no-bg', views = {}, actions = {} }) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const content = {
@@ -32,5 +34,13 @@ export function SiteHero({ subHeader, hero, views = {}, actions = {} }) {
     teams: (hero.teams ?? []).map(t => (views[t.value] || t.value === hero.team ? t : { ...t, tooltip: NO_ACTION })),
     onTeamChange: value => views[value] && navigate(views[value]),
   }
-  return <HeroSection showProgress={false} header={{ topMenu: topMenuFor(pathname), subHeader }} hero={content} />
+  return (
+    <HeroSection
+      showSubHeader={!!subHeader}
+      showProgress={false}
+      heroVariant={heroVariant}
+      header={{ topMenu: topMenuFor(pathname), subHeader }}
+      hero={content}
+    />
+  )
 }
