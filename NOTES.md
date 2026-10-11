@@ -3,6 +3,68 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.13 — Component consolidation (2026-10-11)
+
+### Summary
+Review of every molecule and organism for repetition (usage map, duplicates, near-duplicates, one-off components,
+thin wrappers, unused components and props). Four grids became one, single-page sections left the design system, a
+thin wrapper went, and the StageProgress molecule became a ProgressBar option. The 11 built pages look exactly the
+same: 33 full-page screenshots (1440, 768, 375) compared pixel by pixel before and after each change. The only
+difference is the interview placeholder's "Will contain" text, which named StageProgress. Each change has its own
+commit. Also: the Dropdown's arrow now turns up while the list is open.
+
+**Count:** organisms 16 → **8** (TopMenu, SubHeader, Header, HeroCard, HeroSection, KanbanBoard, CardGrid,
+PeopleList); molecules 12 → **11**.
+
+### Merged / removed
+- **MetricGrid, TeamGrid, StatGrid, CampaignList → CardGrid** (organism). `card`: metric (4 columns, 2 on mobile) |
+  stat (one column each, 1 on mobile) | team (2 columns, 1 on mobile; each card a link) | campaign (stacked; the card
+  makes its own link). `items` (the cards' props plus `id`, `href`), `cardProps` (for every card, e.g.
+  `{ buttonTooltip }`), `emptyText`, `label`. Used on All teams, Campaign and Team campaigns.
+- **AchievementsCard, DevelopmentCard, DocumentList, PageTitle → site parts** (`src/site/parts/`): each is used on one
+  page and isn't in Figma. Unchanged code; no /ds-dev/ pages.
+- **TeamSummary → removed.** It only wrapped a Notification. Team, Team campaigns and Person place the **Notification**
+  molecule in a labelled section (skipped when there's no message). Rule 8 now allows a page to place a single molecule
+  as a section of its own.
+- **StageProgress → ProgressBar `stages`** (atom option, approved). The stage names under the bar in equal columns;
+  in a mobile page one line, "Stage 7 of 9: Minus one"; the current stage in the bar's label. Header and
+  DevelopmentCard use it.
+
+### Changed
+- **Dropdown:** the arrow turns 180° while the list is open (click or keyboard) and back when it closes
+  (`transition-state`; instant under reduced motion). Closed dropdowns are unchanged.
+
+### Kept on purpose
+- **TopMenu, SubHeader, Header, HeroSection, HeroCard, KanbanBoard:** Figma organisms, reused, with behaviour.
+- **PeopleList:** reused on Employees and Team, with filters, rows that are links and an empty state. It looks like
+  DocumentList, but rows, padding and filters differ.
+- **MetricCard and StatCard:** separate Figma components with different jobs (a chart with a summary vs one big
+  number) and different title sizes.
+- **CampaignCard, TeamCard, ProfileCard:** different content; each its own Figma component.
+- **Notification, Breadcrumbs:** small and reused.
+- **AttemptCard, ExperienceItem, ProjectCard, AutomationNode:** not on a built page yet; kept for the pages still to
+  build (Negotiate, the interview view).
+- **Unused props** (`onSave`, `onDeploy`, `onBack`, `onGenerateReport`, `onMoreInfo`, `onAction`, and label props
+  like `backLabel`, `reportLabel`, `nextLevelLabel`): kept. The callbacks are how "No action for now" buttons get
+  actions later; the labels mirror Figma's text properties.
+
+### Figma to-do
+- **ProgressBar:** add the stage labels as an option (e.g. a boolean `stages` with the text/caps labels under the
+  dots, and a mobile "Stage X of N" line), so Header's progress and the candidate's "Personal development" are
+  ProgressBar instances.
+- **Dropdown:** optionally add an `open` look with the arrow pointing up (code: the arrow-down icon turned 180°).
+- **CardGrid, the site parts, TeamSummary:** nothing to do. They were code-only (the grids, summary and panels in
+  Figma are frames on the screens, not components).
+- **TaskItem** (from v0.6.12): still in `ds-organisms`; remove it there if it should leave the Figma design system.
+
+### How to use
+```jsx
+<CardGrid card="metric" items={teamMetrics} label="Team metrics" />
+<CardGrid card="campaign" items={campaigns} cardProps={{ buttonTooltip: NO_ACTION }} emptyText="No campaigns yet." />
+<section aria-label="Team summary"><Notification message={team.summary} /></section>
+<ProgressBar size="lg" stages={careerStages} value={45} label="Progress" />
+```
+
 ## v0.6.12 — Design system cleanup (2026-10-11)
 
 ### Summary
@@ -1091,7 +1153,7 @@ The library components still exist in their source library; this file no longer 
 | second-row | SubHeader | organisms |
 | topmenu | TopMenu | organisms |
 | header | Header | organisms |
-| task | TaskItem | organisms |
+| task | TaskItem | site part (since v0.6.12) |
 | card top | HeroCard | organisms |
 | (new, 2026-10-11) | HeroSection | organisms |
 | (new, 2026-10-11) HeroCard/background | HeroSection's backdrop (inside HeroSection in code, not a separate export) | organisms |
@@ -1099,8 +1161,8 @@ The library components still exist in their source library; this file no longer 
 | (new, v0.5.0, code first) | TextLink | atoms |
 | (new, v0.5.0, code first) | Logo | atoms |
 | (new, v0.5.0, code first) | Breadcrumbs | molecules |
-| (new, v0.5.0, code first) | StageProgress | molecules |
-| (new, v0.6.0, code first) | Tooltip | atoms |
+| (new, v0.5.0, code first; removed in v0.6.13: ProgressBar `stages`) | StageProgress | molecules |
+| (new, v0.6.0, code first; a helper in `components/support/` since v0.6.12) | Tooltip | support |
 | canban | KanbanBoard | organisms (single component, no props) |
 | indents | SpacingScale | styles (docs only, 0 instances) |
 
