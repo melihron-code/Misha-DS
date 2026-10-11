@@ -46,7 +46,7 @@ mouse and the keyboard, and the links both ways with Team campaigns and the pers
 - **Header:** taller, as on the other Header pages.
 
 ### Open questions
-- What Finish and Cancel should do.
+- None. Finish and Cancel stay without action for now (decided 2026-10-11).
 
 ## v0.6.8 update — Prototype connections updated (2026-10-11)
 
