@@ -3,11 +3,12 @@ import ColorsSection from './ColorsSection'
 import ComponentsPage from './docs/ComponentsPage'
 import EffectsSection from './EffectsSection'
 import { MOLECULE_PAGES } from './molecules/moleculeDocs'
+import { ORGANISM_PAGES } from './organisms/organismDocs'
 import RadiusSection from './RadiusSection'
 import SpacingSection from './SpacingSection'
 import TypographySection from './TypographySection'
 
-// A sidebar item for a scrolling component page (Atoms, Molecules): its pages are the submenu.
+// A sidebar item for a scrolling component page (Atoms, Molecules, Organisms): its pages are the submenu.
 const componentsItem = (base, label, pages) => ({
   path: base,
   label,
@@ -25,6 +26,7 @@ export const NAV = [
   { path: 'effects', label: 'Effects', render: () => <EffectsSection /> },
   componentsItem('atoms', 'Atoms', ATOM_PAGES),
   componentsItem('molecules', 'Molecules', MOLECULE_PAGES),
+  componentsItem('organisms', 'Organisms', ORGANISM_PAGES),
 ]
 
 // The sidebar item whose page shows `path` (itself, or the parent of a submenu item).

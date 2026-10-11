@@ -8,6 +8,10 @@
 // bind:     wires the playground so the component really responds (toggles, selections, typing).
 // controlGrid: a column count (3 or 4): the playground controls sit on equal columns, edges lined up;
 //           a control spans 1 column (`double`: 2, or `span`). controlFill: the grid fills the width after the title.
+// frame:    organisms: show them in a page frame (desktop in the grid; Desktop / Tablet / Mobile in the
+//           playground; frameMinHeight leaves room in it, e.g. for the open mobile menu).
+//           snippetNames: { prop: 'identifier' } for sample data in the snippet;
+//           defaults: props left out of the snippet when unchanged (a changed false prints as {false}).
 // width:    a width class for the grid and the preview (components that fill their container);
 //           wide / narrow are the older shorthands (full, half).
 //

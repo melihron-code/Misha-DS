@@ -3,7 +3,7 @@ import { cx } from '../atoms/shared'
 import { nbsp } from '../../lib/nbsp'
 
 // Figma: TeamCard. A team: name and size, productivity (accent ProgressBar), this week's
-// highlight (wraps, about 3/5 of the width as in Figma) and the members (AvatarGroup + "+N more").
+// highlight (wraps, about 3/5 of the width as in Figma; full width in a mobile page) and the members (AvatarGroup + "+N more").
 // Fills its container; the name stays on one line (ellipsis).
 export default function TeamCard({
   name = 'Engineering Team',
@@ -29,7 +29,7 @@ export default function TeamCard({
         <ProgressBar tone="accent" value={productivity} label={`${name}: productivity`} />
       </div>
       {highlight && (
-        <div className="flex w-3/5 flex-col gap-indents-xs">
+        <div className="flex w-3/5 flex-col gap-indents-xs @max-tablet/page:w-full">
           <p className="text-text-caps text-text-tertiary">Week highlight:</p>
           <p className="text-text-pixel">{nbsp(highlight)}</p>
         </div>

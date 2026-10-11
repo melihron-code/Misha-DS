@@ -17,8 +17,7 @@ export default function Flag({ checked = false, label = 'Flag', disabled = false
       className={cx(
         'inline-flex shrink-0 items-center justify-center rounded-radius-s p-indents-3xs',
         PRESSABLE,
-        checked ? 'text-icon-secondary' : 'text-icon-primary',
-        isDisabled && 'text-text-disabled',
+        isDisabled ? 'text-text-disabled' : checked ? 'text-icon-secondary' : 'text-icon-primary',
         className,
       )}
       {...rest}

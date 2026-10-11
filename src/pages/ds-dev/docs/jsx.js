@@ -1,7 +1,9 @@
 // Builds a JSX snippet for the playground: <Name prop="v" flag>children</Name>.
 // Left out: undefined, false and empty values, functions, and props in `skip` (e.g. the
-// props of controls that are disabled right now, like Button's sublabel outside node).
-export function toJsx(name, props, skip = new Set()) {
+// props of controls that are disabled right now, like Button's sublabel outside node). `names` prints a
+// prop as an identifier instead of its value (e.g. columns={pipeline}), for sample data. `defaults`:
+// props equal to these are left out, and a false that differs is written as prop={false}.
+export function toJsx(name, props, skip = new Set(), names = {}, defaults = {}) {
   const attrs = []
   let children
   for (const [k, v] of Object.entries(props)) {
@@ -10,7 +12,16 @@ export function toJsx(name, props, skip = new Set()) {
       children = v
       continue
     }
+    if (k in defaults && v === defaults[k]) continue
+    if (v === false && k in defaults) {
+      attrs.push(`${k}={false}`)
+      continue
+    }
     if (v === undefined || v === false || v === '' || typeof v === 'function') continue
+    if (names[k]) {
+      attrs.push(`${k}={${names[k]}}`)
+      continue
+    }
     if (typeof v === 'string') attrs.push(`${k}="${v}"`)
     else if (v === true) attrs.push(k)
     else attrs.push(`${k}={${JSON.stringify(v)}}`)

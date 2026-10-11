@@ -6,12 +6,15 @@ import {
   Dropdown,
   ErrorMessage,
   Flag,
+  Logo,
   MiniChart,
+  NavTab,
   ProgressBar,
   Status,
   Tag,
   TextArea,
   TextInput,
+  TextLink,
   ToggleButton,
   ToggleButtonGroup,
 } from '../../../components/atoms'
@@ -22,7 +25,7 @@ import IconGallery from './IconGallery'
 // Disabled in the playground unless the node variant is chosen (the sublabel exists only there).
 const nodeOnly = control => ({ ...control, enabled: p => p.variant === 'node' })
 
-const BUTTON_VARIANTS = ['primary-lg', 'primary-sm', 'secondary', 'on-color', 'node']
+const BUTTON_VARIANTS = ['primary-lg', 'primary-sm', 'secondary', 'on-color', 'on-color-outlined', 'accent', 'node']
 
 const BUTTON = {
   name: 'Button',
@@ -237,6 +240,41 @@ const PROGRESS_BAR = {
 
 // Pages under /ds-dev/atoms/<slug>, in sidebar order. A page shows one or more
 // components (`parts`) or a custom `render`.
+const NAV_TAB = {
+  name: 'NavTab',
+  label: 'Nav tab',
+  Component: NavTab,
+  about: 'A navigation link in TopMenu; the selected one (the current page) has a white outline. Moved from the organisms frame in v0.5.0.',
+  rows: [{ label: 'selected', props: { selected: true } }, { label: 'not selected', props: { selected: false } }],
+  columns: STATES_NO_DISABLED,
+  controls: [toggle('selected'), text('label')],
+  initial: { selected: true, label: 'All teams' },
+  defaults: { label: 'All teams' },
+}
+
+const TEXT_LINK = {
+  name: 'TextLink',
+  label: 'Text link',
+  Component: TextLink,
+  about: 'An inline text link (TopMenu, Breadcrumbs), with a padded hit area that takes no extra room. current marks the current page (plain text). New in v0.5.0.',
+  rows: [{ label: 'link', props: { children: 'Profile' } }, { label: 'current', props: { children: 'Profile', current: true } }],
+  columns: STATES_NO_DISABLED,
+  controls: [text('children', 'label'), toggle('current')],
+  initial: { children: 'Profile', current: false },
+}
+
+const LOGO = {
+  name: 'Logo',
+  label: 'Logo',
+  Component: Logo,
+  about: '"Hired & Wired" in heading/logo (Instrument Serif, 23px). With href it’s the home link. New in v0.5.0.',
+  rows: [{ label: 'link', props: { href: '/' } }, { label: 'text', props: {} }],
+  columns: STATES_NO_DISABLED,
+  controls: [text('label'), text('href')],
+  initial: { label: 'Hired & Wired', href: '/' },
+  defaults: { label: 'Hired & Wired' },
+}
+
 export const ATOM_PAGES = withAbout([
   { slug: 'button', label: 'Button', parts: [BUTTON] },
   { slug: 'input', label: 'Input', about: 'Text fields with a label: one line or several.', parts: [TEXT_INPUT, TEXT_AREA] },
@@ -254,6 +292,9 @@ export const ATOM_PAGES = withAbout([
     render: () => <IconGallery />,
   },
   { slug: 'tag', label: 'Tag', parts: [TAG] },
+  { slug: 'nav-tab', label: 'Nav tab', parts: [NAV_TAB] },
+  { slug: 'text-link', label: 'Text link', parts: [TEXT_LINK] },
+  { slug: 'logo', label: 'Logo', parts: [LOGO] },
   { slug: 'avatar', label: 'Avatar', about: 'Several round photos overlapping, or one on its own.', parts: [AVATAR_GROUP, AVATAR] },
   { slug: 'document-row', label: 'Document row', parts: [DOCUMENT_ROW] },
 ])

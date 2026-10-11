@@ -3,6 +3,91 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.5.0 — Step 5: Organisms (2026-10-11)
+
+### Summary
+The organisms of the Figma `ds-organisms` frame, plus the new HeroSection, are React components in
+`src/components/organisms/`, built from molecules and atoms. They're fluid: they fill the width they're given,
+up to `size/page` (1440) or, for HeroCard, `size/base-with` (830). Figma has desktop screens only, so tablet
+and mobile follow the plan approved in the audit. Components respond to a **page container**
+(`@container/page`), not the window. That lets the /ds-dev/ Organisms page show each one at Desktop 1440,
+Tablet 768 and Mobile 375 without resizing the browser. New tokens (breakpoints, page and hero sizes, the
+hero tint, the logo size, mobile text sizes), 3 new atoms, 2 new molecules and the approved molecule changes
+for small screens. Sample content lives in `src/data/`. Checked in headless Chrome at 1440, 768 and 375:
+nothing overflows; menus, flags, dropdowns and links work with mouse and keyboard.
+
+### Added
+- **Organisms** (all exported from `src/components/organisms/index.js`):
+  - `TopMenu`: `activeTab` all-teams | templates | none, `tabs`, `links`, `logoHref`, `reportLabel`, `onGenerateReport`, `menuLabel`. Logo, "Generate report" (Button on-color), NavTabs, TextLinks; divider/inverse below. Tablet: tighter gap after the logo. Mobile: logo + "Menu" button opening a panel (focus moves in; Escape, outside click or a link close it and focus returns; fades and slides with `duration/base`). Uses Logo, Button, NavTab, TextLink.
+  - `SubHeader`: `variant` default | builder, `backLabel`, `backHref` / `onBack`, `breadcrumbs`, `saveLabel`, `deployLabel`, `onSave`, `onDeploy`. default: Back (Button on-color-outlined) + Breadcrumbs; builder: Back, Save, Deploy. Mobile: breadcrumbs show the current page only. Uses Button, Breadcrumbs.
+  - `Header`: `showSubHeader`, `showProgress`, `topMenu`, `subHeader`, `progress` ({ stages, value }). TopMenu + SubHeader + StageProgress; no fill. Uses TopMenu, SubHeader, StageProgress.
+  - `HeroSection` (new; in Figma as a component too): `showBackground`, `background`, `showSubHeader`, `showProgress`, `showActions`, `heroVariant`, `header`, `hero`. Header, then the hero at the bottom of a `size/hero` (660) area (Figma: Auto gap); `showBackground` adds the full-width backdrop fading into `bg/default`. Mobile: no minimum height. Uses Header, HeroCard.
+  - `HeroCard`: `variant` with-bg | no-bg, `showActions`, `title` (the page's h1), `subtitle`, `labels`, `actions`, `tags`, `endTags`, `addLabel`, `onTagsChange`, `image`, `teams`, `team`, `onTeamChange`. with-bg: the yellow photo card; the tags are editable Dropdowns and "Add" (Button accent) adds an empty one to pick a value. no-bg: transparent, primary-sm actions, the team switcher (ToggleButtonGroup). Up to 830px, centered. Mobile: smaller gaps, no minimum height, tag groups stack. Uses Button, Dropdown, ToggleButtonGroup.
+  - `KanbanBoard`: `title`, `columns` [{ id, title, people: [{ name, role, image, href }] }]. Title, then one column per stage with its count; people as ProfileCard short-outlined (`fill`), each a link (overlay, focus ring). 4 columns, 2 on tablet, 1 on mobile. Uses ProfileCard.
+  - `TaskItem`: `state` default | active, `showButton`, `showError`, `title`, `errorMessage`, `buttonLabel`, `buttonHref` / `onButtonClick`, `onToggle`. default = done (filled Flag, grey title), active = to do (from the hiring-campaign-add screen); the Flag calls `onToggle` with the other state. Uses Flag, ErrorMessage, Button.
+- **Atoms (approved):** `NavTab` (moved from the organisms frame: `selected`, `label`, `href`; a link with `aria-current`), `TextLink` (`href`, `current`; padded hit area that takes no room), `Logo` (`label`, `href`; new text style `heading/logo`). Button variants `on-color-outlined` (SubHeader's Back) and `accent` (HeroCard's Add).
+- **Molecules (approved):** `Breadcrumbs` (`items`; TextLinks with "•", the last one current; mobile: current only), `StageProgress` (`stages`, `value`, `size`, `tone`; ProgressBar + equal stage labels; mobile: "Stage 7 of 9: Minus one").
+- **Tokens:**
+  - code and Figma: `color/colors/yellow-600` + `surface/hero-tint` (HeroCard's #FFB700 tint, now bound in Figma), `font-size/23` + `font/size/logo`, `size/1440` + `size/page`, `size/660` + `size/hero` (HeroSection and its background bound in Figma)
+  - code only: breakpoints `tablet` 768 and `desktop` 1200 (media and container queries; Tailwind's defaults removed); preview widths `size/viewport-tablet` and `size/viewport-mobile`; mobile sizes for `heading/h1` (48/44), `heading/h2` (28/26) and `text/description` (20/18) in a mobile page.
+- **Sample data** (`src/data/`): `navigation.js` (tabs, user links, breadcrumbs), `stages.js` (career and development stages), `pipeline.js` (the Kanban), `tasks.js` (the hiring checklist), `heroes.js` (candidate, campaign and all-teams heroes). Copy uses `nbsp()`.
+- **Assets:** `src/assets/hero/backdrop.jpg` (2880px, 262 KB, from 9.9 MB) and `photo.jpg` (89 KB).
+- **/ds-dev/:** an Organisms section like Atoms and Molecules. Each organism: variants (as desktop pages, scaled), a playground with a Desktop 1440 / Tablet 768 / Mobile 375 switcher (`docs/PageFrame.jsx`: a page container of that width, scaled to fit), the JSX snippet (sample data shown by name, e.g. `columns={pipeline}`), and the Uses line (atoms, molecules and organisms). New atom and molecule pages for the new components.
+
+### Changed
+- **Molecules (approved):** CampaignCard numbers 5 → 3 (tablet) → 2 (mobile) columns, header wraps; AttemptCard offers stack on mobile, status first; ProfileCard long puts the progress under the name on mobile, short gets `fill`; ProjectCard and TeamCard text goes full width on mobile.
+- **Flag (bug fix, same rule as v0.3.1):** the disabled color and the checked/unchecked color no longer apply together.
+- **Playground grids** switch to 2 columns under the new `desktop` breakpoint (was Tailwind's `xl`).
+- **CLAUDE.md:** rule 9 (breakpoints, page container, max widths, side padding); organisms and data folders; step 5 done.
+
+### Flagged for step 6
+- **The page root needs `@container/page`,** or the responsive rules and mobile text sizes won't apply.
+- **Page layouts** (from the screens): Header or HeroSection on top; content in the 830 column (`size/base-with`); KanbanBoard and backdrops at full width (`size/page`).
+- **The success screen** is a full-screen HeroSection backdrop with centered content: needs a `size="full"` option (or its own layout).
+- **The candidate screen** uses short ProfileCards in other colors (pink, green, violet, olive): a `color` option for ProfileCard.
+- **Links and actions** are props; step 6 wires routes (`href`) and handlers.
+
+### Differences from Figma
+- **Fluid instead of fixed widths** (1440, 830, 692): organisms fill their container up to their max width.
+- **Raw values → nearest tokens:**
+  - SubHeader's 60px gap → `indents/XXL` (84)
+  - KanbanBoard's 50px gap → `indents/XXL` (84), its 30px side padding → `indents/M` (20)
+  - HeroCard's 160px gap → `indents/M` × 8, its 480px height → `indents/M` × 24 (minimum)
+  - TaskItem's 10px gap → `indents/XS` + `indents/3XS`
+  - NavTab's 10px padding → the same
+- **Not in Figma yet** (the Figma tools can't load Akkurat or Pixform, so these need a hand or the local plugin):
+  - the atoms TextLink and Logo, the molecules Breadcrumbs and StageProgress, the Button variants `on-color-outlined` and `accent`
+  - the mobile text styles, and moving NavTab to the atoms section
+  - from v0.4.0: the green Tag variant
+- **TaskItem's ErrorMessage** fits its text; in Figma it's stretched to the title width (the atom has no full-width option).
+- **TopMenu's mobile panel** (not designed): `bg/default` with `shadow-card`, items stacked.
+- **Sample data:** subtitles and labels keep their Figma words; the "Some fields need your attention" message fixes Figma's "some field need your attention".
+
+### How to use
+```jsx
+import { Header, HeroCard, HeroSection, KanbanBoard, SubHeader, TaskItem, TopMenu } from './components/organisms'
+import { breadcrumbs, topMenuTabs, userLinks } from './data/navigation'
+import { candidateHero, teamsHero } from './data/heroes'
+import { pipeline } from './data/pipeline'
+import { careerStages } from './data/stages'
+import { campaignTasks } from './data/tasks'
+
+const topMenu = { activeTab: 'all-teams', tabs: topMenuTabs, links: userLinks }
+
+<div className="@container/page">  {/* the page root (step 6) */}
+  <TopMenu {...topMenu} onGenerateReport={report} />
+  <SubHeader breadcrumbs={breadcrumbs.candidate} backHref="/teams" />
+  <SubHeader variant="builder" onSave={save} onDeploy={deploy} />
+  <Header topMenu={topMenu} subHeader={{ breadcrumbs: breadcrumbs.candidate }} progress={{ stages: careerStages, value: 45 }} />
+  <HeroSection header={{ topMenu }} hero={teamsHero} showProgress={false} />
+  <HeroSection showBackground={false} heroVariant="with-bg" header={{ topMenu }} hero={candidateHero} />
+  <HeroCard {...candidateHero} onTagsChange={saveTags} />
+  <KanbanBoard columns={pipeline} />
+  {campaignTasks.map(t => <TaskItem key={t.id} {...t} onToggle={state => setTaskState(t.id, state)} />)}
+</div>
+```
+Docs: `/ds-dev/organisms`, or `/ds-dev/organisms/<organism>`, e.g. `/ds-dev/organisms/hero-section`.
+
 ## v0.4.1 — Step 4 refinements: Tag padding, playground layout, sidebar menu (2026-10-11)
 
 ### Summary
@@ -439,7 +524,13 @@ The library components still exist in their source library; this file no longer 
 | header | Header | organisms |
 | task | TaskItem | organisms |
 | card top | HeroCard | organisms |
-| menu_switch | NavTab | organisms |
+| (new, 2026-10-11) | HeroSection | organisms |
+| (new, 2026-10-11) HeroCard/background | HeroSection's backdrop (inside HeroSection in code, not a separate export) | organisms |
+| menu_switch | NavTab | organisms (atoms in code since v0.5.0) |
+| (new, v0.5.0, code first) | TextLink | atoms |
+| (new, v0.5.0, code first) | Logo | atoms |
+| (new, v0.5.0, code first) | Breadcrumbs | molecules |
+| (new, v0.5.0, code first) | StageProgress | molecules |
 | canban | KanbanBoard | organisms (single component, no props) |
 | indents | SpacingScale | styles (docs only, 0 instances) |
 
@@ -477,6 +568,7 @@ The library components still exist in their source library; this file no longer 
 | Header | type → `variant`; Show second-row → `showSubHeader`; Show bar → `showProgress` | variant; boolean; boolean |
 | TaskItem | Property 1 → `state`; Show btn → `showButton`; Show error → `showError` | variant; boolean; boolean |
 | HeroCard | Property 1 → `variant`; Show btns group → `showActions` | variant; boolean |
+| HeroSection | Show bg → `showBackground`; nested Header props → `showSubHeader`, `showProgress`; nested HeroCard props → `showActions`, `heroVariant` | boolean; boolean; boolean; boolean; variant |
 | NavTab | menu → `selected`; Text → `label` | variant; text |
 | SpacingScale | size → `size` | variant |
 
@@ -501,7 +593,9 @@ The library components still exist in their source library; this file no longer 
 | SubHeader.variant | Default → `default`, builider → `builder` |
 | TopMenu.activeTab | all → `all-teams`, templates → `templates`, off → `none` |
 | TaskItem.state | Default → `default`, Variant2 → `active` |
-| HeroCard.variant | Default → `default`, Variant2 → `image` |
+| HeroCard.variant | Default → `default`, Variant2 → `image`; (2026-10-11) renamed in Figma to with bg → `with-bg`, no bg → `no-bg` |
+| Button.variant | (v0.5.0, code first) + `on-color-outlined`, `accent` |
+| TaskItem.state | `default` = done, `active` = to do (from the screens) |
 | NavTab.selected | on → `true`, off → `false` |
 | SpacingScale.size | -1 → `minus-1`, XXXS:2 → `xxxs`, XXS:4 → `xxs`, XS: 8 → `xs`, S (inner): 14 → `s`, M: 20 → `m`, L: 24 → `l`, XL: 30 → `xl`, XXL (out):90 → `xxl` |
 | ErrorMessage, AvatarGroup, DocumentRow, TextArea, TextInput, MiniChart, ToggleButtonGroup, AutomationNode, CampaignCard, ProjectCard, ExperienceItem, TeamCard, MetricCard, StatCard, Notification `.variant`; Header `.variant` | Default/default → `default` |

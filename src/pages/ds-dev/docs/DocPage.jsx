@@ -1,18 +1,19 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Dropdown, TextInput } from '../../../components/atoms'
+import { Dropdown, TextInput, ToggleButtonGroup } from '../../../components/atoms'
 import { cx, SIZE } from '../../../components/atoms/shared'
 import { nbsp } from '../../../lib/nbsp'
 import CopyButton from '../CopyButton'
 import Switch from '../Switch'
 import { toJsx } from './jsx'
+import PageFrame from './PageFrame'
 
 // Literal classes, so Tailwind generates them. GRID_COLS: the playground control grid; 2 columns
-// below Tailwind's xl breakpoint (1280px window), where the main column gets narrower than 830px.
+// below the desktop breakpoint (1200px window).
 // (A container query can't use the size/base-with variable: CSS doesn't allow var() there.)
-const GRID_COLS = { 3: 'grid-cols-3 max-xl:grid-cols-2', 4: 'grid-cols-4 max-xl:grid-cols-2' }
+const GRID_COLS = { 3: 'grid-cols-3 max-desktop:grid-cols-2', 4: 'grid-cols-4 max-desktop:grid-cols-2' }
 // Column spans of a control in that grid; 3 columns become the full 2 on narrow windows.
-const SPAN = { 1: '', 2: 'col-span-2', 3: 'col-span-3 max-xl:col-span-2' }
+const SPAN = { 1: '', 2: 'col-span-2', 3: 'col-span-3 max-desktop:col-span-2' }
 // Grid rows for the aside.
 const ROW_START = ['row-start-1', 'row-start-2', 'row-start-3', 'row-start-4']
 
@@ -74,9 +75,16 @@ function Grid({ doc }) {
           <tr>
             {columns.map(c => (
               <td key={c.label} className="pr-indents-xs pb-indents-m align-middle">
-                <div className={doc.width ?? (doc.wide ? 'w-full' : doc.narrow ? 'w-1/2' : '')}>
-                  <Component {...r.props} {...c.props} />
-                </div>
+                {doc.frame ? (
+                  // Organisms: a desktop page, scaled to the column.
+                  <PageFrame width="var(--size-page)">
+                    <Component {...r.props} {...c.props} />
+                  </PageFrame>
+                ) : (
+                  <div className={doc.width ?? (doc.wide ? 'w-full' : doc.narrow ? 'w-1/2' : '')}>
+                    <Component {...r.props} {...c.props} />
+                  </div>
+                )}
               </td>
             ))}
           </tr>
@@ -206,8 +214,45 @@ function Playground({ doc, level }) {
 }
 
 // The playground card: title and controls, the live preview, and the JSX snippet.
+// Organism previews: a page of this width (size tokens), see PageFrame.
+const VIEWPORTS = [
+  { value: 'desktop', label: 'Desktop 1440', width: 'var(--size-page)' },
+  { value: 'tablet', label: 'Tablet 768', width: 'var(--size-viewport-tablet)' },
+  { value: 'mobile', label: 'Mobile 375', width: 'var(--size-viewport-mobile)' },
+]
+
+function FramedPreview({ minHeight, children }) {
+  const [viewport, setViewport] = useState('desktop')
+  return (
+    <div className="flex flex-col items-start gap-indents-s-inner">
+      <ToggleButtonGroup label="Viewport" options={VIEWPORTS} value={viewport} onChange={setViewport} />
+      <div className="w-full rounded-radius-m border border-border-default">
+        <PageFrame width={VIEWPORTS.find(v => v.value === viewport).width} minHeight={minHeight}>
+          {children}
+        </PageFrame>
+      </div>
+    </div>
+  )
+}
+
 function PlaygroundBody({ doc, live, bound, props, rows, level, aside, baseline, fill }) {
   const { Component } = doc
+  const snippet = (
+    <CopyButton
+      value={toJsx(doc.name, live, new Set(rows.flat().filter(c => c.enabled && !c.enabled(props)).map(c => c.prop)), doc.snippetNames, doc.defaults)}
+      className="self-start text-text-grotesk text-text-secondary"
+    />
+  )
+  if (doc.frame) {
+    return (
+      <Section title="Playground" level={level} aside={aside} baseline={baseline} fill={fill} className="rounded-radius-m bg-surface-card p-indents-m">
+        <FramedPreview minHeight={doc.frameMinHeight}>
+          <Component {...live} {...bound} />
+        </FramedPreview>
+        {snippet}
+      </Section>
+    )
+  }
   return (
     <Section title="Playground" level={level} aside={aside} baseline={baseline} fill={fill} className="rounded-radius-m bg-surface-card p-indents-m">
       {/* Fixed height: the preview is as tall as the tallest variant in the grid. */}
@@ -221,10 +266,7 @@ function PlaygroundBody({ doc, live, bound, props, rows, level, aside, baseline,
       </div>
       {/* The JSX for the current props, styled like the CSS variables on the foundation
           pages; click to copy. Props of disabled controls are left out. */}
-      <CopyButton
-        value={toJsx(doc.name, live, new Set(rows.flat().filter(c => c.enabled && !c.enabled(props)).map(c => c.prop)))}
-        className="self-start text-text-grotesk text-text-secondary"
-      />
+      {snippet}
     </Section>
   )
 }
@@ -246,7 +288,7 @@ function ComponentDocs({ doc, level }) {
 // The page description sits half a section gap (indents/XXL ÷ 2) above the content.
 const ABOUT_GAP = 'calc(var(--indents-xxl) / 2)'
 
-// "Uses: Button, Status": the atoms inside a molecule, linking to their pages.
+// "Uses: Button, Status": the atoms (and molecules) inside a component, linking to their pages.
 function Uses({ uses }) {
   return (
     <p className="text-text-grotesk text-text-secondary">
@@ -254,7 +296,7 @@ function Uses({ uses }) {
       {uses.map((u, i) => (
         <span key={u.slug}>
           {i > 0 && ', '}
-          <Link to={`/ds-dev/atoms/${u.slug}`} className="rounded-radius-s text-text-grotesk-bold text-status-info underline focus-ring transition-state hover:text-text-primary">
+          <Link to={`/ds-dev/${u.group ?? 'atoms'}/${u.slug}`} className="rounded-radius-s text-text-grotesk-bold text-status-info underline focus-ring transition-state hover:text-text-primary">
             {u.label}
           </Link>
         </span>

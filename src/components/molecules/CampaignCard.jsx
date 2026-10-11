@@ -3,7 +3,8 @@ import { cx } from '../atoms/shared'
 
 // Figma: CampaignCard. showStatus, showButton. A hiring campaign: title, status and a "More
 // info" button (secondary), then its numbers in equal columns. Fills its container; the title
-// stays on one line (ellipsis). Each number is a <dt>/<dd> pair, shown value first.
+// stays on one line (ellipsis). Each number is a <dt>/<dd> pair, shown value first. The numbers are 5
+// columns, 3 in a tablet page and 2 in a mobile page (container "page"); the header wraps.
 const STATS = [
   { value: '142', label: 'Applied' },
   { value: '89', label: 'Rejected' },
@@ -26,7 +27,7 @@ export default function CampaignCard({
 }) {
   return (
     <div className={cx('flex w-full flex-col gap-indents-xxl-out rounded-radius-l bg-surface-card p-indents-x', className)} {...rest}>
-      <div className="flex items-center justify-between gap-indents-m">
+      <div className="flex flex-wrap items-center justify-between gap-indents-m">
         <h3 className="min-w-0 truncate text-heading-h2 text-text-primary">{title}</h3>
         {(showStatus || showButton) && (
           <div className="flex shrink-0 items-center justify-end gap-indents-s-inner">
@@ -39,9 +40,9 @@ export default function CampaignCard({
           </div>
         )}
       </div>
-      <dl className="flex w-full text-text-primary">
+      <dl className="grid w-full grid-cols-5 gap-y-indents-l text-text-primary @max-desktop/page:grid-cols-3 @max-tablet/page:grid-cols-2">
         {stats.map(s => (
-          <div key={s.label} className="flex min-w-0 flex-1 flex-col-reverse gap-indents-xs">
+          <div key={s.label} className="flex min-w-0 flex-col-reverse gap-indents-xs">
             <dt className="text-text-caps">{s.label}</dt>
             <dd className="text-heading-h1">{s.value}</dd>
           </div>

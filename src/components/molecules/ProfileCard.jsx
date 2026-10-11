@@ -5,7 +5,9 @@ import { cx } from '../atoms/shared'
 // long: a list row (divider/default underneath) with avatar, name and role, status, and an
 // accent progress bar filling the rest; it fills its container. short / short-outlined: a
 // compact chip (surface/tag-red | surface/tag-neutral) that hugs its content; the avatar is
-// multiplied onto the fill, as in Figma. Name and role stay on one line (ellipsis).
+// multiplied onto the fill, as in Figma. Name and role stay on one line (ellipsis). `fill` stretches a
+// short card to its container (e.g. a Kanban column). In a mobile page (container "page" narrower than
+// tablet) the long row puts the progress bar under the name.
 const CHIP = { short: 'bg-surface-tag-red', 'short-outlined': 'bg-surface-tag-neutral' }
 
 function Info({ name, role }) {
@@ -26,25 +28,26 @@ export default function ProfileCard({
   status = 'on-track',
   statusLabel,
   progress = 86,
+  fill = false,
   className,
   ...rest
 }) {
   if (variant !== 'long') {
     return (
-      <div className={cx('inline-flex max-w-full items-start gap-indents-s-inner rounded-radius-s p-indents-s-inner', CHIP[variant], className)} {...rest}>
+      <div className={cx(fill ? 'flex w-full' : 'inline-flex max-w-full', 'items-start gap-indents-s-inner rounded-radius-s p-indents-s-inner', CHIP[variant], className)} {...rest}>
         <Avatar image={image} src={src} alt="" className="mix-blend-multiply" />
         <Info name={name} role={role} />
       </div>
     )
   }
   return (
-    <div className={cx('flex w-full items-start gap-indents-s-inner border-b border-divider-default py-indents-s-inner', className)} {...rest}>
+    <div className={cx('flex w-full items-start gap-indents-s-inner border-b border-divider-default py-indents-s-inner @max-tablet/page:flex-wrap', className)} {...rest}>
       <Avatar image={image} src={src} alt="" />
       <div className="flex min-w-0 flex-1 items-start justify-between gap-indents-s-inner">
         <Info name={name} role={role} />
         <Status status={status} label={statusLabel} className="shrink-0" />
       </div>
-      <ProgressBar tone="accent" value={progress} label={`${name}: progress`} className="flex-1" />
+      <ProgressBar tone="accent" value={progress} label={`${name}: progress`} className="flex-1 @max-tablet/page:basis-full" />
     </div>
   )
 }

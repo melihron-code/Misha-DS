@@ -49,6 +49,7 @@
   --color-colors-sage-300: #b8c6c3;
   --color-colors-yellow-200: #fffd9e;
   --color-colors-yellow-400: #ffe900;
+  --color-colors-yellow-600: #ffb700;
   --color-colors-olive-200: #e0e2a4;
   --color-colors-olive-800: #646905;
   --color-colors-brown: #d1a63b;
@@ -77,10 +78,15 @@
   --font-size-11: 11px;
   --font-size-15: 15px;
   --font-size-20: 20px;
+  --font-size-23: 23px;
   --font-size-30: 30px;
   --font-size-84: 84px;
   /* size */
+  --size-375: 375px;
+  --size-660: 660px;
+  --size-768: 768px;
   --size-830: 830px;
+  --size-1440: 1440px;
 }
 
 /* ---------- Tokens (Figma: Tokens / Light) — aliases only ---------- */
@@ -93,6 +99,7 @@
   --surface-card: var(--color-neutral-0);
   --surface-card-red: var(--color-colors-red-200);
   --surface-card-pink: var(--color-colors-pink);
+  --surface-hero-tint: var(--color-colors-yellow-600);
   --surface-card-violet: var(--color-colors-purple-100);
   --surface-card-yellow: var(--color-colors-olive-200);
   --surface-card-green: var(--color-colors-green-100);
@@ -177,8 +184,13 @@
   --font-size-h3: var(--font-size-20);
   --font-size-description: var(--font-size-30);
   --font-size-h1: var(--font-size-84);
+  --font-size-logo: var(--font-size-23);
   /* size */
   --size-base-with: var(--size-830);
+  --size-page: var(--size-1440);
+  --size-hero: var(--size-660);
+  --size-viewport-tablet: var(--size-768);
+  --size-viewport-mobile: var(--size-375);
   /* motion (code only) */
   --duration-fast: 120ms;
   --duration-base: 200ms;
@@ -200,6 +212,7 @@
   --leading-*: initial;
   --tracking-*: initial;
   --container-*: initial;
+  --breakpoint-*: initial;
 
   /* colors → bg-surface-card, text-text-primary, border-border-default … */
   --color-bg-default: var(--bg-default);
@@ -208,6 +221,7 @@
   --color-surface-card: var(--surface-card);
   --color-surface-card-red: var(--surface-card-red);
   --color-surface-card-pink: var(--surface-card-pink);
+  --color-surface-hero-tint: var(--surface-hero-tint);
   --color-surface-card-violet: var(--surface-card-violet);
   --color-surface-card-yellow: var(--surface-card-yellow);
   --color-surface-card-green: var(--surface-card-green);
@@ -286,6 +300,22 @@
 
   /* sizes → max-w-size-base-with, w-size-base-with */
   --container-size-base-with: var(--size-base-with);
+  --container-size-page: var(--size-page);
+  --container-size-hero: var(--size-hero);
+  --container-size-viewport-tablet: var(--size-viewport-tablet);
+  --container-size-viewport-mobile: var(--size-viewport-mobile);
+}
+
+/* ---------- Breakpoints (code only) ----------
+   Media queries: tablet:, desktop:, max-tablet:, max-desktop: (the window).
+   Container queries: @tablet:, @max-tablet: … (the nearest @container), and
+   @max-tablet/page: … (the nearest container named "page": the site page, or the
+   /ds-dev/ viewport preview). Literal values: CSS can't use variables in conditions. */
+@theme {
+  --breakpoint-tablet: 48rem; /* 768px */
+  --breakpoint-desktop: 75rem; /* 1200px */
+  --container-tablet: 48rem;
+  --container-desktop: 75rem;
 }
 
 /* ---------- Effects → shadow-card (no effect styles in Figma; the one shadow used in the designs) ---------- */
@@ -294,7 +324,7 @@
 }
 
 /* ---------- Text styles (Figma text styles) ---------- */
-/* heading/h1: Instrument Serif Regular 84/76, -1% */
+/* heading/h1: Instrument Serif Regular 84/76, -1%; mobile 48/44 */
 @utility text-heading-h1 {
   font-family: var(--font-family-antiqa), serif;
   font-size: var(--font-size-h1);
@@ -303,8 +333,13 @@
   letter-spacing: -0.01em;
   --text-letter-spacing: -0.01em;
   text-transform: none;
+  /* mobile: a page (container "page") narrower than the tablet breakpoint */
+  @container page (width < 48rem) {
+    font-size: 48px;
+    line-height: 44px;
+  }
 }
-/* heading/h2: Instrument Serif Regular 40/36, -1% */
+/* heading/h2: Instrument Serif Regular 40/36, -1%; mobile 28/26 */
 @utility text-heading-h2 {
   font-family: var(--font-family-antiqa), serif;
   font-size: 40px;
@@ -313,8 +348,13 @@
   letter-spacing: -0.01em;
   --text-letter-spacing: -0.01em;
   text-transform: none;
+  /* mobile: a page (container "page") narrower than the tablet breakpoint */
+  @container page (width < 48rem) {
+    font-size: 28px;
+    line-height: 26px;
+  }
 }
-/* text/description: Pixform Regular 30/27, -3%, UPPER */
+/* text/description: Pixform Regular 30/27, -3%, UPPER; mobile 20/18 */
 @utility text-text-description {
   font-family: var(--font-family-pixel), monospace;
   font-size: var(--font-size-description);
@@ -323,6 +363,21 @@
   letter-spacing: -0.03em;
   --text-letter-spacing: -0.03em;
   text-transform: uppercase;
+  /* mobile: a page (container "page") narrower than the tablet breakpoint */
+  @container page (width < 48rem) {
+    font-size: 20px;
+    line-height: 18px;
+  }
+}
+/* heading/logo: Instrument Serif Regular 23/23, 0% */
+@utility text-heading-logo {
+  font-family: var(--font-family-antiqa), serif;
+  font-size: var(--font-size-logo);
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0;
+  --text-letter-spacing: 0;
+  text-transform: none;
 }
 /* heading/h3: Akkurat LL Cyr TT Regular 20/18, -2% */
 @utility text-heading-h3 {

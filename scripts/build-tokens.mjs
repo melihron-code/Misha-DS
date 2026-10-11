@@ -13,6 +13,7 @@ const ref = name => {
 }
 const fontVar = n => [...f.fontPrimitives].find(p => p.figma === n).cssVar
 const px = n => (n === 0 ? '0' : n + 'px')
+const rem = n => n / 16 + 'rem'
 const fallback = fam => (fam === 'Instrument Serif' ? 'serif' : fam === 'Pixform' ? 'monospace' : 'sans-serif')
 const L = []
 const w = s => L.push(s)
@@ -96,6 +97,7 @@ w(`/* ---------- Tailwind theme ----------
   --leading-*: initial;
   --tracking-*: initial;
   --container-*: initial;
+  --breakpoint-*: initial;
 `)
 w('  /* colors → bg-surface-card, text-text-primary, border-border-default … */')
 for (const t of f.colorTokens) w(`  --color-${t.cssVar.slice(2)}: var(${t.cssVar});`)
@@ -111,6 +113,16 @@ w('\n  /* sizes → max-w-size-base-with, w-size-base-with */')
 for (const s of f.sizeTokens) w(`  --container-${s.cssVar.slice(2)}: var(${s.cssVar});`)
 w('}\n')
 
+w(`/* ---------- Breakpoints (code only) ----------
+   Media queries: tablet:, desktop:, max-tablet:, max-desktop: (the window).
+   Container queries: @tablet:, @max-tablet: … (the nearest @container), and
+   @max-tablet/page: … (the nearest container named "page": the site page, or the
+   /ds-dev/ viewport preview). Literal values: CSS can't use variables in conditions. */
+@theme {`)
+for (const b of f.breakpoints) w(`  --breakpoint-${b.name}: ${rem(b.px)}; /* ${b.px}px */`)
+for (const b of f.breakpoints) w(`  --container-${b.name}: ${rem(b.px)};`)
+w('}\n')
+
 w('/* ---------- Effects → shadow-card (no effect styles in Figma; the one shadow used in the designs) ---------- */')
 w('@theme {')
 for (const s of f.shadows) w(`  ${s.cssVar}: ${px(s.x)} ${px(s.y)} ${px(s.blur)} ${px(s.spread)} var(${f.colorTokens.find(t => t.figma === s.color).cssVar});`)
@@ -120,7 +132,8 @@ w('/* ---------- Text styles (Figma text styles) ---------- */')
 for (const t of f.textStyles) {
   const fam = t.familyVar ? `var(${t.familyVar}), ${fallback(t.family)}` : `"${t.family}", ${fallback(t.family)}`
   const ls = t.letterSpacing === 0 ? '0' : (t.letterSpacing / 100) + 'em'
-  w(`/* ${t.figma}: ${t.family} ${t.weightName} ${t.size}/${t.lineHeight}, ${t.letterSpacing}%${t.textCase === 'uppercase' ? ', UPPER' : ''} */`)
+  const tablet = f.breakpoints.find(b => b.name === 'tablet').px
+  w(`/* ${t.figma}: ${t.family} ${t.weightName} ${t.size}/${t.lineHeight}, ${t.letterSpacing}%${t.textCase === 'uppercase' ? ', UPPER' : ''}${t.mobile ? `; mobile ${t.mobile.size}/${t.mobile.lineHeight}` : ''} */`)
   w(`@utility ${t.tw} {
   font-family: ${fam};
   font-size: ${t.sizeVar ? `var(${t.sizeVar})` : px(t.size)};
@@ -128,7 +141,12 @@ for (const t of f.textStyles) {
   line-height: ${px(t.lineHeight)};
   letter-spacing: ${ls};
   --text-letter-spacing: ${ls};
-  text-transform: ${t.textCase};
+  text-transform: ${t.textCase};${t.mobile ? `
+  /* mobile: a page (container "page") narrower than the tablet breakpoint */
+  @container page (width < ${rem(tablet)}) {
+    font-size: ${px(t.mobile.size)};
+    line-height: ${px(t.mobile.lineHeight)};
+  }` : ''}
 }`)
 }
 

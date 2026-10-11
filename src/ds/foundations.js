@@ -27,6 +27,8 @@ export const primitiveColors = [
   { figma: 'color/colors/sage-300', cssVar: '--color-colors-sage-300', hex: '#b8c6c3' },
   { figma: 'color/colors/yellow-200', cssVar: '--color-colors-yellow-200', hex: '#fffd9e' },
   { figma: 'color/colors/yellow-400', cssVar: '--color-colors-yellow-400', hex: '#ffe900' },
+  // v0.5.0: HeroCard's hard-light tint (was a raw #FFB700 in Figma).
+  { figma: 'color/colors/yellow-600', cssVar: '--color-colors-yellow-600', hex: '#ffb700' },
   { figma: 'color/colors/olive-200', cssVar: '--color-colors-olive-200', hex: '#e0e2a4' },
   { figma: 'color/colors/olive-800', cssVar: '--color-colors-olive-800', hex: '#646905' },
   { figma: 'color/colors/brown', cssVar: '--color-colors-brown', hex: '#d1a63b' },
@@ -44,6 +46,8 @@ export const colorTokens = [
   { figma: 'surface/card', cssVar: '--surface-card', alias: 'color/neutral/0', tw: 'bg-surface-card' },
   { figma: 'surface/card-red', cssVar: '--surface-card-red', alias: 'color/colors/red-200', tw: 'bg-surface-card-red' },
   { figma: 'surface/card-pink', cssVar: '--surface-card-pink', alias: 'color/colors/pink', tw: 'bg-surface-card-pink' },
+  // v0.5.0: the yellow laid over HeroCard's photo (hard-light blend).
+  { figma: 'surface/hero-tint', cssVar: '--surface-hero-tint', alias: 'color/colors/yellow-600', tw: 'bg-surface-hero-tint' },
   { figma: 'surface/card-violet', cssVar: '--surface-card-violet', alias: 'color/colors/purple-100', tw: 'bg-surface-card-violet' },
   { figma: 'surface/card-yellow', cssVar: '--surface-card-yellow', alias: 'color/colors/olive-200', tw: 'bg-surface-card-yellow' },
   { figma: 'surface/card-green', cssVar: '--surface-card-green', alias: 'color/colors/green-100', tw: 'bg-surface-card-green' },
@@ -150,6 +154,7 @@ export const fontPrimitives = [
   { figma: 'font-size/11', cssVar: '--font-size-11', px: 11 },
   { figma: 'font-size/15', cssVar: '--font-size-15', px: 15 },
   { figma: 'font-size/20', cssVar: '--font-size-20', px: 20 },
+  { figma: 'font-size/23', cssVar: '--font-size-23', px: 23 },
   { figma: 'font-size/30', cssVar: '--font-size-30', px: 30 },
   { figma: 'font-size/84', cssVar: '--font-size-84', px: 84 },
 ]
@@ -164,17 +169,44 @@ export const fontTokens = [
   { figma: 'font/size/h3', cssVar: '--font-size-h3', alias: 'font-size/20' },
   { figma: 'font/size/description', cssVar: '--font-size-description', alias: 'font-size/30' },
   { figma: 'font/size/h1', cssVar: '--font-size-h1', alias: 'font-size/84' },
+  // v0.5.0: the "Hired & Wired" logo (was a raw 23px in Figma).
+  { figma: 'font/size/logo', cssVar: '--font-size-logo', alias: 'font-size/23' },
 ]
 
-export const sizePrimitives = [{ figma: 'size/830', cssVar: '--size-830', px: 830 }]
-export const sizeTokens = [{ figma: 'size/base with', cssVar: '--size-base-with', alias: 'size/830', px: 830, tw: 'max-w-size-base-with' }]
+export const sizePrimitives = [
+  { figma: 'size/375', cssVar: '--size-375', px: 375 },
+  { figma: 'size/660', cssVar: '--size-660', px: 660 },
+  { figma: 'size/768', cssVar: '--size-768', px: 768 },
+  { figma: 'size/830', cssVar: '--size-830', px: 830 },
+  { figma: 'size/1440', cssVar: '--size-1440', px: 1440 },
+]
+export const sizeTokens = [
+  { figma: 'size/base with', cssVar: '--size-base-with', alias: 'size/830', px: 830, tw: 'max-w-size-base-with' },
+  // v0.5.0
+  { figma: 'size/page', cssVar: '--size-page', alias: 'size/1440', px: 1440, tw: 'max-w-size-page', use: 'page max width (the Figma screens)' },
+  { figma: 'size/hero', cssVar: '--size-hero', alias: 'size/660', px: 660, use: 'HeroSection minimum height (desktop), as var(--size-hero)' },
+  { figma: 'size/viewport-tablet', cssVar: '--size-viewport-tablet', alias: 'size/768', px: 768, use: '/ds-dev/ preview width' },
+  { figma: 'size/viewport-mobile', cssVar: '--size-viewport-mobile', alias: 'size/375', px: 375, use: '/ds-dev/ preview width' },
+]
+
+// v0.5.0. Breakpoints (code only): mobile < 768, tablet 768–1199, desktop ≥ 1200. They're both
+// media-query breakpoints (tablet:, desktop:, max-tablet: …) and container-query sizes
+// (@tablet:, @max-tablet: …): components respond to the width they're given, the page to the window.
+// Literal rem values: CSS can't use variables in media or container conditions.
+export const breakpoints = [
+  { name: 'tablet', px: 768 },
+  { name: 'desktop', px: 1200 },
+]
 
 // Same order as the Typography table in the Figma Styles frame.
 // letterSpacing in % of font size (Figma) → em in CSS.
 export const textStyles = [
-  { figma: 'heading/h1', tw: 'text-heading-h1', family: 'Instrument Serif', familyVar: '--font-family-antiqa', size: 84, sizeVar: '--font-size-h1', weight: 400, weightName: 'Regular', lineHeight: 76, letterSpacing: -1, textCase: 'none' },
-  { figma: 'heading/h2', tw: 'text-heading-h2', family: 'Instrument Serif', familyVar: '--font-family-antiqa', size: 40, sizeVar: null, weight: 400, weightName: 'Regular', lineHeight: 36, letterSpacing: -1, textCase: 'none' },
-  { figma: 'text/description', tw: 'text-text-description', family: 'Pixform', familyVar: '--font-family-pixel', size: 30, sizeVar: '--font-size-description', weight: 400, weightName: 'Regular', lineHeight: 27, letterSpacing: -3, textCase: 'uppercase' },
+  // mobile (v0.5.0, code only): size / line height in a page narrower than the tablet breakpoint.
+  { figma: 'heading/h1', tw: 'text-heading-h1', family: 'Instrument Serif', familyVar: '--font-family-antiqa', size: 84, sizeVar: '--font-size-h1', weight: 400, weightName: 'Regular', lineHeight: 76, letterSpacing: -1, textCase: 'none', mobile: { size: 48, lineHeight: 44 } },
+  { figma: 'heading/h2', tw: 'text-heading-h2', family: 'Instrument Serif', familyVar: '--font-family-antiqa', size: 40, sizeVar: null, weight: 400, weightName: 'Regular', lineHeight: 36, letterSpacing: -1, textCase: 'none', mobile: { size: 28, lineHeight: 26 } },
+  { figma: 'text/description', tw: 'text-text-description', family: 'Pixform', familyVar: '--font-family-pixel', size: 30, sizeVar: '--font-size-description', weight: 400, weightName: 'Regular', lineHeight: 27, letterSpacing: -3, textCase: 'uppercase', mobile: { size: 20, lineHeight: 18 } },
+  // v0.5.0: the "Hired & Wired" logo (Figma: raw Instrument Serif 23px, line height normal, trimmed).
+  { figma: 'heading/logo', tw: 'text-heading-logo', family: 'Instrument Serif', familyVar: '--font-family-antiqa', size: 23, sizeVar: '--font-size-logo', weight: 400, weightName: 'Regular', lineHeight: 23, letterSpacing: 0, textCase: 'none' },
   { figma: 'heading/h3', tw: 'text-heading-h3', family: 'Akkurat LL Cyr TT', familyVar: '--font-family-grotesk', size: 20, sizeVar: '--font-size-h3', weight: 400, weightName: 'Regular', lineHeight: 18, letterSpacing: -2, textCase: 'none' },
   { figma: 'heading/H4', tw: 'text-heading-h4', family: 'Inter', familyVar: null, size: 15, sizeVar: '--font-size-m', weight: 600, weightName: 'Semi Bold', lineHeight: 14, letterSpacing: -2, textCase: 'none' },
   { figma: 'text/pixel', tw: 'text-text-pixel', family: 'Pixform', familyVar: '--font-family-pixel', size: 10, sizeVar: null, weight: 400, weightName: 'Regular', lineHeight: 9, letterSpacing: 20, textCase: 'uppercase' },
