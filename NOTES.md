@@ -3,6 +3,34 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.14 — ProgressBar: four variants (2026-10-11)
+
+### Summary
+ProgressBar follows the simplified Figma set (node 357:33707): tone default (sage) | accent (green) × size sm (one row
+of dots) | lg (two rows with the stage labels). The labels now belong to lg only, behind Figma's `labels` boolean. The 11
+built pages look exactly the same (33 full-page screenshots, 1440 / 768 / 375, identical to v0.6.13): Header and the
+candidate's "Personal development" were already lg with stages.
+
+### Changed
+- **ProgressBar:** new `labels` (default on): lg shows `stages` under the bar (equal columns; "Stage 7 of 9: Minus one" in
+  a mobile page). sm never shows labels, even with `stages`. The current stage is in the bar's label only when the labels
+  show.
+- **Fix:** switching the labels on or off no longer leaves the bar with a single dot (the dot count is measured again on
+  the new row). It also happened with v0.6.13's `stages`.
+- **Docs** (/ds-dev/atoms/progress-bar): the grid shows the four Figma variants at 75; the playground has tone, size,
+  value and a labels toggle (enabled for lg).
+
+### Differences from Figma
+- The labels' row in Figma has a 20px gap (not bound to a token) but its labels are fixed 156px wide and overflow the
+  frame, so they land in equal columns with no visible gap. Code keeps equal columns without a gap: same result.
+
+### How to use
+```jsx
+<ProgressBar tone="accent" value={60} label="Productivity" />            // sm: one row, no labels
+<ProgressBar size="lg" stages={careerStages} value={45} label="Progress" /> // lg: two rows + labels
+<ProgressBar size="lg" labels={false} value={45} />                        // lg without labels
+```
+
 ## v0.6.13 — Component consolidation (2026-10-11)
 
 ### Summary
@@ -49,9 +77,7 @@ PeopleList); molecules 12 → **11**.
   actions later; the labels mirror Figma's text properties.
 
 ### Figma to-do
-- **ProgressBar:** add the stage labels as an option (e.g. a boolean `stages` with the text/caps labels under the
-  dots, and a mobile "Stage X of N" line), so Header's progress and the candidate's "Personal development" are
-  ProgressBar instances.
+- **ProgressBar:** add the stage labels as an option. Done in Figma before v0.6.14 (the `labels` boolean on lg).
 - **Dropdown:** optionally add an `open` look with the arrow pointing up (code: the arrow-down icon turned 180°).
 - **CardGrid, the site parts, TeamSummary:** nothing to do. They were code-only (the grids, summary and panels in
   Figma are frames on the screens, not components).
@@ -1169,7 +1195,7 @@ The library components still exist in their source library; this file no longer 
 #### Properties
 | Component | Old → New | Type |
 |---|---|---|
-| ProgressBar | Property 1 → `size`; length → `value`; (new in v0.4.0) `tone` default \| accent | variant; variant; variant |
+| ProgressBar | Property 1 → `size`; length → `value`; (new in v0.4.0) `tone` default \| accent; (new in v0.6.14) `labels` (lg only; the texts come from `stages`) | variant; variant; variant; boolean |
 | Avatar | Property 1 → `image` | variant |
 | Status | Property 1 → `status` | variant |
 | Icon | Property 1 → `name` | variant |

@@ -18,7 +18,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from '../../../components/atoms'
-import { careerStages, developmentStages } from '../../../data/stages'
+import { careerStages } from '../../../data/stages'
 import { ONE, STATES, STATES_NO_DISABLED, select, text, toggle, withAbout } from '../docs/docHelpers'
 import IconGallery from './IconGallery'
 
@@ -228,22 +228,24 @@ const PROGRESS_BAR = {
   name: 'ProgressBar',
   label: 'Progress bar',
   Component: ProgressBar,
-  about: 'Dotted progress; fills the width of its container. tone accent uses the green data/bar-*-accent colors. stages: the stage names under the bar (Header, the candidate’s development); in a mobile page one line, “Stage 7 of 9: Minus one”.',
+  about: 'Dotted progress; fills the width of its container. tone default is sage, accent green (data/bar-*-accent). sm: one row of dots. lg: two rows with the stage names (stages) under them, unless labels is off; in a mobile page the names become one line, “Stage 7 of 9: Minus one”.',
   rows: [
-    { label: 'sm · 75', props: { size: 'sm', value: 75 } },
-    { label: 'sm · 20', props: { size: 'sm', value: 20 } },
-    { label: 'lg · 75', props: { size: 'lg', value: 75 } },
-    { label: 'lg · 20', props: { size: 'lg', value: 20 } },
-    { label: 'accent · sm · 75', props: { tone: 'accent', size: 'sm', value: 75 } },
-    { label: 'accent · lg · 75', props: { tone: 'accent', size: 'lg', value: 75 } },
-    { label: 'lg · stages (career)', props: { size: 'lg', value: 45, stages: careerStages } },
-    { label: 'sm · accent · stages (development)', props: { tone: 'accent', size: 'sm', value: 60, stages: developmentStages } },
+    { label: 'default · sm', props: { size: 'sm', value: 75 } },
+    { label: 'default · lg · labels', props: { size: 'lg', value: 75, stages: careerStages } },
+    { label: 'accent · sm', props: { tone: 'accent', size: 'sm', value: 75 } },
+    { label: 'accent · lg · labels', props: { tone: 'accent', size: 'lg', value: 75, stages: careerStages } },
   ],
   columns: ONE,
-  controls: [select('tone', ['default', 'accent']), select('size', ['sm', 'lg']), { prop: 'value', type: 'number', label: 'value (0–100)' }, select('stages', ['none', 'career', 'development'])],
-  initial: { tone: 'default', size: 'sm', value: 75, stages: 'none' },
-  toProps: ({ stages, ...p }) => ({ ...p, ...(stages !== 'none' && { stages: stages === 'career' ? careerStages : developmentStages }) }),
-  snippetNames: { stages: 'stages' },
+  controls: [
+    select('tone', ['default', 'accent']),
+    select('size', ['sm', 'lg']),
+    { prop: 'value', type: 'number', label: 'value (0–100)' },
+    { ...toggle('labels'), enabled: p => p.size === 'lg' },
+  ],
+  initial: { tone: 'default', size: 'lg', value: 75, labels: true },
+  toProps: p => (p.size === 'lg' ? { ...p, stages: careerStages } : { tone: p.tone, size: p.size, value: p.value }),
+  snippetNames: { stages: 'careerStages' },
+  defaults: { labels: true },
   wide: true,
 }
 
