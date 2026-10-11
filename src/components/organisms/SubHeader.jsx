@@ -1,4 +1,5 @@
-import { Button, Tooltip } from '../atoms'
+import { Button } from '../atoms'
+import Tooltip from '../support/Tooltip'
 import { cx } from '../atoms/shared'
 import { Breadcrumbs } from '../molecules'
 

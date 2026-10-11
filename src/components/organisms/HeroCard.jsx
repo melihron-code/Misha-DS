@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import photo768 from '../../assets/hero/photo-768.webp'
 import photo1536 from '../../assets/hero/photo-1536.webp'
-import { Button, Dropdown, ToggleButtonGroup, Tooltip } from '../atoms'
+import { Button, Dropdown, ToggleButtonGroup } from '../atoms'
+import Tooltip from '../support/Tooltip'
 import { cx } from '../atoms/shared'
 import { nbsp } from '../../lib/nbsp'
 

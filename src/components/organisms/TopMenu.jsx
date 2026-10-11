@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { Button, Logo, NavTab, TextLink, Tooltip } from '../atoms'
+import { Button, Logo, NavTab, TextLink } from '../atoms'
+import Tooltip from '../support/Tooltip'
 import { cx } from '../atoms/shared'
 
 // Figma: Top menu (one component, no properties of its own). The current tab is set on the NavTabs

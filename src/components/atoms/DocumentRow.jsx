@@ -1,5 +1,5 @@
 import Button from './Button'
-import Tooltip from './Tooltip'
+import Tooltip from '../support/Tooltip'
 import { cx } from './shared'
 
 // Figma: DocumentRow. title, author, date (+ type "Document" and an "edit" button).

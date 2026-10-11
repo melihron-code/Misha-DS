@@ -1,4 +1,5 @@
-import { Button, TextLink, Tooltip } from '../components/atoms'
+import { Button, TextLink } from '../components/atoms'
+import Tooltip from '../components/support/Tooltip'
 import { NO_ACTION, SITE_NAME } from './site'
 
 // Step 6, part 1: a page's content before it's built (part 2). It sets the tab title and shows the page's

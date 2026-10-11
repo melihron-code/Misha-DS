@@ -1,4 +1,5 @@
-import { Button, Status, Tooltip } from '../atoms'
+import { Button, Status } from '../atoms'
+import Tooltip from '../support/Tooltip'
 import { cx } from '../atoms/shared'
 
 // Figma: CampaignCard. showStatus, showButton. A hiring campaign: title, status and a "More

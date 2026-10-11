@@ -1,13 +1,13 @@
 import { useId } from 'react'
-import { Button, Tooltip } from '../atoms'
+import { Button } from '../atoms'
+import Tooltip from '../support/Tooltip'
 import { cx } from '../atoms/shared'
 import { StageProgress } from '../molecules'
 
 // DevelopmentCard (v0.6.7, code first; Figma: "development" on the candidate screen). A surface/card panel (radius/L,
 // padding indents/X, indents/L inside): a title (heading/h2), the stages (StageProgress lg, accent: teal as in
-// Figma), the next level (a
-// heading/h3 label in text/secondary over the role, indents/XS apart), the prediction (a text/caps label over a
-// heading/h3 date), indents/S (inner) between those two, and a Button secondary.
+// Figma), the next level (a heading/h3 label in text/secondary over the role, indents/XS apart), the prediction (a
+// text/caps label over a heading/h3 date), indents/S (inner) between those two, and a Button secondary.
 // `stages`, `value` (0–100), `nextLevel`, `prediction`; `action`: { label, href, onClick, tooltip } (with `tooltip` it
 // has no action yet). Responsive: StageProgress shows "Stage X of N" in a mobile page.
 export default function DevelopmentCard({

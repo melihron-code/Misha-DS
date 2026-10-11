@@ -1,7 +1,7 @@
-import { Button, ErrorMessage, Flag } from '../atoms'
-import { cx, SIZE } from '../atoms/shared'
+import { Button, ErrorMessage, Flag } from '../../components/atoms'
+import { cx, SIZE } from '../../components/atoms/shared'
 
-// Figma: TaskItem. state default | active, showButton, showError. A task in a checklist, with a
+// Figma: TaskItem (a site part since v0.6.12, taken out of the design system; for the New campaign page). state default | active, showButton, showError. A task in a checklist, with a
 // divider/default line under it. state default = done (Flag filled, title in text/secondary);
 // active = to do (Flag outline, title in text/primary). The Flag switches between them: it calls
 // onToggle with the new state. Under the title: an ErrorMessage (it fits its text; Figma stretches it to

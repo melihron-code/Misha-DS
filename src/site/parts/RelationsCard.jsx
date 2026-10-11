@@ -1,8 +1,10 @@
-import { Button, Tooltip } from '../atoms'
-import { cx, PRESSABLE } from '../atoms/shared'
-import { ProfileCard } from '../molecules'
+import { Button } from '../../components/atoms'
+import Tooltip from '../../components/support/Tooltip'
+import { cx, PRESSABLE } from '../../components/atoms/shared'
+import { ProfileCard } from '../../components/molecules'
 
-// RelationsCard (v0.6.7, code first; Figma: "relations" on the candidate screen). A surface/card panel (radius/L,
+// RelationsCard (v0.6.7; a site part since v0.6.12, not in the design system; Figma: "relations" on the candidate
+// screen). A surface/card panel (radius/L,
 // padding indents/X) with groups of people, indents/XXL (out) apart: each a title (heading/h2), the people as short
 // ProfileCards in their colors (indents/3XS apart, wrapping), then an optional Button secondary, indents/L between.
 // `groups`: [{ title, people: [{ name, role, image, color, href, tooltip }], action: { label, href, onClick, tooltip } }].

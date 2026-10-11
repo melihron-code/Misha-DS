@@ -20,7 +20,6 @@ import {
 } from '../../../components/atoms'
 import { ONE, STATES, STATES_NO_DISABLED, select, text, toggle, withAbout } from '../docs/docHelpers'
 import IconGallery from './IconGallery'
-import TooltipOnButton from './TooltipOnButton'
 
 // Docs for each atom (the format is described in ../docs/docHelpers.js).
 // Disabled in the playground unless the node variant is chosen (the sublabel exists only there).
@@ -60,11 +59,15 @@ const TOGGLE_BUTTON_GROUP = {
   name: 'ToggleButtonGroup',
   label: 'Toggle button group',
   Component: ToggleButtonGroup,
-  about: 'Single choice from a few options (radio group). Arrow keys move the selection; Tab leaves the group.',
-  rows: [{ label: 'default', props: { value: 'team-1' } }],
+  about: 'Single choice from a few options (radio group). Arrow keys move the selection; Tab leaves the group. size lg (on accent/highlight) or sm (small buttons, wrapping; the status filter on Employees); showLabel shows the label above.',
+  rows: [
+    { label: 'lg', props: { value: 'team-1' } },
+    { label: 'sm · showLabel', props: { size: 'sm', showLabel: true, label: 'Status:', options: ['All', 'On track', 'Rocket growth', 'Failing'], value: 'All' } },
+  ],
   columns: ONE,
-  controls: [select('value', ['team-1', 'team-2', 'team-3'])],
-  initial: { value: 'team-1' },
+  controls: [select('size', ['lg', 'sm']), toggle('showLabel'), select('value', ['team-1', 'team-2', 'team-3'])],
+  initial: { size: 'lg', showLabel: false, value: 'team-1', label: 'Team' },
+  defaults: { size: 'lg', showLabel: false },
   bind: (p, set) => ({ onChange: v => set({ ...p, value: v }) }),
 }
 
@@ -264,18 +267,6 @@ const TEXT_LINK = {
   initial: { children: 'Profile', current: false },
 }
 
-const TOOLTIP = {
-  name: 'Tooltip',
-  label: 'Tooltip',
-  Component: TooltipOnButton,
-  about: 'A short note under a control, shown on hover and keyboard focus; the site puts "No action for now" on buttons and links that don’t lead anywhere yet. Wraps one focusable element (here a Button). unavailable: the element has no action (aria-disabled, not-allowed cursor, no hover overlay; still focusable). align: which edges line up, so it stays inside the page. New in v0.6.0, not in Figma yet.',
-  rows: ['start', 'center', 'end'].map(a => ({ label: `align ${a}`, props: { align: a, open: true, unavailable: true, text: 'No action for now', children: 'Generate report' } })),
-  columns: ONE,
-  controls: [select('align', ['start', 'center', 'end']), toggle('unavailable'), text('text')],
-  initial: { align: 'center', unavailable: true, text: 'No action for now', children: 'Generate report' },
-  defaults: { align: 'center', unavailable: false },
-}
-
 const LOGO = {
   name: 'Logo',
   label: 'Logo',
@@ -308,7 +299,6 @@ export const ATOM_PAGES = withAbout([
   { slug: 'nav-tab', label: 'Nav tab', parts: [NAV_TAB] },
   { slug: 'text-link', label: 'Text link', parts: [TEXT_LINK] },
   { slug: 'logo', label: 'Logo', parts: [LOGO] },
-  { slug: 'tooltip', label: 'Tooltip', parts: [TOOLTIP] },
   { slug: 'avatar', label: 'Avatar', about: 'Several round photos overlapping, or one on its own.', parts: [AVATAR_GROUP, AVATAR] },
   { slug: 'document-row', label: 'Document row', parts: [DOCUMENT_ROW] },
 ])

@@ -1,6 +1,7 @@
-import { useRef } from 'react'
+import { useId, useRef } from 'react'
+import { cx } from './shared'
 import ToggleButton from './ToggleButton'
-import Tooltip from './Tooltip'
+import Tooltip from '../support/Tooltip'
 
 // Figma: ToggleButtonGroup (lg ToggleButtons on accent/highlight). In code it's a
 // single-choice radio group: one option is selected; arrow keys move the selection.
@@ -13,7 +14,16 @@ const DEFAULT_OPTIONS = [
   { value: 'team-3', label: 'Team' },
 ]
 
-export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, onChange, label = 'Options', className }) {
+// `size` (v0.6.12): lg (Figma's group: lg ToggleButtons on accent/highlight) or sm (small ToggleButtons, no fill, indents/2XS
+// apart, wrapping; Figma: the status chips on all-teams-employees). `showLabel` shows `label` over the buttons
+// (text/caps, indents/XS above them); otherwise it only names the group for screen readers.
+const GROUP = {
+  lg: 'inline-flex items-center gap-indents-3xs rounded-radius-m bg-accent-highlight p-indents-2xs',
+  sm: 'flex flex-wrap gap-indents-2xs',
+}
+
+export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, onChange, label = 'Options', size = 'lg', showLabel = false, className }) {
+  const labelId = useId()
   const refs = useRef([])
   const items = options.map(o => (typeof o === 'string' ? { value: o, label: o } : o))
   const selectedIndex = Math.max(0, items.findIndex(o => o.value === value))
@@ -30,19 +40,20 @@ export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, on
     select(next < 0 ? last : next > last ? 0 : next)
   }
 
-  return (
+  const group = (
     <div
       role="radiogroup"
-      aria-label={label}
+      aria-label={showLabel ? undefined : label}
+      aria-labelledby={showLabel ? labelId : undefined}
       onKeyDown={onKeyDown}
-      className={`inline-flex items-center gap-indents-3xs rounded-radius-m bg-accent-highlight p-indents-2xs ${className ?? ''}`}
+      className={cx(GROUP[size], !showLabel && className)}
     >
       {items.map((o, i) => (
         <Tooltip key={i} text={o.tooltip} unavailable>
           <ToggleButton
             ref={el => (refs.current[i] = el)}
             role="radio"
-            size="lg"
+            size={size}
             label={o.label}
             selected={i === selectedIndex}
             tabIndex={i === selectedIndex ? 0 : -1}
@@ -50,6 +61,15 @@ export default function ToggleButtonGroup({ options = DEFAULT_OPTIONS, value, on
           />
         </Tooltip>
       ))}
+    </div>
+  )
+  if (!showLabel) return group
+  return (
+    <div className={cx('flex flex-col gap-indents-xs', className)}>
+      <span id={labelId} className="text-text-caps text-text-primary">
+        {label}
+      </span>
+      {group}
     </div>
   )
 }

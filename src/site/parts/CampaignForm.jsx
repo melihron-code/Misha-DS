@@ -1,9 +1,11 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { Button, Dropdown, ErrorMessage, TextArea, TextInput, Tooltip } from '../atoms'
-import { cx } from '../atoms/shared'
-import { SkillsInput } from '../molecules'
+import { Button, Dropdown, ErrorMessage, TextArea, TextInput } from '../../components/atoms'
+import Tooltip from '../../components/support/Tooltip'
+import { cx } from '../../components/atoms/shared'
+import SkillsInput from './SkillsInput'
 
-// CampaignForm (v0.6.9, code first; Figma: the "form" card on hiring-campaign-wizard). A surface/card panel (radius/L,
+// CampaignForm (v0.6.9; a site part since v0.6.12, not in the design system; Figma: the "form" card on
+// hiring-campaign-wizard). Built from design-system atoms, plus its own SkillsInput. A surface/card panel (radius/L,
 // indents/X on top, indents/XXL (out) at the bottom) with a centered column (7/12 of the card; Figma: 482 of 830):
 // sections indents/XXL (out) apart, each a title (heading/h2) over its fields, then the submit Button (primary-lg,
 // full column width). Fields sit in 2 columns (indents/2XS between them, indents/L between rows); `span: 2` takes

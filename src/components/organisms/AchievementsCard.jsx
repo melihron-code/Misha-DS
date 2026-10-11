@@ -1,5 +1,6 @@
 import { useId } from 'react'
-import { Button, Tooltip } from '../atoms'
+import { Button } from '../atoms'
+import Tooltip from '../support/Tooltip'
 import { cx } from '../atoms/shared'
 
 // AchievementsCard (v0.6.7, code first; Figma: "achievements" on the candidate screen). A surface/card-yellow panel

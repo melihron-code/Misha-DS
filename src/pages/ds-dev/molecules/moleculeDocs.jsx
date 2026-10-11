@@ -4,12 +4,10 @@ import {
   Breadcrumbs,
   CampaignCard,
   ExperienceItem,
-  FilterChips,
   MetricCard,
   Notification,
   ProfileCard,
   ProjectCard,
-  SkillsInput,
   StageProgress,
   StatCard,
   TeamCard,
@@ -17,7 +15,6 @@ import {
 import { breadcrumbs } from '../../../data/navigation'
 import { careerStages, developmentStages } from '../../../data/stages'
 import { ONE, number, select, text, toggle, withAbout } from '../docs/docHelpers'
-import { employeeFilters } from '../../../data/people'
 
 // Docs for each molecule (the format is described in ../docs/docHelpers.js). Molecules fill
 // their container; `width` shows each one at about its Figma width in the 830px column.
@@ -160,33 +157,6 @@ const METRIC_CARD = {
   width: 'w-2/9',
 }
 
-const FILTER_CHIPS = {
-  name: 'FilterChips',
-  label: 'Filter chips',
-  Component: FilterChips,
-  about: 'A label over small ToggleButtons: pick one to filter a list (a radio group; arrow keys move the choice). New in v0.6.4 (Figma: the status chips on all-teams-employees, drawn with Dropdowns there).',
-  rows: [{ label: 'default', props: { ...employeeFilters.status, value: 'all' } }, { label: 'one picked', props: { ...employeeFilters.status, value: 'growth' } }],
-  columns: ONE,
-  controls: [select('value', employeeFilters.status.options.map(o => o.value)), text('label')],
-  initial: { value: 'all', label: 'Status:' },
-  toProps: p => ({ ...p, options: employeeFilters.status.options }),
-  bind: (p, set) => ({ onChange: value => set({ ...p, value }) }),
-  snippetNames: { options: 'options' },
-}
-
-const SKILLS_INPUT = {
-  name: 'SkillsInput',
-  label: 'Skills input',
-  Component: SkillsInput,
-  about: 'A text field with Add; the added skills show as Tags you can remove. Enter adds too; no empty or repeated skills. New in v0.6.9 (Figma: required skills on hiring-campaign-wizard).',
-  rows: [{ label: 'default', props: { value: ['Python', 'SQL', 'R', 'Java'], placeholder: 'e.g. Python, SQL, etc.' } }],
-  columns: ONE,
-  controls: [text('label'), text('placeholder')],
-  initial: { label: 'Required skills', placeholder: 'e.g. Python, SQL, etc.', value: ['Python', 'SQL', 'R', 'Java'] },
-  bind: (p, set) => ({ onChange: value => set({ ...p, value }) }),
-  width: 'w-7/12',
-}
-
 const STAT_CARD = {
   name: 'StatCard',
   label: 'Stat card',
@@ -275,6 +245,4 @@ export const MOLECULE_PAGES = withAbout([
   { slug: 'notification', label: 'Notification', uses: [A.button], parts: [NOTIFICATION] },
   { slug: 'breadcrumbs', label: 'Breadcrumbs', uses: [A.textLink], parts: [BREADCRUMBS] },
   { slug: 'stage-progress', label: 'Stage progress', uses: [A.progressBar], parts: [STAGE_PROGRESS] },
-  { slug: 'filter-chips', label: 'Filter chips', uses: [A.toggleButton], parts: [FILTER_CHIPS] },
-  { slug: 'skills-input', label: 'Skills input', uses: [A.textInput, A.button, A.tag], parts: [SKILLS_INPUT] },
 ])

@@ -3,6 +3,31 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.12 — Design system cleanup (2026-10-11)
+
+### Summary
+Review of the design system after the first ten pages: step 6 had added 12 organisms, 2 molecules and an atom, most
+used on a single page. Taken out of the design system (no /ds-dev/ pages, not exported as design-system components),
+with the code kept where the site still needs it. The pages look and work as before. The design system now has 15
+organisms, 12 molecules and 19 atoms.
+
+### Changed
+- **Tooltip** (atom → helper): `src/components/support/Tooltip.jsx`. Still used for "No action for now"; no /ds-dev/
+  page, not in Figma.
+- **FilterChips** (molecule): removed. **ToggleButtonGroup** got `size` (lg | sm: small ToggleButtons, no fill,
+  `indents/2XS` apart, wrapping) and `showLabel` (the label above, text/caps); PeopleList's status filter uses it.
+- **Site parts** (new folder `src/site/parts/`: page sections only one page needs, built from design-system atoms and
+  molecules, not in the design system):
+  - **CampaignForm** (was an organism) with **SkillsInput** (was a molecule): Job description.
+  - **RelationsCard** (was an organism): Person.
+  - **TaskItem** (was a step-5 organism, also in Figma's `ds-organisms`): for the New campaign page.
+- **CLAUDE.md:** where helpers and site parts live; rule 8: site parts for sections only one page needs, and add a
+  component to the design system only when it's reused or in Figma.
+- **docs/sitemap.md:** the parts are marked on Person, Job description and New campaign.
+
+### Figma
+- **TaskItem** is still in Figma's `ds-organisms`; remove it there if it should leave the Figma design system too.
+
 ## v0.6.11 — Step 6, Part 2: Campaign published page (2026-10-11)
 
 ### Summary

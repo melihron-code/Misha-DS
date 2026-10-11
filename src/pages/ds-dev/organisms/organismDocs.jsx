@@ -1,6 +1,5 @@
 import {
   AchievementsCard,
-  CampaignForm,
   CampaignList,
   DevelopmentCard,
   DocumentList,
@@ -11,10 +10,8 @@ import {
   MetricGrid,
   PageTitle,
   PeopleList,
-  RelationsCard,
   StatGrid,
   SubHeader,
-  TaskItem,
   TeamGrid,
   TeamSummary,
   TopMenu,
@@ -23,13 +20,11 @@ import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
 import { candidateHero, homeHero, publishedBackground, publishedHero, teamsHero } from '../../../data/heroes'
 import { pipeline } from '../../../data/pipeline'
 import { careerStages } from '../../../data/stages'
-import { campaignTasks } from '../../../data/tasks'
 import { teamMetrics } from '../../../data/metrics'
 import { campaignById, campaignStatsOf, campaignsOf, teams } from '../../../data/teams'
 import { allEmployees, employeeFilters } from '../../../data/people'
 import { templateTypeByView, templates } from '../../../data/templates'
 import { personProfile } from '../../../data/profiles'
-import { campaignForm, generateQualifications } from '../../../data/campaignForm'
 import { number, ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
 
 // Docs for each organism (the format is described in ../docs/docHelpers.js). Organisms are shown in a
@@ -61,13 +56,11 @@ const U = {
   profileCard: { group: 'molecules', slug: 'profile-card', label: 'ProfileCard' },
   metricCard: { group: 'molecules', slug: 'metric-card', label: 'MetricCard' },
   teamCard: { group: 'molecules', slug: 'team-card', label: 'TeamCard' },
-  filterChips: { group: 'molecules', slug: 'filter-chips', label: 'FilterChips' },
   documentRow: { slug: 'document-row', label: 'DocumentRow' },
   notification: { group: 'molecules', slug: 'notification', label: 'Notification' },
   campaignCard: { group: 'molecules', slug: 'campaign-card', label: 'CampaignCard' },
   statCard: { group: 'molecules', slug: 'stat-card', label: 'StatCard' },
   textInput: { slug: 'input', label: 'TextInput' },
-  skillsInput: { group: 'molecules', slug: 'skills-input', label: 'SkillsInput' },
   stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
   topMenu: { group: 'organisms', slug: 'top-menu', label: 'TopMenu' },
   subHeader: { group: 'organisms', slug: 'sub-header', label: 'SubHeader' },
@@ -223,7 +216,7 @@ const PEOPLE_LIST = {
   name: 'PeopleList',
   label: 'People list',
   Component: PeopleList,
-  about: 'A card with an optional title (heading/h2, e.g. Team), optional filters (FilterChips on the left, a Dropdown on the right; with tooltip it has no action yet) and ProfileCard long rows, each a link to the person (overlay, focus ring). Mobile: the dropdown goes under the chips. New in v0.6.4 (Figma: the employees card on all-teams-employees).',
+  about: 'A card with an optional title (heading/h2, e.g. Team), optional filters (a small ToggleButtonGroup with its label on the left, a Dropdown on the right; with tooltip it has no action yet) and ProfileCard long rows, each a link to the person (overlay, focus ring). Mobile: the dropdown goes under the chips. New in v0.6.4 (Figma: the employees card on all-teams-employees).',
   rows: [
     { label: 'with title (a team page)', props: { title: 'Team', people: listedPeople.slice(0, 4) } },
     { label: 'with filters', props: { people: listedPeople, statusFilter: { ...employeeFilters.status, value: 'all' }, selectFilter: { ...employeeFilters.curator, tooltip: 'No action for now' } } },
@@ -279,21 +272,6 @@ const DEVELOPMENT_CARD = {
   snippetNames: { stages: 'developmentStages', action: 'action' },
   frame: true,
 }
-const relationGroups = personProfile.relations.map(g => ({ title: g.title, people: g.people.map(p => ({ ...p, tooltip: NO_ACTION_DOC })), action: g.actionLabel && { label: g.actionLabel, tooltip: NO_ACTION_DOC } }))
-const RELATIONS_CARD = {
-  name: 'RelationsCard',
-  label: 'Relations card',
-  Component: RelationsCard,
-  about: 'A white card with groups of people (Reports to, Mentoring): a title, colored short ProfileCards (links, or with a tooltip when they have no action yet) and an optional button. New in v0.6.7 (Figma: relations on the candidate screen).',
-  rows: [{ label: 'default', props: { groups: relationGroups } }],
-  columns: ONE,
-  controls: [],
-  initial: {},
-  toProps: () => ({ groups: relationGroups }),
-  snippetNames: { groups: 'groups' },
-  frame: true,
-}
-
 const listedCampaigns = campaignsOf('engineering').map(c => ({ id: c.id, title: c.title, status: c.status, statusLabel: c.statusLabel, stats: c.stats, href: `/campaigns/${c.id}` }))
 const CAMPAIGN_LIST = {
   name: 'CampaignList',
@@ -320,20 +298,6 @@ const PAGE_TITLE = {
   initial: { title: 'New Campaign' },
   frame: true,
 }
-const CAMPAIGN_FORM = {
-  name: 'CampaignForm',
-  label: 'Campaign form',
-  Component: CampaignForm,
-  about: 'A form card: sections of fields in 2 columns (text, dropdown, text area, skills), an error under a field with a minimum, a popover with Generate on a text area with assist, and a full-width submit button. Mobile: one column. New in v0.6.9 (Figma: the form on hiring-campaign-wizard).',
-  rows: [{ label: 'default', props: { sections: campaignForm.sections, submit: { label: 'Publish', href: '/campaigns/new/published' }, onAssist: (name, headLine) => generateQualifications(headLine) } }],
-  columns: ONE,
-  controls: [],
-  initial: {},
-  toProps: () => ({ sections: campaignForm.sections, submit: { label: 'Publish', href: '/campaigns/new/published' }, onAssist: (name, headLine) => generateQualifications(headLine) }),
-  snippetNames: { sections: 'campaignForm.sections', submit: 'submit', onAssist: 'onAssist' },
-  frame: true,
-}
-
 const sampleStats = campaignStatsOf(campaignById('forward-architect'))
 const STAT_GRID = {
   name: 'StatGrid',
@@ -363,24 +327,6 @@ const DOCUMENT_LIST = {
   frame: true,
 }
 
-const TASK_ITEM = {
-  name: 'TaskItem',
-  label: 'Task item',
-  Component: TaskItem,
-  about: 'A task in a checklist. default = done (filled flag, grey title), active = to do; the flag switches it. Optional error and button.',
-  rows: [
-    { label: 'default (done)', props: campaignTasks[1] },
-    { label: 'active (to do)', props: { ...campaignTasks[1], state: 'active' } },
-  ],
-  columns: ONE,
-  controls: [select('state', ['default', 'active']), toggle('showButton'), toggle('showError'), text('title')],
-  initial: { state: 'active', showButton: true, showError: true, title: campaignTasks[1].title },
-  toProps: p => ({ ...campaignTasks[1], ...p }),
-  bind: (p, set) => ({ onToggle: state => set({ ...p, state }) }),
-  defaults: { state: 'default', showButton: true, showError: true },
-  frame: true,
-}
-
 // Pages under /ds-dev/organisms/<slug>, in the order of the Figma organisms frame, HeroCard before HeroSection.
 export const ORGANISM_PAGES = withAbout([
   { slug: 'top-menu', label: 'Top menu', uses: [U.logo, U.button, U.navTab, U.textLink], parts: [TOP_MENU] },
@@ -391,15 +337,12 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'kanban-board', label: 'Kanban board', uses: [U.profileCard], parts: [KANBAN_BOARD] },
   { slug: 'metric-grid', label: 'Metric grid', uses: [U.metricCard], parts: [METRIC_GRID] },
   { slug: 'team-grid', label: 'Team grid', uses: [U.teamCard], parts: [TEAM_GRID] },
-  { slug: 'people-list', label: 'People list', uses: [U.filterChips, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
+  { slug: 'people-list', label: 'People list', uses: [U.toggleGroup, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
   { slug: 'document-list', label: 'Document list', uses: [U.documentRow], parts: [DOCUMENT_LIST] },
   { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
   { slug: 'campaign-list', label: 'Campaign list', uses: [U.campaignCard], parts: [CAMPAIGN_LIST] },
   { slug: 'page-title', label: 'Page title', parts: [PAGE_TITLE] },
   { slug: 'stat-grid', label: 'Stat grid', uses: [U.statCard], parts: [STAT_GRID] },
-  { slug: 'campaign-form', label: 'Campaign form', uses: [U.textInput, U.dropdown, U.errorMessage, U.skillsInput, U.button], parts: [CAMPAIGN_FORM] },
   { slug: 'achievements-card', label: 'Achievements card', uses: [U.button], parts: [ACHIEVEMENTS_CARD] },
   { slug: 'development-card', label: 'Development card', uses: [U.stageProgress, U.button], parts: [DEVELOPMENT_CARD] },
-  { slug: 'relations-card', label: 'Relations card', uses: [U.profileCard, U.button], parts: [RELATIONS_CARD] },
-  { slug: 'task-item', label: 'Task item', uses: [U.flag, U.errorMessage, U.button], parts: [TASK_ITEM] },
 ])

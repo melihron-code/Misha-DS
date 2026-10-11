@@ -1,7 +1,8 @@
 import { cloneElement, useId } from 'react'
-import { cx } from './shared'
+import { cx } from '../atoms/shared'
 
-// Tooltip (v0.6.0, code first; not in Figma yet). A short note under a control, shown while the pointer is
+// Tooltip (v0.6.0, code only; a helper, not part of the design system since v0.6.12: no /ds-dev/ page, not in Figma).
+// Atoms, molecules, organisms and site parts use it for buttons and links with no action yet. A short note under a control, shown while the pointer is
 // over it or it has keyboard focus (e.g. "No action for now" on buttons that don't lead anywhere yet).
 // Wraps one focusable element and describes it (aria-describedby). accent/primary with text/on-accent in
 // text/grotesk, radius/S, padded indents/2XS × indents/XS, indents/XS under the control. `align`: which

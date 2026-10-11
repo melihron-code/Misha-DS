@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Button, Tag, TextInput } from '../atoms'
-import { cx } from '../atoms/shared'
+import { Button, Tag, TextInput } from '../../components/atoms'
+import { cx } from '../../components/atoms/shared'
 
-// SkillsInput (v0.6.9, code first; Figma: "skills" on hiring-campaign-wizard). A TextInput with an "Add" Button
+// SkillsInput (v0.6.9; CampaignForm's own part since v0.6.12, not in the design system; Figma: "skills" on
+// hiring-campaign-wizard). A TextInput with an "Add" Button
 // (secondary) beside it, aligned to the field, then the added skills as Tags (control, with the remove icon),
 // indents/3XS apart, indents/2XS under the field. Typing a skill and pressing Add or Enter adds it (no empty or
 // repeated ones); a Tag removes its skill. `value` (the skills), `onChange(skills)`; `label`, `placeholder`, `addLabel`.
