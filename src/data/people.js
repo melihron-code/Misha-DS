@@ -1,7 +1,8 @@
 // People (Figma: the Kanban on hiring-campaign, the team on all-teams-one, the list on all-teams-employees).
 // Each has a unique `id` (used in /people/:id): the name in kebab-case, plus -2, -3… for repeated names.
 // candidates: `stage` is their Kanban column (applied | screening | interview | offer).
-// employees: `teamId` is their team, `status` their ProfileCard status.
+// employees: `teamId` is their team, `status` their ProfileCard status (the Status atom's keys: on-track | growth |
+// failing), `progress` their ProfileCard bar (Figma: the same for everyone).
 
 const candidates = [
   ['Michael Thompson', 'Product Manager', 'applied', 'petya'],
@@ -21,17 +22,17 @@ const candidates = [
 ].map(([name, role, stage, image = 'katya']) => ({ kind: 'candidate', name, role, stage, image }))
 
 const employees = [
-  ['Sarah Johnson', 'Senior Developer', 'On Track'],
-  ['Michael Smith', 'Product Manager', 'Rocket Growth'],
-  ['Emily Davis', 'UX Designer', 'On Track'],
-  ['David Brown', 'QA Engineer', 'Rocket Growth'],
-  ['Linda Garcia', 'Data Analyst', 'On Track'],
-  ['James Wilson', 'Software Engineer', 'Failing'],
-  ['Alice Thompson', 'Marketing Specialist', 'On Track'],
-  ['Robert Martinez', 'Sales Executive', 'Failing'],
-  ['Jessica Taylor', 'Content Strategist', 'On Track'],
-  ['Charles Lee', 'Systems Analyst', 'Failing'],
-].map(([name, role, status]) => ({ kind: 'employee', name, role, status, teamId: 'engineering', image: 'katya' }))
+  ['Sarah Johnson', 'Senior Developer', 'on-track'],
+  ['Michael Smith', 'Product Manager', 'growth'],
+  ['Emily Davis', 'UX Designer', 'on-track'],
+  ['David Brown', 'QA Engineer', 'growth'],
+  ['Linda Garcia', 'Data Analyst', 'on-track'],
+  ['James Wilson', 'Software Engineer', 'failing'],
+  ['Alice Thompson', 'Marketing Specialist', 'on-track'],
+  ['Robert Martinez', 'Sales Executive', 'failing'],
+  ['Jessica Taylor', 'Content Strategist', 'on-track'],
+  ['Charles Lee', 'Systems Analyst', 'failing'],
+].map(([name, role, status]) => ({ kind: 'employee', name, role, status, progress: 86, teamId: 'engineering', image: 'katya' }))
 
 const slug = name => name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 const seen = {}
@@ -45,3 +46,18 @@ export const personById = id => people.find(p => p.id === id)
 export const candidatesIn = stage => people.filter(p => p.kind === 'candidate' && p.stage === stage)
 export const membersOf = teamId => people.filter(p => p.kind === 'employee' && p.teamId === teamId)
 export const allEmployees = people.filter(p => p.kind === 'employee')
+
+// The Employees page filters (Figma: all-teams-employees). The status chips match the employees' statuses;
+// the curator dropdown has no data yet (no action for now).
+export const employeeFilters = {
+  status: {
+    label: 'Status:',
+    options: [
+      { value: 'all', label: 'All' },
+      { value: 'on-track', label: 'On track' },
+      { value: 'growth', label: 'Rocket growth' },
+      { value: 'failing', label: 'Failing' },
+    ],
+  },
+  curator: { label: 'Choose curator', placeholder: 'Choose curator', options: [] },
+}

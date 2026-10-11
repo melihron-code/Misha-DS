@@ -3,6 +3,48 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.4 — Step 6, Part 2: Employees page (2026-10-11)
+
+### Summary
+Page 3 of 13: Employees on `/employees` (Figma `all-teams-employees`, node `357:58948`; no mobile frame). A
+HeroSection, then the 830px column with the employee list: status chips that filter it, a "Choose curator" dropdown
+(no action yet) and the ten employees, each opening their page. Same page layout as All teams. Checked in headless
+Chrome at 1440, 1200, 1199, 768, 767 and 375 (no sideways scroll), with the mouse (row overlays, filter, dropdown
+tooltip) and the keyboard (arrow keys on the chips, focus rings, Enter on a row), and the links both ways with All
+teams and the Homepage.
+
+### Added
+- **Sections:**
+  - HeroSection (`SiteHero`): Back → All teams, breadcrumbs Home > All teams > Employees; hero "no-bg" with "Add
+    employee" (no action) and the toggle (Overview → `/teams`, Employees selected, Report no action).
+  - **PeopleList** (new organism): a surface/card panel (radius/L, padding indents/X, indents/L inside) with optional
+    filters and ProfileCard long rows, indents/3XS apart, each row a link (overlay on hover / pressed, focus ring).
+    Mobile: the dropdown goes under the chips, full width. Built to be reused by the Team page.
+  - **FilterChips** (new molecule): a label over small ToggleButtons, single choice (radio group, arrow keys).
+- **Layout:** as All teams: `indents/XS` under the hero, `indents/XXL` at the bottom, `size/base-with`, `indents/M`.
+- **Behavior:** the status chips (All, On track, Rocket growth, Failing) filter the list; "No employees with this
+  status." when none match. Rows → `/people/:id?from=employees` (Back on the person's page leads here).
+- **Dropdown (atom):** can be marked unavailable by Tooltip: it keeps its look, stays focusable, shows the not-allowed
+  cursor and doesn't open. The curator dropdown uses it ("No action for now").
+- **Data** (`people.js`): employees' statuses as the Status atom's keys (`on-track`, `growth`, `failing`), progress
+  86 for everyone (as in Figma), `employeeFilters` (status options, curator label).
+- **Docs:** Filter chips (molecules), People list (organisms).
+- **Images:** the existing backdrop and avatar WebPs. No new images or icons.
+
+### Differences from Figma
+- **Status chips:** All, On track, Rocket growth, Failing (the employees' statuses); Figma has All, Onboarding, Rocket
+  growth, Failing, Fired, drawn with Dropdowns, with Onboarding highlighted. "All" is selected by default.
+- **"Choose curator"** (Figma: "chose curator"); no action yet.
+- **Rows are 64px** (Figma 63px), from the ProfileCard molecule, so the page is 10px taller (1541 vs 1531).
+- **Filters row:** the dropdown is aligned right (Figma: a raw 265px gap); rows indents/3XS apart (Figma: a raw 2px).
+- **Breadcrumbs:** real ones (Figma: "Home • Something • Something"), 84px after Back (the SubHeader token since
+  v0.5.0; Figma: a raw 60px).
+
+### Open questions
+- **Mobile rows:** next to the status, long names and roles are cut with "…" (e.g. "Michael S…"). The ProfileCard
+  molecule could move the status under the name on mobile; that would be a molecule change.
+- **Curator:** what it should do (filter by curator?) and the curator list.
+
 ## v0.6.3 — Step 6, Part 2: All teams page (2026-10-11)
 
 ### Summary

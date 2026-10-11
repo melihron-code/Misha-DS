@@ -1,4 +1,4 @@
-import { Header, HeroCard, HeroSection, KanbanBoard, MetricGrid, SubHeader, TaskItem, TeamGrid, TopMenu } from '../../../components/organisms'
+import { Header, HeroCard, HeroSection, KanbanBoard, MetricGrid, PeopleList, SubHeader, TaskItem, TeamGrid, TopMenu } from '../../../components/organisms'
 import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
 import { candidateHero, homeHero, teamsHero } from '../../../data/heroes'
 import { pipeline } from '../../../data/pipeline'
@@ -6,6 +6,7 @@ import { careerStages } from '../../../data/stages'
 import { campaignTasks } from '../../../data/tasks'
 import { teamMetrics } from '../../../data/metrics'
 import { teams } from '../../../data/teams'
+import { allEmployees, employeeFilters } from '../../../data/people'
 import { ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
 
 // Docs for each organism (the format is described in ../docs/docHelpers.js). Organisms are shown in a
@@ -37,6 +38,7 @@ const U = {
   profileCard: { group: 'molecules', slug: 'profile-card', label: 'ProfileCard' },
   metricCard: { group: 'molecules', slug: 'metric-card', label: 'MetricCard' },
   teamCard: { group: 'molecules', slug: 'team-card', label: 'TeamCard' },
+  filterChips: { group: 'molecules', slug: 'filter-chips', label: 'FilterChips' },
   stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
   topMenu: { group: 'organisms', slug: 'top-menu', label: 'TopMenu' },
   subHeader: { group: 'organisms', slug: 'sub-header', label: 'SubHeader' },
@@ -185,6 +187,26 @@ const TEAM_GRID = {
   frame: true,
 }
 
+// The site links each row to the person's page; here they link to the site too.
+const listedPeople = allEmployees.map(p => ({ id: p.id, name: p.name, role: p.role, image: p.image, status: p.status, progress: p.progress, href: `/people/${p.id}` }))
+const PEOPLE_LIST = {
+  name: 'PeopleList',
+  label: 'People list',
+  Component: PeopleList,
+  about: 'A card with optional filters (FilterChips on the left, a Dropdown on the right; with tooltip it has no action yet) and ProfileCard long rows, each a link to the person (overlay, focus ring). Mobile: the dropdown goes under the chips. New in v0.6.4 (Figma: the employees card on all-teams-employees).',
+  rows: [{ label: 'with filters', props: { people: listedPeople, statusFilter: { ...employeeFilters.status, value: 'all' }, selectFilter: { ...employeeFilters.curator, tooltip: 'No action for now' } } }],
+  columns: ONE,
+  controls: [select('status', employeeFilters.status.options.map(o => o.value)), toggle('showFilters')],
+  initial: { status: 'all', showFilters: true },
+  toProps: ({ status, showFilters }) => ({
+    people: listedPeople.filter(p => status === 'all' || p.status === status),
+    ...(showFilters && { statusFilter: { ...employeeFilters.status, value: status }, selectFilter: { ...employeeFilters.curator, tooltip: 'No action for now' } }),
+  }),
+  bind: (p, set) => ({ statusFilter: p.showFilters ? { ...employeeFilters.status, value: p.status, onChange: status => set({ ...p, status }) } : undefined }),
+  snippetNames: { people: 'people', statusFilter: 'statusFilter', selectFilter: 'selectFilter' },
+  frame: true,
+}
+
 const TASK_ITEM = {
   name: 'TaskItem',
   label: 'Task item',
@@ -213,5 +235,6 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'kanban-board', label: 'Kanban board', uses: [U.profileCard], parts: [KANBAN_BOARD] },
   { slug: 'metric-grid', label: 'Metric grid', uses: [U.metricCard], parts: [METRIC_GRID] },
   { slug: 'team-grid', label: 'Team grid', uses: [U.teamCard], parts: [TEAM_GRID] },
+  { slug: 'people-list', label: 'People list', uses: [U.filterChips, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
   { slug: 'task-item', label: 'Task item', uses: [U.flag, U.errorMessage, U.button], parts: [TASK_ITEM] },
 ])

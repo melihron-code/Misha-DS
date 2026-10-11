@@ -7,6 +7,8 @@ import { cx, PRESSABLE, SIZE, stateAttr } from './shared'
 // Behaviour: ARIA select-only combobox + listbox (focus stays on the trigger):
 //   Enter / Space / ↓ / ↑ open · ↑ ↓ Home End move · Enter / Space pick · Esc / Tab close.
 // The open list isn't designed in Figma; it reuses the field's tokens on a surface/card panel.
+// Unavailable (no action yet; Tooltip's `unavailable` passes aria-disabled and aria-describedby): the trigger keeps
+// its look and stays focusable, shows the not-allowed cursor and doesn't open.
 const STYLE = {
   default: {
     label: 'text-text-primary',
@@ -40,8 +42,11 @@ export default function Dropdown({
   disabled = false,
   state,
   className,
+  'aria-disabled': ariaDisabled,
+  'aria-describedby': describedBy,
 }) {
   const s = STYLE[variant]
+  const unavailable = ariaDisabled === true || ariaDisabled === 'true'
   const items = options.map(norm)
   const uid = useId()
   const [inner, setInner] = useState(defaultValue)
@@ -63,7 +68,7 @@ export default function Dropdown({
     setOpen(false)
   }
   const openList = () => {
-    if (isDisabled) return
+    if (isDisabled || unavailable) return
     setActive(selectedIndex >= 0 ? selectedIndex : 0)
     setMoved(false)
     setOpen(true)
@@ -111,6 +116,8 @@ export default function Dropdown({
         aria-controls={listId}
         aria-labelledby={labelId}
         aria-activedescendant={open && active >= 0 ? `${uid}-opt-${active}` : undefined}
+        aria-disabled={unavailable || undefined}
+        aria-describedby={describedBy}
         disabled={isDisabled}
         data-state={stateAttr(state)}
         onClick={() => (open ? setOpen(false) : openList())}

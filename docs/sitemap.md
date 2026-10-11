@@ -10,7 +10,7 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 **13 pages:** the Homepage, 11 pages from the design screens and the 404 page (plus /ds-dev/). The Homepage was
 added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that, All teams was on `/`.
 
-**Built: 2 of 13** — Homepage (v0.6.2), All teams (v0.6.3). The rest are placeholders.
+**Built: 3 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4). The rest are placeholders.
 
 **Breakpoints:** the page container is the window minus its scrollbar, so a desktop browser exactly 768px wide
 (753px of page) gets the mobile layout; tablets (no fixed scrollbar) get the tablet layout. Left as is (decided
@@ -22,7 +22,7 @@ added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that,
 |---|---|---|---|---|---|
 | Homepage | `/` | Homepage | `HomePage.jsx` | HeroSection without SubHeader (decided 2026-10-11; Figma still shows one), no TopMenu tab selected | HeroCard `homepage` (title, subtitle, three large buttons). Nothing below the hero. **Built** (v0.6.2). |
 | All teams | `/teams` | all-teams | `AllTeamsPage.jsx` | HeroSection, SubHeader without Back | MetricGrid (MetricCard ×4), TeamGrid (TeamCard ×6). **Built** (v0.6.3). |
-| Employees | `/employees` | all-teams-employees | `EmployeesPage.jsx` | HeroSection | ⚠ filter bar (Dropdowns), ProfileCard long ×10 |
+| Employees | `/employees` | all-teams-employees | `EmployeesPage.jsx` | HeroSection | PeopleList: FilterChips (status), Dropdown (curator, no action), ProfileCard long ×10. **Built** (v0.6.4). |
 | Team | `/teams/:teamId` | all-teams-one | `TeamPage.jsx` | HeroSection | ⚠ Notification with Avatars, ProfileCard long ×10 |
 | Team campaigns | `/teams/:teamId/campaigns` | all-teams-campaigns | `TeamCampaignsPage.jsx` | HeroSection | Notification, CampaignCard ×4 |
 | All templates | `/templates` | all-teams-templates | `TemplatesPage.jsx` | HeroSection (Figma: Header + HeroCard + background) | DocumentRow ×16 |
@@ -110,7 +110,7 @@ colors unchanged).
 
 - **Every page:** Generate report, Profile, Log out.
 - **All teams:** Add team, hero toggle "Report".
-- **Employees:** Add employee, hero toggle "Report".
+- **Employees:** Add employee, hero toggle "Report", the "Choose curator" dropdown.
 - **Team / Team campaigns:** hero toggle "Access", CampaignCard "Dynamic Program Liaison" (the 4th card), "More info".
 - **All templates:** Add new template, hero toggles Automations / Documents / Access, the document rows, Edit.
 - **Campaign:** Finish, Cancel.
@@ -120,7 +120,8 @@ colors unchanged).
   Reports to, Mentoring and Interview history.
 - **Negotiate:** Send offer.
 
-Controls that work on the page itself (no navigation): hero tag dropdowns and "Add", TaskItem flags, filters.
+Controls that work on the page itself (no navigation): hero tag dropdowns and "Add", TaskItem flags, filters (the
+Employees status chips filter the list).
 
 ## Open questions
 
