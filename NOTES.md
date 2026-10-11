@@ -3,6 +3,41 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.5 — Step 6, Part 2: All templates page (2026-10-11)
+
+### Summary
+Page 4 of 13: All templates on `/templates` (Figma `all-teams-templates`, node `357:58972`; no mobile frame). A
+HeroSection, then the 830px column with the template list; the hero toggle filters it by type. Same page layout as
+All teams and Employees. The list card matches Figma (830×990, rows 60px). Checked in headless Chrome at 1440, 1200,
+1199, 768, 767 and 375 (no sideways scroll), with the mouse (filter, Edit tooltip) and the keyboard (arrow keys on
+the toggle, Tab to Edit with focus ring and tooltip), and the links both ways with the Homepage, All teams and
+Employees.
+
+### Added
+- **Sections:**
+  - HeroSection (`SiteHero`): Back → Homepage, breadcrumbs Home > All templates, the "All templates" tab selected;
+    hero "no-bg" with "Add new template" (no action) and the toggle All / Automations / Documents / Access.
+  - **DocumentList** (new organism): a surface/card panel (radius/L, indents/X at the sides) with DocumentRows,
+    indents/3XS apart; `editTooltip` for edit buttons with no action yet.
+- **Behavior:** the hero toggle filters the list on the page (All, or one type: Automation, Document, Access);
+  `SiteHero` takes `view` / `onViewChange` for this (views without a page). Edit has no action yet (tooltip,
+  not-allowed cursor).
+- **DocumentRow (atom):** `editTooltip`; in a mobile page the row takes two lines (title and Edit, then type, author
+  and date).
+- **Data:** `data/templates.js` (Figma's 8 templates, listed twice as in Figma, with ids; `templateTypeByView`).
+- **Docs:** Document list (organisms); DocumentRow shows `editTooltip`.
+- **Images:** the existing backdrop WebP. No new images or icons.
+
+### Differences from Figma
+- **Top:** HeroSection instead of Figma's Header + HeroCard + separate background (as the other all-teams pages), so
+  the list starts 6px lower (668 vs 662) and the page is 1742px tall (Figma 1736).
+- **TopMenu:** "All templates" is the selected tab here (Figma shows "All teams", the same slip as on the Homepage).
+- **Breadcrumbs:** real ones (Figma: "Home • Something • Something").
+- **"Add new template"** (Figma: "Add New Template").
+
+### Open questions
+- What Edit and "Add new template" should open (no screens yet).
+
 ## v0.6.4 — Step 6, Part 2: Employees page (2026-10-11)
 
 ### Summary

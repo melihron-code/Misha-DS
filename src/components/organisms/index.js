@@ -1,5 +1,6 @@
 // Organisms (Figma: ds-organisms), built from molecules and atoms. Names and props follow NOTES.md.
 // Content comes through props; they never import src/data.
+export { default as DocumentList } from './DocumentList'
 export { default as Header } from './Header'
 export { default as HeroCard } from './HeroCard'
 export { default as HeroSection } from './HeroSection'

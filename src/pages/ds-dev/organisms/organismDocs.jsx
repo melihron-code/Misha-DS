@@ -1,4 +1,4 @@
-import { Header, HeroCard, HeroSection, KanbanBoard, MetricGrid, PeopleList, SubHeader, TaskItem, TeamGrid, TopMenu } from '../../../components/organisms'
+import { DocumentList, Header, HeroCard, HeroSection, KanbanBoard, MetricGrid, PeopleList, SubHeader, TaskItem, TeamGrid, TopMenu } from '../../../components/organisms'
 import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
 import { candidateHero, homeHero, teamsHero } from '../../../data/heroes'
 import { pipeline } from '../../../data/pipeline'
@@ -7,6 +7,7 @@ import { campaignTasks } from '../../../data/tasks'
 import { teamMetrics } from '../../../data/metrics'
 import { teams } from '../../../data/teams'
 import { allEmployees, employeeFilters } from '../../../data/people'
+import { templateTypeByView, templates } from '../../../data/templates'
 import { ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
 
 // Docs for each organism (the format is described in ../docs/docHelpers.js). Organisms are shown in a
@@ -39,6 +40,7 @@ const U = {
   metricCard: { group: 'molecules', slug: 'metric-card', label: 'MetricCard' },
   teamCard: { group: 'molecules', slug: 'team-card', label: 'TeamCard' },
   filterChips: { group: 'molecules', slug: 'filter-chips', label: 'FilterChips' },
+  documentRow: { slug: 'document-row', label: 'DocumentRow' },
   stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
   topMenu: { group: 'organisms', slug: 'top-menu', label: 'TopMenu' },
   subHeader: { group: 'organisms', slug: 'sub-header', label: 'SubHeader' },
@@ -207,6 +209,20 @@ const PEOPLE_LIST = {
   frame: true,
 }
 
+const DOCUMENT_LIST = {
+  name: 'DocumentList',
+  label: 'Document list',
+  Component: DocumentList,
+  about: 'A card of DocumentRows (the templates list); editTooltip: the edit buttons have no action yet. Mobile: two-line rows. New in v0.6.5 (Figma: the document-list card on all-teams-templates).',
+  rows: [{ label: 'default', props: { documents: templates.slice(0, 8), editTooltip: 'No action for now' } }],
+  columns: ONE,
+  controls: [select('type', ['all', 'automations', 'documents', 'access'])],
+  initial: { type: 'all' },
+  toProps: ({ type }) => ({ documents: templates.slice(0, 8).filter(t => !templateTypeByView[type] || t.type === templateTypeByView[type]), editTooltip: 'No action for now' }),
+  snippetNames: { documents: 'templates' },
+  frame: true,
+}
+
 const TASK_ITEM = {
   name: 'TaskItem',
   label: 'Task item',
@@ -236,5 +252,6 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'metric-grid', label: 'Metric grid', uses: [U.metricCard], parts: [METRIC_GRID] },
   { slug: 'team-grid', label: 'Team grid', uses: [U.teamCard], parts: [TEAM_GRID] },
   { slug: 'people-list', label: 'People list', uses: [U.filterChips, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
+  { slug: 'document-list', label: 'Document list', uses: [U.documentRow], parts: [DOCUMENT_LIST] },
   { slug: 'task-item', label: 'Task item', uses: [U.flag, U.errorMessage, U.button], parts: [TASK_ITEM] },
 ])

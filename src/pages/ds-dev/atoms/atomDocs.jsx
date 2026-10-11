@@ -149,11 +149,11 @@ const DOCUMENT_ROW = {
   name: 'DocumentRow',
   label: 'Document row',
   Component: DocumentRow,
-  about: 'A row in a document list: title, type, author, date and an edit button.',
-  rows: [{ label: 'default', props: {} }],
+  about: 'A row in a document list: title, type, author, date and an edit button. editTooltip: edit has no action yet (tooltip, not-allowed cursor). In a mobile page the row takes two lines.',
+  rows: [{ label: 'default', props: {} }, { label: 'editTooltip', props: { editTooltip: 'No action for now' } }],
   columns: ONE,
-  controls: [text('title'), text('author'), text('date')],
-  initial: { title: 'Sarah Johnson', author: 'created by Alan', date: '24.05.2025' },
+  controls: [text('title'), text('author'), text('date'), text('editTooltip')],
+  initial: { title: 'Sarah Johnson', author: 'created by Alan', date: '24.05.2025', editTooltip: '' },
   wide: true,
 }
 

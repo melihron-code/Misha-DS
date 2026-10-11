@@ -24,15 +24,17 @@ export function SiteHeader({ subHeader, progress }) {
 // subHeader: the SubHeader's props (none: no SubHeader). hero: HeroCard content; heroVariant: no-bg (default) or
 // homepage. `views`: { [view value]: path } for the
 // hero's toggle (choosing a view opens its page); views without a path get the "no action" tooltip.
-// `actions`: { [label]: path } likewise for the hero's buttons.
-export function SiteHero({ subHeader, hero, heroVariant = 'no-bg', views = {}, actions = {} }) {
+// `actions`: { [label]: path } likewise for the hero's buttons. `view` + `onViewChange`: the toggle changes the view
+// on the page itself (e.g. a filter) for the views without a path; then they get no tooltip.
+export function SiteHero({ subHeader, hero, heroVariant = 'no-bg', views = {}, actions = {}, view, onViewChange }) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const content = {
     ...hero,
     actions: (hero.actions ?? []).map(a => (actions[a.label] ? { ...a, href: actions[a.label] } : noAction(a))),
-    teams: (hero.teams ?? []).map(t => (views[t.value] || t.value === hero.team ? t : { ...t, tooltip: NO_ACTION })),
-    onTeamChange: value => views[value] && navigate(views[value]),
+    team: view ?? hero.team,
+    teams: (hero.teams ?? []).map(t => (views[t.value] || onViewChange || t.value === hero.team ? t : { ...t, tooltip: NO_ACTION })),
+    onTeamChange: value => (views[value] ? navigate(views[value]) : onViewChange?.(value)),
   }
   return (
     <HeroSection
