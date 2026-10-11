@@ -5,7 +5,8 @@
      only (never layout), with the motion tokens.
    - state-overlay: lays overlay/hover (15% black) or overlay/pressed (25% black)
      over the control. data-state="hover|pressed" forces it for the docs page.
-   - focus-ring: visible keyboard focus in border/focus. data-state="focus" forces it. */
+   - focus-ring: visible keyboard focus in border/focus. data-state="focus" forces it.
+   - hover-fill: hover by a fill color instead of the overlay (Button primary-lg). */
 
 @utility transition-state {
   /* rotate / scale / translate: Tailwind 4 sets these as their own properties, not transform. */
@@ -42,6 +43,27 @@
   &[aria-disabled="true"]::after,
   &[data-state="disabled"]::after {
     background-color: transparent;
+  }
+}
+
+/* Hover by fill (Button primary-lg): on hover the control takes accent/highlight (yellow-400) with text/primary
+   instead of the hover overlay; pressed adds overlay/pressed on top. Not when disabled or marked unavailable.
+   data-state="hover|pressed" forces it for the docs page. Higher specificity than state-overlay and the
+   bg-/text- utilities, so it doesn't depend on the order of the CSS. */
+@utility hover-fill {
+  &:hover:not(:disabled, [aria-disabled="true"]),
+  &[data-state="hover"],
+  &[data-state="pressed"] {
+    background-color: var(--accent-highlight);
+    color: var(--text-primary);
+  }
+  &:hover:not(:disabled, [aria-disabled="true"])::after,
+  &[data-state="hover"]::after {
+    background-color: transparent;
+  }
+  &:active:not(:disabled, [aria-disabled="true"])::after,
+  &[data-state="pressed"]::after {
+    background-color: var(--overlay-pressed);
   }
 }
 

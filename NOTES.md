@@ -7,7 +7,7 @@ Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--f
 
 ### Summary
 The Homepage is built: a HeroSection with the new `homepage` hero (title, subtitle and three large buttons, centered
-as in Figma), no SubHeader. The large Button (`primary-lg`) is now yellow with black text, in code and Figma. On wide
+as in Figma), no SubHeader. The large Button (`primary-lg`) turns yellow with black text on hover. On wide
 windows the HeroSection backdrop fills the whole width (e.g. 1920) while the content stays within 1440. The All
 teams page (`/teams`) is built but not yet checked; its own entry comes when it's done.
 
@@ -23,8 +23,10 @@ teams page (`/teams`) is built but not yet checked; its own entry comes when it'
   (`srcset`, `fetchpriority="high"`, width and height), the avatars at 1× / 2× (width and height 30, lazy).
 
 ### Changed
-- **Button primary-lg** (code and Figma): `accent/highlight` (yellow-400) with `text/primary` (black); was
-  `accent/primary` (black) with `text/on-accent`.
+- **Button primary-lg, hover:** `accent/highlight` (yellow-400) with `text/primary` (black) instead of the hover
+  overlay (new `hover-fill` utility in `interaction.css`); pressed adds overlay/pressed on top. The default stays
+  `accent/primary` (black) with `text/on-accent`. Not when disabled or unavailable. Code only: Figma's Button has
+  no hover variant (an exception to rule 5, asked for by the design owner).
 - **Width:** the site's page root spans the window; each section keeps its content within `size/page` (1440),
   centered. HeroSection: the backdrop spans the full width, the Header and hero sit in an inner 1440 column.
   Header-only pages: the Header is centered within 1440. CLAUDE.md rule 9 updated.
