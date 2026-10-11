@@ -30,9 +30,19 @@ const ACTION_GAP = { 'with-bg': 'gap-indents-3xs', 'no-bg': 'gap-indents-3xs', h
 const NONE = []
 const PHOTO = { src: photo1536, srcSet: `${photo768} 768w, ${photo1536} 1536w`, width: 1536, height: 864 }
 
+// The tag groups (with-bg): the start group is a 2-column grid (v0.6.8), each Dropdown filling its cell and "Add" at
+// its own width; the end group wraps to the right. In a mobile page both wrap, full width (the columns would be too
+// narrow for the tags there).
+const GROUP = {
+  start: 'grid w-fit grid-cols-2 items-center gap-indents-3xs @max-tablet/page:flex @max-tablet/page:w-full @max-tablet/page:flex-wrap',
+  end: 'flex w-1/4 flex-wrap items-center justify-end gap-indents-3xs @max-tablet/page:w-full @max-tablet/page:justify-start',
+}
+const TAG = { start: 'w-full @max-tablet/page:w-auto', end: undefined }
+
 function TagGroup({ tags, onChange, addLabel, onAdd, end = false }) {
+  const side = end ? 'end' : 'start'
   return (
-    <div className={cx('flex flex-wrap items-center gap-indents-3xs @max-tablet/page:w-full', end ? 'w-1/4 justify-end @max-tablet/page:justify-start' : 'w-3/8')}>
+    <div className={GROUP[side]}>
       {tags.map((t, i) => (
         <Dropdown
           key={i}
@@ -43,10 +53,11 @@ function TagGroup({ tags, onChange, addLabel, onAdd, end = false }) {
           value={t.value}
           placeholder={`Choose ${t.label.toLowerCase()}`}
           onChange={v => onChange(i, v)}
+          className={TAG[side]}
         />
       ))}
       {onAdd && (
-        <Button variant="accent" onClick={onAdd}>
+        <Button variant="accent" onClick={onAdd} className="justify-self-start">
           {addLabel}
         </Button>
       )}

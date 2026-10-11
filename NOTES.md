@@ -39,6 +39,8 @@ new-campaign placeholders. Also: descenders no longer cut off in truncated title
 - **All teams page:** the team cards get only their own fields (the team data now also holds the team pages'
   summaries, which leaked into the HTML).
 - **Dynamic Program Liaison** links to its campaign like the other three (it had no prototype link; site map: inferred).
+- **HeroCard (with-bg) tags:** the left group is a 2-column grid (each tag fills its cell, "Add" at its own width),
+  asked for on the Person page; in a mobile page the tags wrap as before (the columns would be too narrow).
 
 ### Differences from Figma
 - **"In progress"** (Figma: "in pgoress").
