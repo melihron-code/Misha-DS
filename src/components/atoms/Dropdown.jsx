@@ -6,7 +6,8 @@ import { cx, PRESSABLE, SIZE, stateAttr } from './shared'
 // `filled` follows from having a value (pass it to force the look on the docs page).
 // Behaviour: ARIA select-only combobox + listbox (focus stays on the trigger):
 //   Enter / Space / ↓ / ↑ open · ↑ ↓ Home End move · Enter / Space pick · Esc / Tab close.
-// The open list isn't designed in Figma; it reuses the field's tokens on a surface/card panel.
+// The open list isn't designed in Figma; it reuses the field's tokens on a surface/card panel. While it's open the
+// arrow points up (v0.6.13: turned 180°, transition-state).
 // Unavailable (no action yet; Tooltip's `unavailable` passes aria-disabled and aria-describedby): the trigger keeps
 // its look and stays focusable, shows the not-allowed cursor and doesn't open.
 const STYLE = {
@@ -131,7 +132,7 @@ export default function Dropdown({
       >
         <span className={cx('trim-letter-spacing text-text-pixel', isDisabled ? 'text-text-disabled' : isFilled ? s.value : s.empty)}>{shown}</span>
         <span className={cx('inline-flex pl-indents-xs', isDisabled ? 'text-text-disabled' : s.icon, !isFilled && variant === 'on-color' && 'opacity-50')}>
-          <ArrowDownIcon size={16} />
+          <ArrowDownIcon size={16} className={cx('transition-state', open && 'rotate-180')} />
         </span>
       </button>
       {open && (
