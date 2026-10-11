@@ -14,6 +14,8 @@ const JOBS = [
   ['hero/photo.jpg', 'hero/photo', [768, 1536], 72],
   // The campaign hero's photo (Figma: hiring-campaign).
   ['hero/campaign-photo.jpg', 'hero/campaign-photo', [768, 1536], 72],
+  // The success page's full-screen background (Figma: success; its two image layers as Figma renders them).
+  ['hero/success.jpg', 'hero/success', [768, 1440, 2880], 72],
   // Avatar: a 30px circle (1× and 2×).
   ...['katya', 'petya', 'dog'].map(name => [`avatars/${name}.png`, `avatars/${name}`, [30, 60], 80]),
 ]

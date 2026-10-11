@@ -20,7 +20,7 @@ import {
   TopMenu,
 } from '../../../components/organisms'
 import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
-import { candidateHero, homeHero, teamsHero } from '../../../data/heroes'
+import { candidateHero, homeHero, publishedBackground, publishedHero, teamsHero } from '../../../data/heroes'
 import { pipeline } from '../../../data/pipeline'
 import { careerStages } from '../../../data/stages'
 import { campaignTasks } from '../../../data/tasks'
@@ -136,10 +136,11 @@ const HERO_SECTION = {
   name: 'HeroSection',
   label: 'Hero section',
   Component: HeroSection,
-  about: 'The top of a page: Header, then the hero at the bottom of a 660px area. showBackground adds the full-width backdrop behind both (with the "no-bg" hero); without it, use the "with-bg" hero. Mobile: no minimum height.',
+  about: 'The top of a page: Header, then the hero at the bottom of a 660px area (size full: the window’s height, the hero centered, no fade). showBackground adds the full-width backdrop behind both (with the "no-bg" hero); without it, use the "with-bg" hero. Mobile: no minimum height.',
   rows: [
     { label: 'showBackground · no-bg hero', props: { header: header('all-teams'), hero: teamsHero, showProgress: false } },
     { label: 'showBackground false · with-bg hero', props: { showBackground: false, heroVariant: 'with-bg', header: header('none'), hero: candidateHero } },
+    { label: 'size full · homepage hero (the success page)', props: { size: 'full', background: publishedBackground, heroVariant: 'homepage', showSubHeader: false, showProgress: false, header: header('none'), hero: publishedHero } },
     { label: 'showBackground · homepage hero', props: { heroVariant: 'homepage', header: { ...header('none'), subHeader: { showBack: false, breadcrumbs: [{ label: 'Home', href: '/' }] } }, hero: homeHero, showProgress: false } },
   ],
   columns: ONE,

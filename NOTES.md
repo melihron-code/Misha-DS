@@ -3,6 +3,33 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.11 — Step 6, Part 2: Campaign published page (2026-10-11)
+
+### Summary
+Page 10 of 13: Campaign published on `/campaigns/new/published` (Figma `success`, node `357:59099`; no mobile frame).
+One full-screen view: the TopMenu over its own background, and "All done, captain!" centered with View campaign and
+Homepage. Checked in headless Chrome at 1440×900, 1440×600, 1920×1080, 1200×800, 768×1024 and 375×700 (the message is
+centered in every window, no sideways scroll), with the mouse and the keyboard, and the links both ways with Job
+description, New campaign and the Homepage.
+
+### Added
+- **HeroSection `size="full"`** (organism change, approved): at least the window's height, the hero centered under the
+  Header, the background centered and without the bottom fade. The default is unchanged.
+- **Sections:** HeroSection full, Header without SubHeader, HeroCard `homepage` (no subtitle) with View campaign →
+  `/campaigns/new` and Homepage → `/` (both primary-sm).
+- **Connections:** the new prototype connection "Homepage" → Homepage (added to the site map, approved).
+- **Data:** `publishedHero` and `publishedBackground` in `heroes.js`; `SiteHero` passes `size` and `background` on.
+- **Images:** Figma's render of the background (two image layers with filters and a screen blend), 2880×1800 JPEG
+  source; WebP 768 / 1440 / 2880 (5, 15, 53 KB), `srcset`, width and height, `fetchpriority="high"`.
+- **Docs:** Hero section shows `size="full"`.
+
+### Differences from Figma
+- **Title on one line** (Figma breaks it after "done," in a 366px box; HeroCard's title spans the column).
+- **Title → buttons:** about 30px (the `homepage` hero's gap, as on the Homepage); Figma 90px.
+
+### Open questions
+- None.
+
 ## v0.6.10 — Step 6, Part 2: Campaign page (2026-10-11)
 
 ### Summary

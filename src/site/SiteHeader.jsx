@@ -24,9 +24,10 @@ export function SiteHeader({ subHeader, progress }) {
 // subHeader: the SubHeader's props (none: no SubHeader). hero: HeroCard content; heroVariant: no-bg (default) or
 // homepage. `views`: { [view value]: path } for the
 // hero's toggle (choosing a view opens its page); views without a path get the "no action" tooltip.
-// `actions`: { [label]: path } likewise for the hero's buttons. `view` + `onViewChange`: the toggle changes the view
+// `actions`: { [label]: path } likewise for the hero's buttons. `size` and `background` go to HeroSection (the full-screen
+// success page). `view` + `onViewChange`: the toggle changes the view
 // on the page itself (e.g. a filter) for the views without a path; then they get no tooltip.
-export function SiteHero({ subHeader, hero, heroVariant = 'no-bg', views = {}, actions = {}, view, onViewChange }) {
+export function SiteHero({ subHeader, hero, heroVariant = 'no-bg', size, background, views = {}, actions = {}, view, onViewChange }) {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const content = {
@@ -41,6 +42,8 @@ export function SiteHero({ subHeader, hero, heroVariant = 'no-bg', views = {}, a
       showSubHeader={!!subHeader}
       showProgress={false}
       heroVariant={heroVariant}
+      size={size}
+      {...(background && { background })}
       header={{ topMenu: topMenuFor(pathname), subHeader }}
       hero={content}
     />

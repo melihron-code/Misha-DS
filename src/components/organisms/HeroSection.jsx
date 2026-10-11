@@ -22,7 +22,20 @@ const BACKDROP = {
   width: 2880,
   height: 1620,
 }
+// `size` (v0.6.11): default (the hero at the bottom of a size/hero area, the backdrop fading into bg/default) or full
+// (Figma: success): at least the window's height, the hero centered under the Header, the background without the
+// fade, centered.
+const SIZE_STYLE = {
+  default: {
+    inner: 'min-h-(--size-hero) justify-between @max-tablet/page:min-h-0 @max-tablet/page:gap-indents-x',
+    hero: '',
+    image: 'object-top',
+  },
+  full: { inner: 'min-h-screen', hero: 'flex-1 items-center', image: 'object-center' },
+}
+
 export default function HeroSection({
+  size = 'default',
   showBackground = true,
   background = BACKDROP,
   showSubHeader = true,
@@ -48,14 +61,14 @@ export default function HeroSection({
             fetchPriority="high"
             decoding="async"
             alt=""
-            className="size-full object-cover object-top"
+            className={cx('size-full object-cover', SIZE_STYLE[size].image)}
           />
-          <div className="absolute inset-0 bg-linear-to-b from-bg-default/0 to-bg-default" />
+          {size === 'default' && <div className="absolute inset-0 bg-linear-to-b from-bg-default/0 to-bg-default" />}
         </div>
       )}
-      <div className="mx-auto flex min-h-(--size-hero) w-full max-w-size-page flex-col justify-between @max-tablet/page:min-h-0 @max-tablet/page:gap-indents-x">
+      <div className={cx('mx-auto flex w-full max-w-size-page flex-col', SIZE_STYLE[size].inner)}>
         <Header showSubHeader={showSubHeader} showProgress={showProgress} {...header} />
-        <div className="flex w-full justify-center px-indents-m">
+        <div className={cx('flex w-full justify-center px-indents-m', SIZE_STYLE[size].hero)}>
           <div className="w-full max-w-size-base-with">
             <HeroCard variant={heroVariant} showActions={showActions} {...hero} />
           </div>

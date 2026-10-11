@@ -1,5 +1,8 @@
 import campaignPhoto768 from '../assets/hero/campaign-photo-768.webp'
 import campaignPhoto1536 from '../assets/hero/campaign-photo-1536.webp'
+import success768 from '../assets/hero/success-768.webp'
+import success1440 from '../assets/hero/success-1440.webp'
+import success2880 from '../assets/hero/success-2880.webp'
 import { nbsp } from '../lib/nbsp'
 
 // Hero content (Figma: HeroCard on the candidate, campaign and all-teams screens).
@@ -43,6 +46,20 @@ export const homeHero = {
   title: 'Hired & Wired',
   subtitle: nbsp('Get most of the hiring and wiring today'),
   actions: [{ label: 'All teams' }, { label: 'All templates' }, { label: 'New campaign' }],
+}
+
+// The success page (Figma: success): a full-screen HeroSection with the "homepage" hero, two primary-sm buttons, and
+// its own background (Figma's render of its two image layers; WebP at 768, 1440 and 2880).
+export const publishedHero = {
+  title: 'All done, captain!',
+  subtitle: '',
+  actions: [{ label: 'View campaign', variant: 'primary-sm' }, { label: 'Homepage', variant: 'primary-sm' }],
+}
+export const publishedBackground = {
+  src: success1440,
+  srcSet: `${success768} 768w, ${success1440} 1440w, ${success2880} 2880w`,
+  width: 2880,
+  height: 1800,
 }
 
 // HeroCard "no bg" inside HeroSection (all-teams screens).

@@ -10,9 +10,9 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 **13 pages:** the Homepage, 11 pages from the design screens and the 404 page (plus /ds-dev/). The Homepage was
 added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that, All teams was on `/`.
 
-**Built: 9 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
+**Built: 10 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
 (v0.6.6), Person (v0.6.7: the profile view; the interview view is still a placeholder), Team campaigns (v0.6.8),
-Job description (v0.6.9), Campaign (v0.6.10). The rest are placeholders.
+Job description (v0.6.9), Campaign (v0.6.10), Campaign published (v0.6.11). The rest are placeholders.
 
 **Hiring data:** every campaign has its own candidates (people.js); its Team campaigns card, its page's stat cards,
 funnel and Kanban, and the team's hiring summary all come from them (data/teams.js).
@@ -36,7 +36,7 @@ funnel and Kanban, and the team's hiring summary all come from them (data/teams.
 | Campaign | `/campaigns/:campaignId` | hiring-campaign | `CampaignPage.jsx` | Header | HeroCard with-bg (the campaign's photo), StatGrid (StatCard ×3), CampaignList (the funnel), KanbanBoard (the campaign's candidates). **Built** (v0.6.10). |
 | New campaign | `/campaigns/new?team=` | hiring-campaign-add | `NewCampaignPage.jsx` | Header | HeroCard with-bg, TaskItem ×6 |
 | Job description | `/campaigns/new/job-description?team=` | hiring-campaign-wizard, hiring-campaign-wizard-viewport (popover) | `JobDescriptionPage.jsx` | Header, SubHeader builder | PageTitle, CampaignForm (fields, SkillsInput, the salary error, the "Head line" popover, Publish). **Built** (v0.6.9). |
-| Campaign published | `/campaigns/new/published` | success | `CampaignPublishedPage.jsx` | Header without SubHeader | ⚠ full-screen backdrop, heading, Button primary-sm |
+| Campaign published | `/campaigns/new/published` | success | `CampaignPublishedPage.jsx` | HeroSection size full (Header without SubHeader) | HeroCard homepage: "All done, captain!", View campaign and Homepage (primary-sm), its own background. **Built** (v0.6.11). |
 | Person | `/people/:personId?campaign=`, `?from=employees` or `?team=` (without one: a candidate's campaign, an employee's team) | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile (**built**, v0.6.7): HeroCard with-bg, TeamSummary, AchievementsCard, DevelopmentCard, RelationsCard. Interview (placeholder): HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
 | Negotiate | `/people/:personId/negotiate?campaign=` or `?team=` | negotiate | `NegotiatePage.jsx` | Header | HeroCard with-bg, AttemptCard ×3, ⚠ offer form, ⚠ prediction |
 | Not found | any other URL, or an unknown id | — | `NotFoundPage.jsx` | Header without SubHeader | heading, Button "Homepage" to `/` |
@@ -90,6 +90,7 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 | hiring-campaign-wizard | TextArea "Preferred qualifications" | hiring-campaign-wizard-viewport | popover on the same page (Figma: a separate screen) |
 | hiring-campaign-wizard | Button "Publish" | success | `/campaigns/new/published` |
 | success | Button "View campaign" (changed 2026-10-11; was "Homepage" → all-teams) | hiring-campaign-add | `/campaigns/new` |
+| success | Button "Homepage" (added 2026-10-11) | Homepage | `/` |
 
 ### Agreed (not in the prototype)
 
@@ -140,7 +141,7 @@ Employees ProfileCards open the person's page (prototype updated); the sample te
 
 1. **Popover** (answered 2026-10-11): it closes on Escape or an outside click; Generate fills Preferred qualifications
    with sample text for now.
-2. **Success screen:** a full-screen backdrop; HeroSection has no full-height option (flagged in v0.5.0).
+2. **Success screen** (answered in v0.6.11): HeroSection `size="full"`.
 3. **Not components yet** (needed in Part 2): filter bar, Notification with avatars, achievements list,
    "next level / prediction" block, assessment results, offer form and prediction, skill input with tags,
    the popover, the page title without a hero, and the white content section with a heading that most pages use.
