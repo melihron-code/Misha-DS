@@ -29,12 +29,12 @@ export default function DocumentRow({ title = 'Sarah Johnson', type = 'Document'
       style={{ '--doc-cols': COLUMNS, '--doc-cols-mobile': MOBILE_COLUMNS, paddingBottom: 'calc(var(--indents-s-inner) + var(--indents-neg-4xs))', ...style }}
       {...rest}
     >
-      <span className="truncate text-heading-h3 text-text-primary @max-tablet/page:col-start-1 @max-tablet/page:row-start-1">{title}</span>
+      <span className="truncate-x text-heading-h3 text-text-primary @max-tablet/page:col-start-1 @max-tablet/page:row-start-1">{title}</span>
       {/* The grid's own cells on wider pages; a second line in a mobile page. */}
       <div className="contents @max-tablet/page:col-span-2 @max-tablet/page:row-start-2 @max-tablet/page:flex @max-tablet/page:flex-wrap @max-tablet/page:gap-x-indents-s-inner @max-tablet/page:gap-y-indents-2xs">
-        <span className="truncate text-text-pixel text-text-primary">{type}</span>
-        <span className="truncate text-text-pixel text-text-primary">{author}</span>
-        <span className="truncate text-right text-text-pixel text-text-primary @max-tablet/page:text-left">{date}</span>
+        <span className="truncate-x text-text-pixel text-text-primary">{type}</span>
+        <span className="truncate-x text-text-pixel text-text-primary">{author}</span>
+        <span className="truncate-x text-right text-text-pixel text-text-primary @max-tablet/page:text-left">{date}</span>
       </div>
       <span className="flex justify-end @max-tablet/page:col-start-2 @max-tablet/page:row-start-1">
         <Tooltip text={editTooltip} align="end" unavailable>

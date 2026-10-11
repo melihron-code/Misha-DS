@@ -1,5 +1,6 @@
 import {
   AchievementsCard,
+  CampaignList,
   DevelopmentCard,
   DocumentList,
   Header,
@@ -21,7 +22,7 @@ import { pipeline } from '../../../data/pipeline'
 import { careerStages } from '../../../data/stages'
 import { campaignTasks } from '../../../data/tasks'
 import { teamMetrics } from '../../../data/metrics'
-import { teams } from '../../../data/teams'
+import { campaignsOf, teams } from '../../../data/teams'
 import { allEmployees, employeeFilters } from '../../../data/people'
 import { templateTypeByView, templates } from '../../../data/templates'
 import { personProfile } from '../../../data/profiles'
@@ -59,6 +60,7 @@ const U = {
   filterChips: { group: 'molecules', slug: 'filter-chips', label: 'FilterChips' },
   documentRow: { slug: 'document-row', label: 'DocumentRow' },
   notification: { group: 'molecules', slug: 'notification', label: 'Notification' },
+  campaignCard: { group: 'molecules', slug: 'campaign-card', label: 'CampaignCard' },
   stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
   topMenu: { group: 'organisms', slug: 'top-menu', label: 'TopMenu' },
   subHeader: { group: 'organisms', slug: 'sub-header', label: 'SubHeader' },
@@ -192,7 +194,7 @@ const METRIC_GRID = {
 }
 
 // The site links each card to its team page; here they link to the site too.
-const linkedTeams = teams.map(t => ({ ...t, href: `/teams/${t.id}` }))
+const linkedTeams = teams.map(t => ({ id: t.id, name: t.name, people: t.people, productivity: t.productivity, highlight: t.highlight, members: t.members, href: `/teams/${t.id}` }))
 const TEAM_GRID = {
   name: 'TeamGrid',
   label: 'Team grid',
@@ -284,6 +286,21 @@ const RELATIONS_CARD = {
   frame: true,
 }
 
+const listedCampaigns = campaignsOf('engineering').map(c => ({ id: c.id, title: c.title, status: c.status, statusLabel: c.statusLabel, stats: c.stats, href: `/campaigns/${c.id}` }))
+const CAMPAIGN_LIST = {
+  name: 'CampaignList',
+  label: 'Campaign list',
+  Component: CampaignList,
+  about: 'CampaignCards stacked; with href each card opens its campaign (overlay, focus ring); buttonTooltip: More info has no action yet. New in v0.6.8 (Figma: the campaign cards on all-teams-campaigns).',
+  rows: [{ label: 'default', props: { campaigns: listedCampaigns.slice(0, 2), buttonTooltip: 'No action for now' } }],
+  columns: ONE,
+  controls: [],
+  initial: {},
+  toProps: () => ({ campaigns: listedCampaigns, buttonTooltip: 'No action for now' }),
+  snippetNames: { campaigns: 'campaigns' },
+  frame: true,
+}
+
 const DOCUMENT_LIST = {
   name: 'DocumentList',
   label: 'Document list',
@@ -329,6 +346,7 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'people-list', label: 'People list', uses: [U.filterChips, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
   { slug: 'document-list', label: 'Document list', uses: [U.documentRow], parts: [DOCUMENT_LIST] },
   { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
+  { slug: 'campaign-list', label: 'Campaign list', uses: [U.campaignCard], parts: [CAMPAIGN_LIST] },
   { slug: 'achievements-card', label: 'Achievements card', uses: [U.button], parts: [ACHIEVEMENTS_CARD] },
   { slug: 'development-card', label: 'Development card', uses: [U.stageProgress, U.button], parts: [DEVELOPMENT_CARD] },
   { slug: 'relations-card', label: 'Relations card', uses: [U.profileCard, U.button], parts: [RELATIONS_CARD] },

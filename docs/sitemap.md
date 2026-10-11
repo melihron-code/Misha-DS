@@ -10,8 +10,9 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 **13 pages:** the Homepage, 11 pages from the design screens and the 404 page (plus /ds-dev/). The Homepage was
 added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that, All teams was on `/`.
 
-**Built: 6 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
-(v0.6.6), Person (v0.6.7: the profile view; the interview view is still a placeholder). The rest are placeholders.
+**Built: 7 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
+(v0.6.6), Person (v0.6.7: the profile view; the interview view is still a placeholder), Team campaigns (v0.6.8).
+The rest are placeholders.
 
 **Page brief:** `docs/page-prompt.md` (the steps for building one page).
 
@@ -27,7 +28,7 @@ added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that,
 | All teams | `/teams` | all-teams | `AllTeamsPage.jsx` | HeroSection, SubHeader without Back | MetricGrid (MetricCard ×4), TeamGrid (TeamCard ×6). **Built** (v0.6.3). |
 | Employees | `/employees` | all-teams-employees | `EmployeesPage.jsx` | HeroSection | PeopleList: FilterChips (status), Dropdown (curator, no action), ProfileCard long ×10. **Built** (v0.6.4). |
 | Team | `/teams/:teamId` | all-teams-one | `TeamPage.jsx` | HeroSection | TeamSummary (Notification), PeopleList with the title "Team" (ProfileCard long). **Built** (v0.6.6). |
-| Team campaigns | `/teams/:teamId/campaigns` | all-teams-campaigns | `TeamCampaignsPage.jsx` | HeroSection | Notification, CampaignCard ×4 |
+| Team campaigns | `/teams/:teamId/campaigns` | all-teams-campaigns | `TeamCampaignsPage.jsx` | HeroSection | TeamSummary (hiring), CampaignList (CampaignCard ×4, each a link). **Built** (v0.6.8). |
 | All templates | `/templates` | all-teams-templates | `TemplatesPage.jsx` | HeroSection (Figma: Header + HeroCard + background) | DocumentList (DocumentRow ×16); the hero toggle filters it by type. **Built** (v0.6.5). |
 | Campaign | `/campaigns/:campaignId` | hiring-campaign | `CampaignPage.jsx` | Header | HeroCard with-bg, StatCard ×3, CampaignCard, KanbanBoard |
 | New campaign | `/campaigns/new?team=` | hiring-campaign-add | `NewCampaignPage.jsx` | Header | HeroCard with-bg, TaskItem ×6 |
@@ -104,6 +105,7 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 | Hero toggle "Overview" (Employees) | `/teams` | same toggle as Overview → Employees |
 | Hero toggle "Team" (Team campaigns) | `/teams/:teamId` | same toggle as Team → Campaigns |
 | Hero button "Negotiate" on the interview content | negotiate | the same hero on the same (now one) candidate page |
+| CampaignCard "Dynamic Program Liaison" | `/campaigns/dynamic-program-liaison` | the other three cards are connected (decided 2026-10-11) |
 
 ### No action yet
 
@@ -114,7 +116,7 @@ colors unchanged).
 - **Every page:** Generate report, Profile, Log out.
 - **All teams:** Add team, hero toggle "Report".
 - **Employees:** Add employee, hero toggle "Report", the "Choose curator" dropdown.
-- **Team / Team campaigns:** hero toggle "Access", CampaignCard "Dynamic Program Liaison" (the 4th card), "More info".
+- **Team / Team campaigns:** hero toggle "Access", "More info" on the campaign cards.
 - **All templates:** Add new template, Edit (the toggle filters the list, decided 2026-10-11; the rows have no link).
 - **Campaign:** Finish, Cancel.
 - **New campaign:** Review, Generate.

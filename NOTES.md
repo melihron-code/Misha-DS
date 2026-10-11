@@ -3,6 +3,50 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.8 — Step 6, Part 2: Team campaigns page (2026-10-11)
+
+### Summary
+Page 7 of 13: Team campaigns on `/teams/:teamId/campaigns` (Figma `all-teams-campaigns`, node `6123:36651`; no mobile
+frame), one page for every team. A HeroSection with the team's name and "Add campaign", then the 830px column with
+the month's hiring summary and the team's campaigns; each card opens its campaign. At 1440 it matches Figma to the
+pixel (summary 114, cards 277, page 1990). Checked in headless Chrome at 1440, 1200, 1199, 768, 767 and 375 (no
+sideways scroll), with the mouse (card overlay, More info above the card's link) and the keyboard (focus ring around
+the card, Enter, Tab to More info), all six teams, and the links both ways with the Team page and the campaign and
+new-campaign placeholders. Also: descenders no longer cut off in truncated titles.
+
+### Added
+- **Sections:**
+  - HeroSection (`SiteHero`): Back → the team, breadcrumbs Home > All teams > *team* > Campaigns; hero "no-bg" with
+    the team's name and "Add campaign" → `/campaigns/new?team=`; toggle Team → team page, Campaigns selected, Access
+    (no action).
+  - **TeamSummary** (label "Hiring summary"): the month's hiring numbers.
+  - **CampaignList** (new organism): CampaignCards, `indents/2XS` apart, each → `/campaigns/:id`; "More info" has
+    no action yet.
+- **CampaignCard (molecule):** `href`: a link named by the title lies over the whole card (overlay/hover and
+  overlay/pressed as its fill, the focus ring around the card); "More info" stays a separate button above it
+  (a button can't sit inside a link). `buttonTooltip` for More info.
+- **Layout:** as Team: `indents/XS` under the hero, `indents/2XS` between parts, `indents/XXL` at the bottom.
+- **Data** (`teams.js`): each campaign's five numbers (Figma's for Engineering), status "Active"; sample campaigns
+  for the other five teams (1–2 each); a hiring summary per team.
+- **Docs:** Campaign list (organisms); CampaignCard shows `href`.
+- **Images:** the existing backdrop WebP. No new images or icons.
+
+### Changed
+- **truncate-x** (new, `text.css`), used instead of Tailwind's `truncate` everywhere (CampaignCard and TeamCard
+  titles, ProfileCard name and role, DocumentRow, StageProgress labels, Kanban column titles): it clips sideways
+  only, so g, p and y are no longer cut off (every text style's line height is smaller than its font size). CLAUDE.md
+  notes it.
+- **All teams page:** the team cards get only their own fields (the team data now also holds the team pages'
+  summaries, which leaked into the HTML).
+- **Dynamic Program Liaison** links to its campaign like the other three (it had no prototype link; site map: inferred).
+
+### Differences from Figma
+- **"In progress"** (Figma: "in pgoress").
+- **Breadcrumbs:** real ones (Figma: "Home • Something • Something").
+
+### Open questions
+- **More info** and **Access** have no screens yet.
+
 ## v0.6.7 — Step 6, Part 2: Person page, profile view (2026-10-11)
 
 ### Summary

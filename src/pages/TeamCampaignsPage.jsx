@@ -1,18 +1,31 @@
 import { useParams } from 'react-router-dom'
+import { CampaignList, TeamSummary } from '../components/organisms'
 import { teamCampaignsHero } from '../data/heroes'
 import { campaignsOf, teamById } from '../data/teams'
-import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHero } from '../site/SiteHeader'
-import { ALL_TEAMS_CRUMB, HOME_CRUMB, paths } from '../site/site'
+import { ALL_TEAMS_CRUMB, HOME_CRUMB, NO_ACTION, SITE_NAME, paths } from '../site/site'
 import NotFoundPage from './NotFoundPage'
 
-// /teams/:teamId/campaigns — Figma: all-teams-campaigns (the Campaigns view of a team).
+// /teams/:teamId/campaigns — Figma: all-teams-campaigns (6123:36651), the Campaigns view of a team. HeroSection (the
+// team's name, "Add campaign" → a new campaign for this team; the toggle's Team opens the team page), then the 830px
+// content column (size/base-with): the month's hiring summary, then the campaigns, indents/2XS apart; indents/XS
+// under the hero, indents/XXL at the bottom, indents/M at the sides (as the other all-teams pages). Each campaign card
+// opens its campaign; "More info" has no action yet.
 export default function TeamCampaignsPage() {
   const team = teamById(useParams().teamId)
   if (!team) return <NotFoundPage />
-  const campaigns = campaignsOf(team.id)
+  const campaigns = campaignsOf(team.id).map(c => ({
+    id: c.id,
+    title: c.title,
+    status: c.status,
+    statusLabel: c.statusLabel,
+    stats: c.stats,
+    href: paths.campaign(c.id),
+  }))
+
   return (
     <>
+      <title>{`${team.name}: campaigns · ${SITE_NAME}`}</title>
       <SiteHero
         subHeader={{
           backHref: paths.team(team.id),
@@ -22,13 +35,12 @@ export default function TeamCampaignsPage() {
         views={{ team: paths.team(team.id), campaigns: paths.teamCampaigns(team.id) }}
         actions={{ 'Add campaign': paths.newCampaign(team.id) }}
       />
-      <PagePlaceholder
-        name={`${team.name}: campaigns`}
-        screens={['all-teams-campaigns']}
-        contains={['HeroSection: Header + hero with Add campaign and Team / Campaigns / Access', 'Notification', `CampaignCard ×${campaigns.length} (status, “More info”)`]}
-        links={campaigns.filter(c => c.linked !== false).map(c => ({ element: 'CampaignCard', label: c.title, href: paths.campaign(c.id) }))}
-        idle={[...campaigns.filter(c => c.linked === false).map(c => c.title), 'More info']}
-      />
+      <main className="flex w-full justify-center px-indents-m pt-indents-xs pb-indents-xxl">
+        <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
+          <TeamSummary label="Hiring summary" message={team.hiringSummary} />
+          <CampaignList campaigns={campaigns} buttonTooltip={NO_ACTION} />
+        </div>
+      </main>
     </>
   )
 }

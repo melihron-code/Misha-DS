@@ -7,3 +7,13 @@
 @utility trim-letter-spacing {
   margin-inline-end: calc(var(--text-letter-spacing, 0em) * -1);
 }
+
+/* truncate-x: one line ending in "…" when it doesn't fit, like Tailwind's truncate, but clipped only sideways.
+   Every text style's line height is smaller than its font size (e.g. heading/h2 40/36), so truncate's
+   overflow: hidden cut off descenders (g, p, y); overflow-x: clip keeps them. Use it instead of truncate. */
+@utility truncate-x {
+  overflow-x: clip;
+  overflow-y: visible;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

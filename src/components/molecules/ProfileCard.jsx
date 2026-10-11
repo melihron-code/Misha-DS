@@ -23,8 +23,8 @@ const CHIP_COLOR = {
 function Info({ name, role }) {
   return (
     <div className="flex min-w-0 flex-col gap-indents-xs text-text-primary">
-      <p className="truncate text-heading-h3">{name}</p>
-      <p className="truncate text-text-pixel">{role}</p>
+      <p className="truncate-x text-heading-h3">{name}</p>
+      <p className="truncate-x text-text-pixel">{role}</p>
     </div>
   )
 }

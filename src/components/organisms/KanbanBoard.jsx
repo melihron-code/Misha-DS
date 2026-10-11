@@ -15,7 +15,7 @@ export default function KanbanBoard({ title = 'Pipeline', columns = [], classNam
         {columns.map(col => (
           <section key={col.id ?? col.title} aria-label={`${col.title}: ${col.people.length}`} className="flex min-w-0 flex-col gap-indents-m">
             <h3 className="flex items-start justify-between gap-indents-s-inner text-heading-h2">
-              <span className="min-w-0 truncate text-text-primary">{col.title}</span>
+              <span className="min-w-0 truncate-x text-text-primary">{col.title}</span>
               <span className="text-text-tertiary">{col.people.length}</span>
             </h3>
             <ul className="flex flex-col gap-indents-3xs">

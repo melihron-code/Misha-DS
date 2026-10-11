@@ -15,7 +15,7 @@ export default function StageProgress({ stages = [], value = 0, size = 'lg', ton
         <>
           <ol aria-hidden="true" className="flex text-text-caps text-text-secondary @max-tablet/page:hidden">
             {stages.map(s => (
-              <li key={s} className="min-w-0 flex-1 truncate">
+              <li key={s} className="min-w-0 flex-1 truncate-x">
                 {s}
               </li>
             ))}

@@ -9,7 +9,8 @@ import { ALL_TEAMS_CRUMB, HOME_CRUMB, SITE_NAME, paths } from '../site/site'
 // (size/base-with) with the metrics and the teams, indents/2XS apart; indents/XS under the hero and
 // indents/XXL at the bottom (Figma: the screen's gap and bottom padding), indents/M at the sides.
 // Each team card opens its team page.
-const linkedTeams = teams.map(t => ({ ...t, href: paths.team(t.id) }))
+// Only the TeamCard's fields (the team data also holds the team pages' summaries).
+const linkedTeams = teams.map(t => ({ id: t.id, name: t.name, people: t.people, productivity: t.productivity, highlight: t.highlight, members: t.members, href: paths.team(t.id) }))
 
 export default function AllTeamsPage() {
   return (

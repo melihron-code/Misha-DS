@@ -18,7 +18,7 @@ export default function TeamCard({
   return (
     <div className={cx('flex w-full flex-col gap-indents-l rounded-radius-l bg-surface-card p-indents-x text-text-primary', className)} {...rest}>
       <div className="flex items-end justify-between gap-indents-m">
-        <h3 className="min-w-0 truncate text-heading-h3">{name}</h3>
+        <h3 className="min-w-0 truncate-x text-heading-h3">{name}</h3>
         <p className="shrink-0 text-text-pixel">{nbsp(`${people} people`)}</p>
       </div>
       <div className="flex flex-col gap-indents-xs">

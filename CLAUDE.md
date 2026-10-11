@@ -15,7 +15,7 @@ Stack: Vite + React (plain JavaScript, `.jsx`), Tailwind CSS v4 (`@tailwindcss/v
 ## Where things live
 - `src/ds/foundations.js`: every foundation as read from Figma (names, aliases, values). Edit here, then run `npm run tokens`. Never edit `tokens.css` by hand.
 - `src/styles/tokens.css`: generated. Primitives, alias tokens, the Tailwind theme, text-style utilities and fonts.
-- `src/styles/interaction.css`: `state-overlay`, `focus-ring`, `focus-ring-within`, `transition-state`, `collapsible` (expand / collapse), `scrollbar-stable` and reduced motion. `src/styles/text.css`: `trim-letter-spacing`.
+- `src/styles/interaction.css`: `state-overlay`, `focus-ring`, `focus-ring-within`, `transition-state`, `collapsible` (expand / collapse), `scrollbar-stable` and reduced motion. `src/styles/text.css`: `trim-letter-spacing`, and `truncate-x` (one line with "…"; use it instead of Tailwind's `truncate`, which cuts off descenders because every text style's line height is smaller than its font size).
 - `src/components/atoms/`: one file per atom, all exported from `index.js`. `shared.js` holds `cx`, `SIZE` (sizes built from tokens with `calc()`), `PRESSABLE` and `stateAttr`.
 - `src/components/molecules/`: one file per molecule, all exported from `index.js`, built only from atoms.
 - `src/components/organisms/`: one file per organism, all exported from `index.js`, built from molecules and atoms (and other organisms: Header nests TopMenu and SubHeader).
