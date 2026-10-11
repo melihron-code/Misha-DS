@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { CampaignList, TeamSummary } from '../components/organisms'
+import { CardGrid, TeamSummary } from '../components/organisms'
 import { teamCampaignsHero } from '../data/heroes'
 import { campaignsOf, hiringSummaryOf, teamById } from '../data/teams'
 import { SiteHero } from '../site/SiteHeader'
@@ -37,7 +37,7 @@ export default function TeamCampaignsPage() {
       <main className="flex w-full justify-center px-indents-m pt-indents-xs pb-indents-xxl">
         <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
           <TeamSummary label="Hiring summary" message={hiringSummaryOf(team.id)} />
-          <CampaignList campaigns={campaigns} buttonTooltip={NO_ACTION} />
+          <CardGrid card="campaign" items={campaigns} cardProps={{ buttonTooltip: NO_ACTION }} emptyText="No campaigns yet." />
         </div>
       </main>
     </>

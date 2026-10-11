@@ -1,18 +1,15 @@
 import {
+  CardGrid,
   AchievementsCard,
-  CampaignList,
   DevelopmentCard,
   DocumentList,
   Header,
   HeroCard,
   HeroSection,
   KanbanBoard,
-  MetricGrid,
   PageTitle,
   PeopleList,
-  StatGrid,
   SubHeader,
-  TeamGrid,
   TeamSummary,
   TopMenu,
 } from '../../../components/organisms'
@@ -180,35 +177,9 @@ const KANBAN_BOARD = {
   frame: true,
 }
 
-const METRIC_GRID = {
-  name: 'MetricGrid',
-  label: 'Metric grid',
-  Component: MetricGrid,
-  about: 'MetricCards in equal columns (the all-teams metrics), each in its card color. 4 columns, 2 on mobile. New in v0.6.2 (Figma: the metrics frame on all-teams).',
-  rows: [{ label: 'default', props: { metrics: teamMetrics } }],
-  columns: ONE,
-  controls: [],
-  initial: {},
-  toProps: () => ({ metrics: teamMetrics }),
-  snippetNames: { metrics: 'teamMetrics' },
-  frame: true,
-}
 
 // The site links each card to its team page; here they link to the site too.
 const linkedTeams = teams.map(t => ({ id: t.id, name: t.name, people: t.people, productivity: t.productivity, highlight: t.highlight, members: t.members, href: `/teams/${t.id}` }))
-const TEAM_GRID = {
-  name: 'TeamGrid',
-  label: 'Team grid',
-  Component: TeamGrid,
-  about: 'TeamCards in 2 columns, 1 on mobile; with href each card is a link to its team (overlay on hover and pressed, focus ring). New in v0.6.2 (Figma: the team-list frame on all-teams).',
-  rows: [{ label: 'default', props: { teams: linkedTeams } }],
-  columns: ONE,
-  controls: [],
-  initial: {},
-  toProps: () => ({ teams: linkedTeams }),
-  snippetNames: { teams: 'teams' },
-  frame: true,
-}
 
 // The site links each row to the person's page; here they link to the site too.
 const listedPeople = allEmployees.map(p => ({ id: p.id, name: p.name, role: p.role, image: p.image, status: p.status, progress: p.progress, href: `/people/${p.id}` }))
@@ -273,19 +244,6 @@ const DEVELOPMENT_CARD = {
   frame: true,
 }
 const listedCampaigns = campaignsOf('engineering').map(c => ({ id: c.id, title: c.title, status: c.status, statusLabel: c.statusLabel, stats: c.stats, href: `/campaigns/${c.id}` }))
-const CAMPAIGN_LIST = {
-  name: 'CampaignList',
-  label: 'Campaign list',
-  Component: CampaignList,
-  about: 'CampaignCards stacked; with href each card opens its campaign (overlay, focus ring); buttonTooltip: More info has no action yet. New in v0.6.8 (Figma: the campaign cards on all-teams-campaigns).',
-  rows: [{ label: 'default', props: { campaigns: listedCampaigns.slice(0, 2), buttonTooltip: 'No action for now' } }],
-  columns: ONE,
-  controls: [],
-  initial: {},
-  toProps: () => ({ campaigns: listedCampaigns, buttonTooltip: 'No action for now' }),
-  snippetNames: { campaigns: 'campaigns' },
-  frame: true,
-}
 
 const PAGE_TITLE = {
   name: 'PageTitle',
@@ -299,19 +257,6 @@ const PAGE_TITLE = {
   frame: true,
 }
 const sampleStats = campaignStatsOf(campaignById('forward-architect'))
-const STAT_GRID = {
-  name: 'StatGrid',
-  label: 'Stat grid',
-  Component: StatGrid,
-  about: 'StatCards in equal columns (a campaign’s Applications, In progress and Conversion rate); 1 column on mobile. New in v0.6.10 (Figma: the stats row on hiring-campaign).',
-  rows: [{ label: 'default', props: { stats: sampleStats } }],
-  columns: ONE,
-  controls: [],
-  initial: {},
-  toProps: () => ({ stats: sampleStats }),
-  snippetNames: { stats: 'stats' },
-  frame: true,
-}
 
 const DOCUMENT_LIST = {
   name: 'DocumentList',
@@ -328,6 +273,26 @@ const DOCUMENT_LIST = {
 }
 
 // Pages under /ds-dev/organisms/<slug>, in the order of the Figma organisms frame, HeroCard before HeroSection.
+const CARD_ITEMS = { metric: teamMetrics, stat: sampleStats, team: linkedTeams, campaign: listedCampaigns }
+const CARD_GRID = {
+  name: 'CardGrid',
+  label: 'Card grid',
+  Component: CardGrid,
+  about: 'One kind of card, laid out for that kind, indents/2XS apart. card: metric (4 columns, 2 on mobile) | stat (one column each, 1 on mobile) | team (2 columns, 1 on mobile) | campaign (stacked). With href a card is a link (overlay on hover and pressed, focus ring); cardProps go to every card (e.g. buttonTooltip: More info has no action yet); emptyText when there are no items. New in v0.6.13, replacing MetricGrid, TeamGrid, StatGrid and CampaignList.',
+  rows: [
+    { label: 'metric', props: { card: 'metric', items: teamMetrics } },
+    { label: 'stat', props: { card: 'stat', items: sampleStats } },
+    { label: 'team', props: { card: 'team', items: linkedTeams } },
+    { label: 'campaign', props: { card: 'campaign', items: listedCampaigns.slice(0, 2), cardProps: { buttonTooltip: 'No action for now' } } },
+  ],
+  columns: ONE,
+  controls: [select('card', ['metric', 'stat', 'team', 'campaign'])],
+  initial: { card: 'metric' },
+  toProps: p => ({ card: p.card, items: CARD_ITEMS[p.card], ...(p.card === 'campaign' && { cardProps: { buttonTooltip: 'No action for now' } }) }),
+  snippetNames: { items: 'items', cardProps: 'cardProps' },
+  frame: true,
+}
+
 export const ORGANISM_PAGES = withAbout([
   { slug: 'top-menu', label: 'Top menu', uses: [U.logo, U.button, U.navTab, U.textLink], parts: [TOP_MENU] },
   { slug: 'sub-header', label: 'Subheader', uses: [U.button, U.breadcrumbs], parts: [SUB_HEADER] },
@@ -335,14 +300,11 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'hero-card', label: 'Hero card', uses: [U.button, U.dropdown, U.toggleGroup], parts: [HERO_CARD] },
   { slug: 'hero-section', label: 'Hero section', uses: [U.header, U.heroCard], parts: [HERO_SECTION] },
   { slug: 'kanban-board', label: 'Kanban board', uses: [U.profileCard], parts: [KANBAN_BOARD] },
-  { slug: 'metric-grid', label: 'Metric grid', uses: [U.metricCard], parts: [METRIC_GRID] },
-  { slug: 'team-grid', label: 'Team grid', uses: [U.teamCard], parts: [TEAM_GRID] },
+  { slug: 'card-grid', label: 'Card grid', uses: [U.metricCard, U.statCard, U.teamCard, U.campaignCard], parts: [CARD_GRID] },
   { slug: 'people-list', label: 'People list', uses: [U.toggleGroup, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
   { slug: 'document-list', label: 'Document list', uses: [U.documentRow], parts: [DOCUMENT_LIST] },
   { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
-  { slug: 'campaign-list', label: 'Campaign list', uses: [U.campaignCard], parts: [CAMPAIGN_LIST] },
   { slug: 'page-title', label: 'Page title', parts: [PAGE_TITLE] },
-  { slug: 'stat-grid', label: 'Stat grid', uses: [U.statCard], parts: [STAT_GRID] },
   { slug: 'achievements-card', label: 'Achievements card', uses: [U.button], parts: [ACHIEVEMENTS_CARD] },
   { slug: 'development-card', label: 'Development card', uses: [U.stageProgress, U.button], parts: [DEVELOPMENT_CARD] },
 ])

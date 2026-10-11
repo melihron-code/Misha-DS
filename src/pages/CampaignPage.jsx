@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { CampaignList, HeroCard, KanbanBoard, StatGrid } from '../components/organisms'
+import { CardGrid, HeroCard, KanbanBoard } from '../components/organisms'
 import { campaignHero } from '../data/heroes'
 import { pipelineFor } from '../data/pipeline'
 import { campaignById, campaignStatsOf, teamById } from '../data/teams'
@@ -40,8 +40,8 @@ export default function CampaignPage() {
         <div className="flex w-full justify-center px-indents-m">
           <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
             <HeroCard variant="with-bg" {...hero} />
-            <StatGrid label="Campaign stats" stats={campaignStatsOf(campaign)} />
-            <CampaignList label="Funnel" campaigns={[{ id: 'funnel', title: 'Funnel', stats: campaign.stats, showStatus: false, showButton: false }]} />
+            <CardGrid card="stat" items={campaignStatsOf(campaign)} label="Campaign stats" />
+            <CardGrid card="campaign" label="Funnel" items={[{ id: 'funnel', title: 'Funnel', stats: campaign.stats, showStatus: false, showButton: false }]} />
           </div>
         </div>
         <KanbanBoard title="Pipeline" columns={columns} className="max-w-size-page" />

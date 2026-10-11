@@ -1,4 +1,4 @@
-import { MetricGrid, TeamGrid } from '../components/organisms'
+import { CardGrid } from '../components/organisms'
 import { teamsHero } from '../data/heroes'
 import { teamMetrics } from '../data/metrics'
 import { teams } from '../data/teams'
@@ -23,8 +23,8 @@ export default function AllTeamsPage() {
       />
       <main className="flex w-full justify-center px-indents-m pt-indents-xs pb-indents-xxl">
         <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
-          <MetricGrid metrics={teamMetrics} label="Team metrics" />
-          <TeamGrid teams={linkedTeams} />
+          <CardGrid card="metric" items={teamMetrics} label="Team metrics" />
+          <CardGrid card="team" items={linkedTeams} />
         </div>
       </main>
     </>
