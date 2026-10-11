@@ -2,7 +2,7 @@
 
 // TopMenu tabs. A page marks its own tab with `selected: true` (see tabsFor).
 export const topMenuTabs = [
-  { id: 'all-teams', label: 'All teams', href: '/' },
+  { id: 'all-teams', label: 'All teams', href: '/teams' },
   { id: 'templates', label: 'All templates', href: '/templates' },
 ]
 

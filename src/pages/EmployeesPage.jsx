@@ -2,16 +2,16 @@ import { employeesHero } from '../data/heroes'
 import { allEmployees } from '../data/people'
 import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHero } from '../site/SiteHeader'
-import { HOME_CRUMB, paths } from '../site/site'
+import { ALL_TEAMS_CRUMB, HOME_CRUMB, paths } from '../site/site'
 
 // /employees — Figma: all-teams-employees (the Employees view of the all-teams hero).
 export default function EmployeesPage() {
   return (
     <>
       <SiteHero
-        subHeader={{ backHref: paths.home, breadcrumbs: [HOME_CRUMB, { label: 'Employees', href: paths.employees }] }}
+        subHeader={{ backHref: paths.allTeams, breadcrumbs: [HOME_CRUMB, ALL_TEAMS_CRUMB, { label: 'Employees', href: paths.employees }] }}
         hero={employeesHero}
-        views={{ overview: paths.home, employees: paths.employees }}
+        views={{ overview: paths.allTeams, employees: paths.employees }}
       />
       <PagePlaceholder
         name="Employees"

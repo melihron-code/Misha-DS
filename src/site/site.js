@@ -18,6 +18,7 @@ const withQuery = (path, params = {}) => {
 // ({ campaign }, { team } or { from: 'employees' }), so Back and the breadcrumbs lead there.
 export const paths = {
   home: '/',
+  allTeams: '/teams',
   employees: '/employees',
   templates: '/templates',
   team: id => `/teams/${id}`,
@@ -31,8 +32,12 @@ export const paths = {
 }
 
 // TopMenu for a path: the current tab selected (the tab whose page the path is under; otherwise the first,
-// All teams: every other page belongs to it); the report button and user links have no action yet.
-const currentTab = pathname => (topMenuTabs.find(t => t.href !== paths.home && pathname.startsWith(t.href)) ?? topMenuTabs[0]).id
+// All teams: every other page belongs to it, except the Homepage, where no tab is selected); the report button
+// and user links have no action yet.
+const currentTab = pathname => {
+  if (pathname === paths.home) return null
+  return (topMenuTabs.find(t => t.href !== paths.allTeams && pathname.startsWith(t.href)) ?? topMenuTabs[0]).id
+}
 export const topMenuFor = pathname => ({
   logoHref: paths.home,
   tabs: tabsFor(currentTab(pathname)),
@@ -41,6 +46,7 @@ export const topMenuFor = pathname => ({
 })
 
 export const HOME_CRUMB = { label: 'Home', href: paths.home }
+export const ALL_TEAMS_CRUMB = { label: 'All teams', href: paths.allTeams }
 
 // Where a person's page was opened from (?campaign=, ?from=employees or ?team=; an employee defaults to their team):
 // `from` for links that keep it, and `parent` ({ label, href }) for Back and the breadcrumbs.

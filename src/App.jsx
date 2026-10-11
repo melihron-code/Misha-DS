@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
+import AllTeamsPage from './pages/AllTeamsPage'
 import CampaignPage from './pages/CampaignPage'
 import CampaignPublishedPage from './pages/CampaignPublishedPage'
 import DsDevPage from './pages/ds-dev/DsDevPage'
@@ -22,6 +23,7 @@ function App() {
       <Route path="/ds-dev/*" element={<DsDevPage />} />
       <Route element={<SiteLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="teams" element={<AllTeamsPage />} />
         <Route path="employees" element={<EmployeesPage />} />
         <Route path="teams/:teamId" element={<TeamPage />} />
         <Route path="teams/:teamId/campaigns" element={<TeamCampaignsPage />} />

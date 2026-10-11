@@ -7,11 +7,15 @@ pages. Figma: the `design` section (node `357:58709`) of file `dPIEJfY3Ma8tiCOcO
 
 Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), the pages in `src/pages/`.
 
+**13 pages:** the Homepage, 11 pages from the design screens and the 404 page (plus /ds-dev/). The Homepage was
+added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that, All teams was on `/`.
+
 ## Pages
 
 | Page | Route | Figma screen(s) | File | Top of the page | Content (organisms, molecules; ⚠ = not a component yet) |
 |---|---|---|---|---|---|
-| All teams (home) | `/` | all-teams | `HomePage.jsx` | HeroSection, SubHeader without Back | MetricCard ×4, TeamCard ×6 |
+| Homepage | `/` | Homepage | `HomePage.jsx` | HeroSection, SubHeader without Back, no TopMenu tab selected | ⚠ HeroCard variant "Homepage" (title, subtitle, three primary-lg buttons; not in code yet). Nothing below the hero. |
+| All teams | `/teams` | all-teams | `AllTeamsPage.jsx` | HeroSection, SubHeader without Back | MetricCard ×4, TeamCard ×6 |
 | Employees | `/employees` | all-teams-employees | `EmployeesPage.jsx` | HeroSection | ⚠ filter bar (Dropdowns), ProfileCard long ×10 |
 | Team | `/teams/:teamId` | all-teams-one | `TeamPage.jsx` | HeroSection | ⚠ Notification with Avatars, ProfileCard long ×10 |
 | Team campaigns | `/teams/:teamId/campaigns` | all-teams-campaigns | `TeamCampaignsPage.jsx` | HeroSection | Notification, CampaignCard ×4 |
@@ -22,7 +26,7 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 | Campaign published | `/campaigns/new/published` | success | `CampaignPublishedPage.jsx` | Header without SubHeader | ⚠ full-screen backdrop, heading, Button primary-sm |
 | Person | `/people/:personId?campaign=`, `?from=employees` or `?team=` | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile: HeroCard with-bg, Notification, ⚠ achievements, StageProgress, ⚠ next level, ProfileCard short ×6. Interview: HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
 | Negotiate | `/people/:personId/negotiate?campaign=` or `?team=` | negotiate | `NegotiatePage.jsx` | Header | HeroCard with-bg, AttemptCard ×3, ⚠ offer form, ⚠ prediction |
-| Not found | any other URL, or an unknown id | — | `NotFoundPage.jsx` | Header without SubHeader | heading, Button to `/` |
+| Not found | any other URL, or an unknown id | — | `NotFoundPage.jsx` | Header without SubHeader | heading, Button "Homepage" to `/` |
 | Design system | `/ds-dev/*` | — | `ds-dev/DsDevPage.jsx` | — | unchanged |
 
 **Templates for many items (dynamic routes):** a team (`/teams/:teamId`, `/teams/:teamId/campaigns`), a
@@ -39,8 +43,9 @@ person's pages keep where they were opened from, so Back and the breadcrumbs lea
   (1440) wide on `bg/default`; client-side links (the components render `<a href>`, the layout routes the
   clicks); scroll to the top on every page change. Each page sets its tab title (`<title>`, "Page · Hired & Wired").
 - `src/site/SiteHeader.jsx`: the top of every page, from one place. `SiteHeader` (Header) or `SiteHero`
-  (HeroSection, the all-teams family). The TopMenu is the same everywhere: the logo leads to `/`, the current
-  tab comes from the URL (All templates under `/templates`, All teams elsewhere).
+  (HeroSection: the Homepage and the all-teams family). The TopMenu is the same everywhere: the logo leads to the
+  Homepage (`/`), the current tab comes from the URL (none on the Homepage, All templates under `/templates`,
+  All teams elsewhere).
 - Overlays: only the "Head line" popover on Job description (opens from the Preferred qualifications field).
 
 ## Connections
@@ -51,6 +56,10 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 
 | Source screen | Element | Destination | Route |
 |---|---|---|---|
+| Homepage | Hero button "All teams" | all-teams | `/teams` |
+| Homepage | Hero button "All templates" | all-teams-templates | `/templates` |
+| Homepage | Hero button "New campaign" | hiring-campaign-wizard (skips the task list) | `/campaigns/new/job-description` |
+| all-teams | Logo "Hired & Wired" | Homepage | `/` |
 | all-teams | TopMenu tab "All templates" | all-teams-templates | `/templates` |
 | all-teams | Hero toggle "Employees" | all-teams-employees | `/employees` |
 | all-teams | TeamCard ×6 | all-teams-one | `/teams/:teamId` |
@@ -71,17 +80,18 @@ All prototype connections are **click → navigate, instant** (no overlays, no b
 
 | Element | Destination |
 |---|---|
-| Back (every SubHeader) | the parent page: the previous breadcrumb (e.g. a campaign → its team's campaigns; a person → the campaign or team they were opened from; Negotiate → the person) |
-| Breadcrumbs | each crumb links to its page; the last one is the current page |
-| Logo | `/` |
-| Success "Homepage" | `/` |
+| Back (every SubHeader) | the parent page: the previous breadcrumb (e.g. Employees and a team → All teams; All templates → the Homepage; a campaign → its team's campaigns; a person → the campaign, team or Employees they were opened from; Negotiate → the person; Job description → New campaign) |
+| Breadcrumbs | each crumb links to its page; the last one is the current page. They start with Home (`/`); the all-teams family adds All teams (`/teams`) |
+| Logo (every screen) | the Homepage, `/` (the prototype connects it on all-teams) |
+| Success "Homepage" | the Homepage, `/` |
+| 404 "Homepage" | the Homepage, `/` |
 
 ### Inferred (same control as a connected one) — to confirm in Part 3
 
 | Element | Destination | Why |
 |---|---|---|
-| TopMenu tab "All teams" (every page) | `/` | the other tab of the same TopMenu is connected |
-| Hero toggle "Overview" (Employees) | `/` | same toggle as Overview → Employees |
+| TopMenu tab "All teams" (every page) | `/teams` | the other tab of the same TopMenu is connected |
+| Hero toggle "Overview" (Employees) | `/teams` | same toggle as Overview → Employees |
 | Hero toggle "Team" (Team campaigns) | `/teams/:teamId` | same toggle as Team → Campaigns |
 | Hero button "Negotiate" on the interview content | negotiate | the same hero on the same (now one) candidate page |
 
@@ -116,3 +126,6 @@ Employees ProfileCards open the person's page (prototype updated); the sample te
    "next level / prediction" block, assessment results, offer form and prediction, skill input with tags,
    the popover, the page title without a hero, and the white content section with a heading that most pages use.
 4. **Stray layers** in the `design` section: `Ellipse 12` and `Frame 1` ("asdasd").
+5. **Homepage hero:** Figma's new HeroCard variant "Homepage" (three primary-lg buttons, no team switcher) isn't in
+   code; it's needed when the Homepage is built. In Figma the Homepage's TopMenu still shows "All teams" selected
+   (a mistake; the code selects no tab there; to be fixed in Figma).

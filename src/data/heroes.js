@@ -32,6 +32,13 @@ export const campaignHero = {
   endTags: [],
 }
 
+// The Homepage hero (Figma: HeroCard variant "Homepage": three primary-lg buttons, no team switcher).
+export const homeHero = {
+  title: 'Hired & Wired',
+  subtitle: nbsp('Get most of the hiring and wiring today'),
+  actions: [{ label: 'All teams' }, { label: 'All templates' }, { label: 'New campaign' }],
+}
+
 // HeroCard "no bg" inside HeroSection (all-teams screens).
 export const teamsHero = {
   title: 'All teams',

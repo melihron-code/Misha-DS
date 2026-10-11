@@ -3,7 +3,7 @@ import { pipeline } from '../data/pipeline'
 import { campaignById, teamById } from '../data/teams'
 import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHeader } from '../site/SiteHeader'
-import { HOME_CRUMB, paths } from '../site/site'
+import { ALL_TEAMS_CRUMB, HOME_CRUMB, paths } from '../site/site'
 import NotFoundPage from './NotFoundPage'
 
 // /campaigns/:campaignId — Figma: hiring-campaign. The Kanban's people open with ?campaign=, so their
@@ -20,7 +20,7 @@ export default function CampaignPage() {
       <SiteHeader
         subHeader={{
           backHref: paths.teamCampaigns(team.id),
-          breadcrumbs: [HOME_CRUMB, { label: team.name, href: paths.team(team.id) }, { label: campaign.title, href: paths.campaign(campaign.id) }],
+          breadcrumbs: [HOME_CRUMB, ALL_TEAMS_CRUMB, { label: team.name, href: paths.team(team.id) }, { label: campaign.title, href: paths.campaign(campaign.id) }],
         }}
       />
       <PagePlaceholder

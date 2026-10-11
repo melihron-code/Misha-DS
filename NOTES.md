@@ -3,6 +3,24 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.0 update — Homepage added to the site map (2026-10-11)
+
+A Homepage screen was added in Figma (`Homepage`, node `357:59066`): a HeroSection with three buttons. The site now
+has 13 pages (the Homepage, 11 design pages, the 404 page); see [docs/sitemap.md](docs/sitemap.md).
+
+- **Routes:** the Homepage takes `/` (`HomePage.jsx`, a placeholder; its hero buttons already work). All teams moves
+  from `/` to **`/teams`** (`AllTeamsPage.jsx`). All other routes are unchanged.
+- **Homepage connections** (from the prototype): All teams → `/teams`, All templates → `/templates`, New campaign →
+  the job description form (`/campaigns/new/job-description`). The logo on all-teams → Homepage.
+- **Links:**
+  - the logo, the "Home" breadcrumb, the success page's "Homepage" and the 404 button (now "Homepage") lead to `/`
+  - the TopMenu tab "All teams" and the hero toggle "Overview" lead to `/teams`
+  - Back on Employees and on a team leads to All teams (`/teams`); on All templates, to the Homepage
+  - the all-teams family's breadcrumbs gain "All teams": Home > All teams > Engineering Team …
+- **TopMenu:** no tab is selected on the Homepage (Figma still shows All teams selected there; a mistake, to be
+  fixed in Figma).
+- **Open:** Figma's new HeroCard variant "Homepage" isn't in code yet (needed when the Homepage is built).
+
 ## v0.6.1 — Step 6, Part 1 refinements: unavailable elements, Employees connections (2026-10-11)
 
 ### Summary

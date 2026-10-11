@@ -2,13 +2,13 @@ import { useSearchParams } from 'react-router-dom'
 import { teamById } from '../data/teams'
 import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHeader } from '../site/SiteHeader'
-import { HOME_CRUMB, paths } from '../site/site'
+import { ALL_TEAMS_CRUMB, HOME_CRUMB, paths } from '../site/site'
 
 // /campaigns/new — Figma: hiring-campaign-add. ?team= is the team it was started from (Back leads there).
 export default function NewCampaignPage() {
   const team = teamById(useSearchParams()[0].get('team'))
   const crumbs = team
-    ? [HOME_CRUMB, { label: team.name, href: paths.team(team.id) }, { label: 'Campaigns', href: paths.teamCampaigns(team.id) }]
+    ? [HOME_CRUMB, ALL_TEAMS_CRUMB, { label: team.name, href: paths.team(team.id) }, { label: 'Campaigns', href: paths.teamCampaigns(team.id) }]
     : [HOME_CRUMB]
   return (
     <>

@@ -3,7 +3,7 @@ import { teamCampaignsHero } from '../data/heroes'
 import { campaignsOf, teamById } from '../data/teams'
 import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHero } from '../site/SiteHeader'
-import { HOME_CRUMB, paths } from '../site/site'
+import { ALL_TEAMS_CRUMB, HOME_CRUMB, paths } from '../site/site'
 import NotFoundPage from './NotFoundPage'
 
 // /teams/:teamId/campaigns — Figma: all-teams-campaigns (the Campaigns view of a team).
@@ -16,7 +16,7 @@ export default function TeamCampaignsPage() {
       <SiteHero
         subHeader={{
           backHref: paths.team(team.id),
-          breadcrumbs: [HOME_CRUMB, { label: team.name, href: paths.team(team.id) }, { label: 'Campaigns', href: paths.teamCampaigns(team.id) }],
+          breadcrumbs: [HOME_CRUMB, ALL_TEAMS_CRUMB, { label: team.name, href: paths.team(team.id) }, { label: 'Campaigns', href: paths.teamCampaigns(team.id) }],
         }}
         hero={teamCampaignsHero(team.name)}
         views={{ team: paths.team(team.id), campaigns: paths.teamCampaigns(team.id) }}

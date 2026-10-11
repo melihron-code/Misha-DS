@@ -12,7 +12,7 @@ export default function NotFoundPage() {
         <h1 className="text-heading-h1 text-text-primary">Page not found</h1>
         <p className="text-text-description text-text-primary">There’s no page at this address.</p>
         <Button variant="primary-sm" href={paths.home}>
-          All teams
+          Homepage
         </Button>
       </main>
     </>
