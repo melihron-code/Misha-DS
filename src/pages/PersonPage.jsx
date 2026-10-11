@@ -19,7 +19,7 @@ import NotFoundPage from './NotFoundPage'
 // the Header (Figma: the screen's gap), cards indents/2XS apart, indents/XXL at the bottom, indents/M at the sides.
 // ?campaign= / ?from=employees / ?team= is where the page was opened from (Back and the breadcrumbs lead there).
 
-// Where the person is on the career path (Header's StageProgress).
+// Where the person is on the career path (Header's progress).
 const CAREER_STAGE = { applied: 'Applied', screening: 'Applied', interview: 'Interviewed', offer: 'Interviewed', employee: 'Common' }
 const progressFor = person => {
   const i = careerStages.indexOf(CAREER_STAGE[person.stage ?? 'employee'])
@@ -101,7 +101,7 @@ export default function PersonPage() {
           name={person.name}
           screens={[INTERVIEWED.screen]}
           heading
-          contains={['Header (SubHeader + StageProgress)', ...INTERVIEWED.contains]}
+          contains={['Header (SubHeader + progress)', ...INTERVIEWED.contains]}
           links={[{ element: 'Hero button', label: 'Negotiate', href: negotiateHref }]}
           idle={INTERVIEWED.idle}
         />

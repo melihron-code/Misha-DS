@@ -1,15 +1,14 @@
 import { useId } from 'react'
-import { Button } from '../../components/atoms'
+import { Button, ProgressBar } from '../../components/atoms'
 import Tooltip from '../../components/support/Tooltip'
 import { cx } from '../../components/atoms/shared'
-import { StageProgress } from '../../components/molecules'
 
 // DevelopmentCard (v0.6.7; a site part since v0.6.13, not in the design system; Figma: "development" on the candidate
 // screen). A surface/card panel (radius/L, padding indents/X, indents/L inside): a title (heading/h2), the stages
-// (StageProgress lg, accent: teal as in Figma), the next level (a heading/h3 label in text/secondary over the role,
+// (ProgressBar lg with its stages, accent: teal as in Figma), the next level (a heading/h3 label in text/secondary over the role,
 // indents/XS apart), the prediction (a text/caps label over a heading/h3 date), indents/S (inner) between those two,
 // and a Button secondary. `stages`, `value` (0–100), `nextLevel`, `prediction`; `action`: { label, href, onClick,
-// tooltip } (with `tooltip` it has no action yet). Responsive: StageProgress shows "Stage X of N" in a mobile page.
+// tooltip } (with `tooltip` it has no action yet). Responsive: the stages become "Stage X of N" in a mobile page.
 export default function DevelopmentCard({
   title = 'Personal Development',
   stages = [],
@@ -28,7 +27,7 @@ export default function DevelopmentCard({
       <h2 id={titleId} className="text-heading-h2">
         {title}
       </h2>
-      <StageProgress stages={stages} value={value} size="lg" tone="accent" label={title} className="w-full" />
+      <ProgressBar stages={stages} value={value} size="lg" tone="accent" label={title} className="w-full" />
       {(nextLevel || prediction) && (
         <div className="flex flex-col gap-indents-s-inner">
           {nextLevel && (

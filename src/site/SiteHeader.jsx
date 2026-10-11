@@ -4,7 +4,7 @@ import { NO_ACTION, noAction, topMenuFor } from './site'
 
 // The top of every site page, built in one place: the TopMenu (same everywhere, current tab from the URL)
 // plus the page's SubHeader and progress. A page uses one of these:
-// - SiteHeader: Header (TopMenu + optional SubHeader + optional StageProgress), up to size/page wide, centered.
+// - SiteHeader: Header (TopMenu + optional SubHeader + optional ProgressBar with stages), up to size/page wide, centered.
 // - SiteHero: HeroSection (backdrop, Header, the "no-bg" hero) for the all-teams family of pages.
 
 export function SiteHeader({ subHeader, progress }) {

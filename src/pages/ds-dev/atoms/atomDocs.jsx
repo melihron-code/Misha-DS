@@ -18,6 +18,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from '../../../components/atoms'
+import { careerStages, developmentStages } from '../../../data/stages'
 import { ONE, STATES, STATES_NO_DISABLED, select, text, toggle, withAbout } from '../docs/docHelpers'
 import IconGallery from './IconGallery'
 
@@ -227,7 +228,7 @@ const PROGRESS_BAR = {
   name: 'ProgressBar',
   label: 'Progress bar',
   Component: ProgressBar,
-  about: 'Dotted progress; fills the width of its container. tone accent uses the green data/bar-*-accent colors.',
+  about: 'Dotted progress; fills the width of its container. tone accent uses the green data/bar-*-accent colors. stages: the stage names under the bar (Header, the candidate’s development); in a mobile page one line, “Stage 7 of 9: Minus one”.',
   rows: [
     { label: 'sm · 75', props: { size: 'sm', value: 75 } },
     { label: 'sm · 20', props: { size: 'sm', value: 20 } },
@@ -235,10 +236,14 @@ const PROGRESS_BAR = {
     { label: 'lg · 20', props: { size: 'lg', value: 20 } },
     { label: 'accent · sm · 75', props: { tone: 'accent', size: 'sm', value: 75 } },
     { label: 'accent · lg · 75', props: { tone: 'accent', size: 'lg', value: 75 } },
+    { label: 'lg · stages (career)', props: { size: 'lg', value: 45, stages: careerStages } },
+    { label: 'sm · accent · stages (development)', props: { tone: 'accent', size: 'sm', value: 60, stages: developmentStages } },
   ],
   columns: ONE,
-  controls: [select('tone', ['default', 'accent']), select('size', ['sm', 'lg']), { prop: 'value', type: 'number', label: 'value (0–100)' }],
-  initial: { tone: 'default', size: 'sm', value: 75 },
+  controls: [select('tone', ['default', 'accent']), select('size', ['sm', 'lg']), { prop: 'value', type: 'number', label: 'value (0–100)' }, select('stages', ['none', 'career', 'development'])],
+  initial: { tone: 'default', size: 'sm', value: 75, stages: 'none' },
+  toProps: ({ stages, ...p }) => ({ ...p, ...(stages !== 'none' && { stages: stages === 'career' ? careerStages : developmentStages }) }),
+  snippetNames: { stages: 'stages' },
   wide: true,
 }
 

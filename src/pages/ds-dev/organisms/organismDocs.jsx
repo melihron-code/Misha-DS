@@ -51,7 +51,7 @@ const U = {
   campaignCard: { group: 'molecules', slug: 'campaign-card', label: 'CampaignCard' },
   statCard: { group: 'molecules', slug: 'stat-card', label: 'StatCard' },
   textInput: { slug: 'input', label: 'TextInput' },
-  stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
+  progressBar: { slug: 'progress-bar', label: 'ProgressBar' },
   topMenu: { group: 'organisms', slug: 'top-menu', label: 'TopMenu' },
   subHeader: { group: 'organisms', slug: 'sub-header', label: 'SubHeader' },
   header: { group: 'organisms', slug: 'header', label: 'Header' },
@@ -224,7 +224,7 @@ const CARD_GRID = {
 export const ORGANISM_PAGES = withAbout([
   { slug: 'top-menu', label: 'Top menu', uses: [U.logo, U.button, U.navTab, U.textLink], parts: [TOP_MENU] },
   { slug: 'sub-header', label: 'Subheader', uses: [U.button, U.breadcrumbs], parts: [SUB_HEADER] },
-  { slug: 'header', label: 'Header', uses: [U.topMenu, U.subHeader, U.stageProgress], parts: [HEADER] },
+  { slug: 'header', label: 'Header', uses: [U.topMenu, U.subHeader, U.progressBar], parts: [HEADER] },
   { slug: 'hero-card', label: 'Hero card', uses: [U.button, U.dropdown, U.toggleGroup], parts: [HERO_CARD] },
   { slug: 'hero-section', label: 'Hero section', uses: [U.header, U.heroCard], parts: [HERO_SECTION] },
   { slug: 'kanban-board', label: 'Kanban board', uses: [U.profileCard], parts: [KANBAN_BOARD] },

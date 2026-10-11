@@ -8,12 +8,10 @@ import {
   Notification,
   ProfileCard,
   ProjectCard,
-  StageProgress,
   StatCard,
   TeamCard,
 } from '../../../components/molecules'
 import { breadcrumbs } from '../../../data/navigation'
-import { careerStages, developmentStages } from '../../../data/stages'
 import { ONE, number, select, text, toggle, withAbout } from '../docs/docHelpers'
 
 // Docs for each molecule (the format is described in ../docs/docHelpers.js). Molecules fill
@@ -213,24 +211,6 @@ const BREADCRUMBS = {
   snippetNames: { items: 'breadcrumbs' },
 }
 
-const STAGE_PROGRESS = {
-  name: 'StageProgress',
-  label: 'Stage progress',
-  Component: StageProgress,
-  about: 'A ProgressBar with its stages under it in equal columns (Header, the candidate’s development). In a mobile page the labels become "Stage 7 of 9: Minus one". New in v0.5.0.',
-  rows: [
-    { label: 'lg · career', props: { stages: careerStages, value: 45 } },
-    { label: 'sm · accent · development', props: { stages: developmentStages, value: 60, size: 'sm', tone: 'accent' } },
-  ],
-  columns: ONE,
-  controls: [select('stages', ['career', 'development']), select('size', ['lg', 'sm']), select('tone', ['default', 'accent']), number('value', 'value (0–100)')],
-  initial: { stages: 'career', size: 'lg', tone: 'default', value: 45 },
-  toProps: p => ({ ...p, stages: p.stages === 'career' ? careerStages : developmentStages }),
-  defaults: { size: 'lg', tone: 'default' },
-  snippetNames: { stages: 'stages' },
-  wide: true,
-}
-
 // Pages under /ds-dev/molecules/<slug>, in the order of the Figma molecules frame (then the new ones).
 export const MOLECULE_PAGES = withAbout([
   { slug: 'profile-card', label: 'Profile card', uses: [A.avatar, A.status, A.progressBar], parts: [PROFILE_CARD] },
@@ -244,5 +224,4 @@ export const MOLECULE_PAGES = withAbout([
   { slug: 'attempt-card', label: 'Attempt card', uses: [A.status], parts: [ATTEMPT_CARD] },
   { slug: 'notification', label: 'Notification', uses: [A.button], parts: [NOTIFICATION] },
   { slug: 'breadcrumbs', label: 'Breadcrumbs', uses: [A.textLink], parts: [BREADCRUMBS] },
-  { slug: 'stage-progress', label: 'Stage progress', uses: [A.progressBar], parts: [STAGE_PROGRESS] },
 ])
