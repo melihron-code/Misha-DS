@@ -1,4 +1,4 @@
-import { DocumentList, Header, HeroCard, HeroSection, KanbanBoard, MetricGrid, PeopleList, SubHeader, TaskItem, TeamGrid, TopMenu } from '../../../components/organisms'
+import { DocumentList, Header, HeroCard, HeroSection, KanbanBoard, MetricGrid, PeopleList, SubHeader, TaskItem, TeamGrid, TeamSummary, TopMenu } from '../../../components/organisms'
 import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
 import { candidateHero, homeHero, teamsHero } from '../../../data/heroes'
 import { pipeline } from '../../../data/pipeline'
@@ -41,6 +41,7 @@ const U = {
   teamCard: { group: 'molecules', slug: 'team-card', label: 'TeamCard' },
   filterChips: { group: 'molecules', slug: 'filter-chips', label: 'FilterChips' },
   documentRow: { slug: 'document-row', label: 'DocumentRow' },
+  notification: { group: 'molecules', slug: 'notification', label: 'Notification' },
   stageProgress: { group: 'molecules', slug: 'stage-progress', label: 'StageProgress' },
   topMenu: { group: 'organisms', slug: 'top-menu', label: 'TopMenu' },
   subHeader: { group: 'organisms', slug: 'sub-header', label: 'SubHeader' },
@@ -195,8 +196,11 @@ const PEOPLE_LIST = {
   name: 'PeopleList',
   label: 'People list',
   Component: PeopleList,
-  about: 'A card with optional filters (FilterChips on the left, a Dropdown on the right; with tooltip it has no action yet) and ProfileCard long rows, each a link to the person (overlay, focus ring). Mobile: the dropdown goes under the chips. New in v0.6.4 (Figma: the employees card on all-teams-employees).',
-  rows: [{ label: 'with filters', props: { people: listedPeople, statusFilter: { ...employeeFilters.status, value: 'all' }, selectFilter: { ...employeeFilters.curator, tooltip: 'No action for now' } } }],
+  about: 'A card with an optional title (heading/h2, e.g. Team), optional filters (FilterChips on the left, a Dropdown on the right; with tooltip it has no action yet) and ProfileCard long rows, each a link to the person (overlay, focus ring). Mobile: the dropdown goes under the chips. New in v0.6.4 (Figma: the employees card on all-teams-employees).',
+  rows: [
+    { label: 'with title (a team page)', props: { title: 'Team', people: listedPeople.slice(0, 4) } },
+    { label: 'with filters', props: { people: listedPeople, statusFilter: { ...employeeFilters.status, value: 'all' }, selectFilter: { ...employeeFilters.curator, tooltip: 'No action for now' } } },
+  ],
   columns: ONE,
   controls: [select('status', employeeFilters.status.options.map(o => o.value)), toggle('showFilters')],
   initial: { status: 'all', showFilters: true },
@@ -206,6 +210,18 @@ const PEOPLE_LIST = {
   }),
   bind: (p, set) => ({ statusFilter: p.showFilters ? { ...employeeFilters.status, value: p.status, onChange: status => set({ ...p, status }) } : undefined }),
   snippetNames: { people: 'people', statusFilter: 'statusFilter', selectFilter: 'selectFilter' },
+  frame: true,
+}
+
+const TEAM_SUMMARY = {
+  name: 'TeamSummary',
+  label: 'Team summary',
+  Component: TeamSummary,
+  about: 'A team’s update for the week: a Notification, full width; the message wraps. New in v0.6.6 (Figma: the summary on all-teams-one).',
+  rows: [{ label: 'default', props: { message: teams[0].summary } }],
+  columns: ONE,
+  controls: [text('message')],
+  initial: { message: teams[0].summary },
   frame: true,
 }
 
@@ -253,5 +269,6 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'team-grid', label: 'Team grid', uses: [U.teamCard], parts: [TEAM_GRID] },
   { slug: 'people-list', label: 'People list', uses: [U.filterChips, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
   { slug: 'document-list', label: 'Document list', uses: [U.documentRow], parts: [DOCUMENT_LIST] },
+  { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
   { slug: 'task-item', label: 'Task item', uses: [U.flag, U.errorMessage, U.button], parts: [TASK_ITEM] },
 ])

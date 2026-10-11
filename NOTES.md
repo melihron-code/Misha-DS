@@ -3,6 +3,40 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.6 — Step 6, Part 2: Team page (2026-10-11)
+
+### Summary
+Page 5 of 13: Team on `/teams/:teamId` (Figma `all-teams-one`, node `6114:31079`; no mobile frame), one page for
+every team. A HeroSection with the team's name, then the 830px column with the week's summary and the team's people;
+each person opens their page. Same page layout as the other all-teams pages. Checked in headless Chrome at 1440,
+1200, 1199, 768, 767 and 375 (no sideways scroll), with the mouse (row overlays, toggle) and the keyboard (focus
+rings, Enter on a row, arrow keys on the toggle), all six teams and an unknown id (404), and the links both ways
+with All teams, Team campaigns and the person pages.
+
+### Added
+- **Sections:**
+  - HeroSection (`SiteHero`): Back → All teams, breadcrumbs Home > All teams > *team*; hero "no-bg" with the team's
+    name, no actions; toggle Team (selected) / Campaigns → `/teams/:id/campaigns` / Access (no action).
+  - **TeamSummary** (new organism): the week's update, a Notification, full width.
+  - **PeopleList** with a new `title` prop ("Team", heading/h2): the team's people, each → `/people/:id?team=:id`.
+- **Layout:** `indents/XS` under the hero, `indents/2XS` between the summary and the list, `indents/XXL` at the
+  bottom, `size/base-with`, `indents/M` at the sides.
+- **Data:** `summary` per team in `teams.js` (Engineering's from Figma, the others sample); sample members for the
+  other five teams in `people.js` (3–5 each, with their own person pages). The Employees page keeps Figma's ten.
+- **Docs:** Team summary (organisms); People list shows the title.
+- **Images:** the existing backdrop and avatar WebPs. No new images or icons.
+
+### Differences from Figma
+- **Summary text** wraps onto three lines at 1440 (Figma: two): short words stay with the next word (CLAUDE.md
+  rule 4), so "3 new hires" and "had a successful" don't break; Figma breaks after "3 new".
+- **Avatars:** Figma's two Avatars placed under the summary (almost hidden behind the list card) are left out.
+- **Rows are 64px** (Figma 63px), from ProfileCard, as on Employees.
+- **Breadcrumbs:** real ones (Figma: "Home • Something • Something").
+
+### Open questions
+- **Employees list:** it shows Figma's ten (Engineering). Should it also list the other teams' sample members?
+- **Access** (the toggle) has no screen yet.
+
 ## v0.6.5 — Step 6, Part 2: All templates page (2026-10-11)
 
 ### Summary
