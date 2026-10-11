@@ -12,7 +12,8 @@ export const candidateHero = {
   title: 'Sarah Mitchell',
   subtitle: 'Senior Software Engineer',
   labels: { start: 'Teams', end: 'Access' },
-  actions: [{ label: 'Promote' }, { label: 'Negotiate' }, { label: 'Suspend' }, { label: 'Fire' }],
+  // Promote is the CTA (primary-sm); the others on-color.
+  actions: [{ label: 'Promote', variant: 'primary-sm' }, { label: 'Negotiate' }, { label: 'Suspend' }, { label: 'Fire' }],
   tags: [
     { label: 'Team', value: 'frontend-team', options: teams },
     { label: 'Lab', value: 'Innovation Lab', options: labs },

@@ -26,7 +26,7 @@ import TooltipOnButton from './TooltipOnButton'
 // Disabled in the playground unless the node variant is chosen (the sublabel exists only there).
 const nodeOnly = control => ({ ...control, enabled: p => p.variant === 'node' })
 
-const BUTTON_VARIANTS = ['primary-lg', 'primary-sm', 'secondary', 'on-color', 'on-color-outlined', 'accent', 'node']
+const BUTTON_VARIANTS = ['primary-lg', 'primary-sm', 'secondary', 'on-color', 'on-color-outlined', 'accent', 'on-yellow', 'node']
 
 const BUTTON = {
   name: 'Button',

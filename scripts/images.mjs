@@ -10,6 +10,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'src', 'assets'
 const JOBS = [
   // HeroSection's backdrop: the page is up to 1440 wide (2880 for 2× screens); 768 for phones and tablets.
   ['hero/backdrop.jpg', 'hero/backdrop', [768, 1440, 2880], 72],
+  // HeroCard's photo (with-bg): up to the 830px card (1536 for 2× screens).
+  ['hero/photo.jpg', 'hero/photo', [768, 1536], 72],
   // Avatar: a 30px circle (1× and 2×).
   ...['katya', 'petya', 'dog'].map(name => [`avatars/${name}.png`, `avatars/${name}`, [30, 60], 80]),
 ]

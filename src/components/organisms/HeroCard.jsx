@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import photo from '../../assets/hero/photo.jpg'
+import photo768 from '../../assets/hero/photo-768.webp'
+import photo1536 from '../../assets/hero/photo-1536.webp'
 import { Button, Dropdown, ToggleButtonGroup, Tooltip } from '../atoms'
 import { cx } from '../atoms/shared'
 import { nbsp } from '../../lib/nbsp'
@@ -14,6 +15,9 @@ import { nbsp } from '../../lib/nbsp'
 //   (ToggleButtonGroup) sits at the bottom, indents/M × 8 under the content (Figma: 160px).
 // homepage (Figma: "Homepage"): no fill, at least 480px like with-bg, the content centered in it; actions are
 //   Button primary-lg, indents/XS apart; no team switcher.
+// An action can set its own `variant` (v0.6.7; e.g. the candidate's "Promote", a primary-sm CTA among on-color
+// buttons). with-bg's photo is WebP at 768 and 1536 wide (npm run images); it's high on the page, so it loads first.
+// `image`: { src, srcSet, width, height } (or a plain URL).
 // An action or team option with `tooltip` has no action yet: it shows the Tooltip (e.g. "No action for now") and
 // is marked unavailable (not-allowed cursor).
 // Fills its container up to size/base-with (830px), centered. Responsive (container "page"): in a mobile page the gaps shrink, the minimum height goes, the tag groups
@@ -24,6 +28,7 @@ const ACTION_VARIANT = { 'with-bg': 'on-color', 'no-bg': 'primary-sm', homepage:
 const ACTION_GAP = { 'with-bg': 'gap-indents-3xs', 'no-bg': 'gap-indents-3xs', homepage: 'gap-indents-xs' }
 // One shared empty list, so a missing tags prop is the same value on every render.
 const NONE = []
+const PHOTO = { src: photo1536, srcSet: `${photo768} 768w, ${photo1536} 1536w`, width: 1536, height: 864 }
 
 function TagGroup({ tags, onChange, addLabel, onAdd, end = false }) {
   return (
@@ -60,7 +65,7 @@ export default function HeroCard({
   endTags = NONE,
   addLabel = 'Add',
   onTagsChange,
-  image = photo,
+  image = PHOTO,
   teams = NONE,
   team,
   onTeamChange,
@@ -97,7 +102,7 @@ export default function HeroCard({
         <div className={cx('flex flex-wrap justify-center', ACTION_GAP[variant])}>
           {actions.map(a => (
             <Tooltip key={a.label} text={a.tooltip} unavailable>
-              <Button variant={ACTION_VARIANT[variant]} href={a.href} onClick={a.onClick}>
+              <Button variant={a.variant ?? ACTION_VARIANT[variant]} href={a.href} onClick={a.onClick}>
                 {a.label}
               </Button>
             </Tooltip>
@@ -143,7 +148,17 @@ export default function HeroCard({
     >
       {/* The yellow photo: the image, turned black-and-white ("color" blend with black), then tinted. */}
       <div aria-hidden="true" className="absolute inset-0 -z-10">
-        <img src={image} alt="" className="size-full object-cover" />
+        <img
+          src={typeof image === 'string' ? image : image.src}
+          srcSet={image.srcSet}
+          sizes="100vw"
+          width={image.width}
+          height={image.height}
+          fetchPriority="high"
+          decoding="async"
+          alt=""
+          className="size-full object-cover"
+        />
         <div className="absolute inset-0 bg-accent-primary mix-blend-color" />
         <div className="absolute inset-0 bg-surface-hero-tint mix-blend-hard-light" />
       </div>

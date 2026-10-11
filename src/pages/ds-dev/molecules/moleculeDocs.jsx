@@ -39,18 +39,24 @@ const A = {
   textLink: { slug: 'text-link', label: 'TextLink' },
 }
 
+// Disabled in the playground unless a short variant is chosen.
+const shortOnly = control => ({ ...control, enabled: p => p.variant !== 'long' })
+
 const PROFILE_CARD = {
   name: 'ProfileCard',
   label: 'Profile card',
   Component: ProfileCard,
-  about: 'A person: long is a list row with status and progress; short and short-outlined are compact chips (red or neutral) that hug their content. Name and role stay on one line.',
-  rows: ['long', 'short', 'short-outlined'].map(v => ({ label: v, props: { variant: v } })),
+  about: 'A person: long is a list row with status and progress; short and short-outlined are compact chips (red or neutral, or a color: red, green, pink, yellow, violet, neutral) that hug their content. Name and role stay on one line.',
+  rows: [
+    ...['long', 'short', 'short-outlined'].map(v => ({ label: v, props: { variant: v } })),
+    ...['green', 'pink', 'yellow', 'violet'].map(c => ({ label: `short · ${c}`, props: { variant: 'short', color: c } })),
+  ],
   columns: ONE,
   controls: [
     [select('variant', ['long', 'short', 'short-outlined']), text('name'), text('role')],
-    [longOnly(select('status', STATUSES)), longOnly(number('progress', 'progress (0–100)'))],
+    [longOnly(select('status', STATUSES)), longOnly(number('progress', 'progress (0–100)')), shortOnly(select('color', ['red', 'green', 'pink', 'yellow', 'violet', 'neutral']))],
   ],
-  initial: { variant: 'long', name: 'Sarah Johnson', role: 'Senior Developer', status: 'on-track', progress: 86 },
+  initial: { variant: 'long', name: 'Sarah Johnson', role: 'Senior Developer', status: 'on-track', progress: 86, color: 'red' },
   controlGrid: 3, // controls on 3 equal columns, edges lined up across rows
   width: 'w-5/6',
 }

@@ -1,4 +1,20 @@
-import { DocumentList, Header, HeroCard, HeroSection, KanbanBoard, MetricGrid, PeopleList, SubHeader, TaskItem, TeamGrid, TeamSummary, TopMenu } from '../../../components/organisms'
+import {
+  AchievementsCard,
+  DevelopmentCard,
+  DocumentList,
+  Header,
+  HeroCard,
+  HeroSection,
+  KanbanBoard,
+  MetricGrid,
+  PeopleList,
+  RelationsCard,
+  SubHeader,
+  TaskItem,
+  TeamGrid,
+  TeamSummary,
+  TopMenu,
+} from '../../../components/organisms'
 import { breadcrumbs, tabsFor, userLinks } from '../../../data/navigation'
 import { candidateHero, homeHero, teamsHero } from '../../../data/heroes'
 import { pipeline } from '../../../data/pipeline'
@@ -8,7 +24,8 @@ import { teamMetrics } from '../../../data/metrics'
 import { teams } from '../../../data/teams'
 import { allEmployees, employeeFilters } from '../../../data/people'
 import { templateTypeByView, templates } from '../../../data/templates'
-import { ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
+import { personProfile } from '../../../data/profiles'
+import { number, ONE, select, text, toggle, withAbout } from '../docs/docHelpers'
 
 // Docs for each organism (the format is described in ../docs/docHelpers.js). Organisms are shown in a
 // page frame (`frame`): desktop in the grid, Desktop / Tablet / Mobile in the playground. Content comes
@@ -225,6 +242,48 @@ const TEAM_SUMMARY = {
   frame: true,
 }
 
+const NO_ACTION_DOC = 'No action for now'
+const ACHIEVEMENTS_CARD = {
+  name: 'AchievementsCard',
+  label: 'Achievements card',
+  Component: AchievementsCard,
+  about: 'A yellow card: title, the achievements spread across the width (2 × 2 on mobile) and a Button on-yellow. New in v0.6.7 (Figma: achievements on the candidate screen).',
+  rows: [{ label: 'default', props: { achievements: personProfile.achievements.items, action: { label: 'All achievements', tooltip: NO_ACTION_DOC } } }],
+  columns: ONE,
+  controls: [text('title')],
+  initial: { title: 'Achievements' },
+  toProps: p => ({ ...p, achievements: personProfile.achievements.items, action: { label: 'All achievements', tooltip: NO_ACTION_DOC } }),
+  snippetNames: { achievements: 'achievements', action: 'action' },
+  frame: true,
+}
+const DEVELOPMENT_CARD = {
+  name: 'DevelopmentCard',
+  label: 'Development card',
+  Component: DevelopmentCard,
+  about: 'A white card: title, the stages (StageProgress), the next level, the prediction and a Button secondary. New in v0.6.7 (Figma: development on the candidate screen).',
+  rows: [{ label: 'default', props: { title: personProfile.development.title, stages: personProfile.development.stages, value: personProfile.development.value, nextLevel: personProfile.development.nextLevel, prediction: personProfile.development.prediction, action: { label: 'More info', tooltip: NO_ACTION_DOC } } }],
+  columns: ONE,
+  controls: [number('value', 'value (0–100)'), text('nextLevel'), text('prediction')],
+  initial: { value: 75, nextLevel: 'Lead Software Engineer', prediction: 'February 2026' },
+  toProps: p => ({ ...p, stages: personProfile.development.stages, action: { label: 'More info', tooltip: NO_ACTION_DOC } }),
+  snippetNames: { stages: 'developmentStages', action: 'action' },
+  frame: true,
+}
+const relationGroups = personProfile.relations.map(g => ({ title: g.title, people: g.people.map(p => ({ ...p, tooltip: NO_ACTION_DOC })), action: g.actionLabel && { label: g.actionLabel, tooltip: NO_ACTION_DOC } }))
+const RELATIONS_CARD = {
+  name: 'RelationsCard',
+  label: 'Relations card',
+  Component: RelationsCard,
+  about: 'A white card with groups of people (Reports to, Mentoring): a title, colored short ProfileCards (links, or with a tooltip when they have no action yet) and an optional button. New in v0.6.7 (Figma: relations on the candidate screen).',
+  rows: [{ label: 'default', props: { groups: relationGroups } }],
+  columns: ONE,
+  controls: [],
+  initial: {},
+  toProps: () => ({ groups: relationGroups }),
+  snippetNames: { groups: 'groups' },
+  frame: true,
+}
+
 const DOCUMENT_LIST = {
   name: 'DocumentList',
   label: 'Document list',
@@ -270,5 +329,8 @@ export const ORGANISM_PAGES = withAbout([
   { slug: 'people-list', label: 'People list', uses: [U.filterChips, U.dropdown, U.profileCard], parts: [PEOPLE_LIST] },
   { slug: 'document-list', label: 'Document list', uses: [U.documentRow], parts: [DOCUMENT_LIST] },
   { slug: 'team-summary', label: 'Team summary', uses: [U.notification], parts: [TEAM_SUMMARY] },
+  { slug: 'achievements-card', label: 'Achievements card', uses: [U.button], parts: [ACHIEVEMENTS_CARD] },
+  { slug: 'development-card', label: 'Development card', uses: [U.stageProgress, U.button], parts: [DEVELOPMENT_CARD] },
+  { slug: 'relations-card', label: 'Relations card', uses: [U.profileCard, U.button], parts: [RELATIONS_CARD] },
   { slug: 'task-item', label: 'Task item', uses: [U.flag, U.errorMessage, U.button], parts: [TASK_ITEM] },
 ])

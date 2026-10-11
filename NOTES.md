@@ -3,6 +3,60 @@
 Figma → React migration of the design system.
 Figma file: https://www.figma.com/design/dPIEJfY3Ma8tiCOcO9LXJO/design-system--forShare--Copy-
 
+## v0.6.7 — Step 6, Part 2: Person page, profile view (2026-10-11)
+
+### Summary
+Page 6 of 13: Person on `/people/:personId`, the **profile view** (Figma `candidate`, node `357:59014`; no mobile
+frame). Candidates in the Interview stage get the interview view (`candidate-interviewed`), still a placeholder; it
+comes in its own run. The first page with a Header instead of a HeroSection: the Header with the career progress,
+then the 830px column with the yellow photo hero, the summary and three cards. Checked in headless Chrome at 1440,
+1200, 1199, 768, 767 and 375 (no sideways scroll), with the mouse and the keyboard (hero tags and Add work; every
+no-action button and card shows the tooltip on hover and on Tab), and the links both ways with Employees, Team,
+the person's campaign and the Negotiate placeholder. The cards match Figma's sizes (hero 480, summary 114,
+achievements 239, development 318).
+
+### Added
+- **Sections:**
+  - Header (`SiteHeader`): SubHeader (Back and breadcrumbs from where the person was opened) and StageProgress (the
+    career stages).
+  - **HeroCard with-bg**: the person's name and role; labels Teams / Access; editable tags + Add; actions Promote
+    (the CTA, black), Negotiate → `/people/:id/negotiate`, Suspend, Fire (no action yet).
+  - **TeamSummary** (label "Summary"): the person's update.
+  - **AchievementsCard** (new organism): a yellow card, the achievements spread across the width (2 × 2 on mobile),
+    "All achievements" (Button on-yellow, no action yet).
+  - **DevelopmentCard** (new organism): StageProgress (development stages, accent), next level, prediction, "More
+    info" (no action yet).
+  - **RelationsCard** (new organism): "Reports to" and "Mentoring:", colored short ProfileCards (no action yet:
+    focusable, tooltip), "Org. chart" (no action yet); groups indents/XXL (out) apart, indents/X on mobile.
+- **Layout (Header pages):** `indents/XXL (out)` under the Header (Figma: the screen's gap), `indents/2XS` between
+  cards, `indents/XXL` at the bottom, `size/base-with`, `indents/M` at the sides.
+- **Changed components (approved):**
+  - ProfileCard short / short-outlined: `color` (red, green, pink, yellow, violet, neutral; surface/tag-*).
+  - Button: variant `on-yellow` (surface/tag-yellow-bright with text/on-yellow).
+  - HeroCard: each action can set its `variant` (the candidate's Promote: primary-sm); the photo is WebP (768 /
+    1536, `srcset`, width and height, `fetchpriority="high"`).
+- **Data:** `data/profiles.js` (Figma's profile content, used for everyone; the hero shows each person's name and
+  role); `candidateHero` marks Promote as the CTA.
+- **Images:** the hero photo as WebP (7 and 20 KB, from an 87 KB JPEG); `npm run images` makes it.
+- **Docs:** Achievements, Development and Relations cards (organisms); ProfileCard colors; Button on-yellow.
+- **`docs/page-prompt.md`:** the page brief, for the next runs.
+
+### Differences from Figma
+- **Header:** 148px tall (Figma 114). Figma's Top menu and SubHeader keep 14px padding but are only 45 and 43px tall,
+  so their 32px buttons overflow; the code keeps the padding and the buttons (since step 5, every Header page).
+- **Hero tags:** the left group takes four lines (Figma two); the code's Dropdown is wider than Figma's (since step 5).
+- **Relations:** 8px taller (each short ProfileCard is 63px; Figma 59).
+- **Development stages:** the labels sit in equal columns ("Ready" isn't pushed to the right edge as in Figma).
+- **"February 2026"** (Figma: "Febrary"); real breadcrumbs.
+- **Not in Figma yet:** the Button `on-yellow` variant (Figma draws an on-color instance with those fills); the
+  Figma tools can't edit Pixform text, so this needs a hand.
+
+### Open questions
+- **Interview view** (`candidate-interviewed`): its own run; it needs experience, skills, projects, assessment
+  results, interview history and Hire / Reject.
+- **Profile content per person:** everyone shows Figma's achievements, development and relations for now.
+- **Header height:** keep the code's padding, or match Figma's 45 / 43px bars (an organism change)?
+
 ## v0.6.6 — Step 6, Part 2: Team page (2026-10-11)
 
 ### Summary

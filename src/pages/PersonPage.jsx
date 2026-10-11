@@ -1,14 +1,19 @@
 import { useParams, useSearchParams } from 'react-router-dom'
+import { AchievementsCard, DevelopmentCard, HeroCard, RelationsCard, TeamSummary } from '../components/organisms'
+import { candidateHero } from '../data/heroes'
 import { personById } from '../data/people'
+import { personProfile } from '../data/profiles'
 import { careerStages } from '../data/stages'
 import PagePlaceholder from '../site/PagePlaceholder'
 import { SiteHeader } from '../site/SiteHeader'
-import { HOME_CRUMB, paths, personContext } from '../site/site'
+import { HOME_CRUMB, NO_ACTION, SITE_NAME, noAction, paths, personContext } from '../site/site'
 import NotFoundPage from './NotFoundPage'
 
-// /people/:personId — Figma: candidate and candidate-interviewed, one template: candidates in the
-// Interview stage get the interview content, everyone else the profile content. Header with progress.
-// ?campaign= / ?team= is where the page was opened from (Back and the breadcrumbs lead there).
+// /people/:personId — Figma: candidate (profile, 357:59014 / 357:58796) and candidate-interviewed (interview), one
+// template: candidates in the Interview stage get the interview content (still a placeholder), everyone else the
+// profile. Header with the career progress; then the 830px content column (size/base-with), indents/XXL (out) under
+// the Header (Figma: the screen's gap), cards indents/2XS apart, indents/XXL at the bottom, indents/M at the sides.
+// ?campaign= / ?from=employees / ?team= is where the page was opened from (Back and the breadcrumbs lead there).
 
 // Where the person is on the career path (Header's StageProgress).
 const CAREER_STAGE = { applied: 'Applied', screening: 'Applied', interview: 'Interviewed', offer: 'Interviewed', employee: 'Common' }
@@ -17,17 +22,7 @@ const progressFor = person => {
   return { stages: careerStages, value: ((i + 0.5) / careerStages.length) * 100 }
 }
 
-const PROFILE = {
-  screen: 'candidate',
-  contains: [
-    'HeroCard with-bg (Promote, Negotiate, Suspend, Fire; tags + Add)',
-    'Notification',
-    '⚠ Achievements list + Button “All achievements”',
-    'Personal development: StageProgress, ⚠ “Next level / Prediction” block, Button “More info”',
-    '“Reports to” and “Mentoring”: ProfileCard short ×6, Button “Org. chart”',
-  ],
-  idle: ['Promote', 'Suspend', 'Fire', 'All achievements', 'More info', 'Org. chart', 'Reports to / Mentoring ProfileCards'],
-}
+// The interview view (Figma: candidate-interviewed) is built in a later run.
 const INTERVIEWED = {
   screen: 'candidate-interviewed',
   contains: [
@@ -42,14 +37,50 @@ const INTERVIEWED = {
   idle: ['Promote', 'Suspend', 'Fire', 'Hire', 'Reject', 'Interview history ProfileCards'],
 }
 
+function Profile({ person, negotiateHref }) {
+  const { summary, achievements, development, relations } = personProfile
+  const hero = {
+    ...candidateHero,
+    title: person.name,
+    subtitle: person.role,
+    actions: candidateHero.actions.map(a => (a.label === 'Negotiate' ? { ...a, href: negotiateHref } : noAction(a))),
+  }
+  return (
+    <main className="flex w-full justify-center px-indents-m pt-indents-xxl-out pb-indents-xxl">
+      <div className="flex w-full max-w-size-base-with flex-col gap-indents-2xs">
+        <HeroCard variant="with-bg" {...hero} />
+        <TeamSummary label="Summary" message={summary} />
+        <AchievementsCard title={achievements.title} achievements={achievements.items} action={{ label: achievements.actionLabel, tooltip: NO_ACTION }} />
+        <DevelopmentCard
+          title={development.title}
+          stages={development.stages}
+          value={development.value}
+          nextLevel={development.nextLevel}
+          prediction={development.prediction}
+          action={{ label: development.actionLabel, tooltip: NO_ACTION }}
+        />
+        <RelationsCard
+          groups={relations.map(g => ({
+            title: g.title,
+            people: g.people.map(p => ({ ...p, tooltip: NO_ACTION })),
+            action: g.actionLabel && { label: g.actionLabel, tooltip: NO_ACTION },
+          }))}
+        />
+      </div>
+    </main>
+  )
+}
+
 export default function PersonPage() {
   const person = personById(useParams().personId)
   const [params] = useSearchParams()
   if (!person) return <NotFoundPage />
   const { from, parent } = personContext(person, params)
-  const view = person.stage === 'interview' ? INTERVIEWED : PROFILE
+  const negotiateHref = paths.negotiate(person.id, from)
+  const interviewed = person.stage === 'interview'
   return (
     <>
+      <title>{`${person.name} · ${SITE_NAME}`}</title>
       <SiteHeader
         subHeader={{
           backHref: parent?.href ?? paths.home,
@@ -57,14 +88,18 @@ export default function PersonPage() {
         }}
         progress={progressFor(person)}
       />
-      <PagePlaceholder
-        name={person.name}
-        screens={[view.screen]}
-        heading
-        contains={['Header (SubHeader + StageProgress)', ...view.contains]}
-        links={[{ element: 'Hero button', label: 'Negotiate', href: paths.negotiate(person.id, from) }]}
-        idle={view.idle}
-      />
+      {interviewed ? (
+        <PagePlaceholder
+          name={person.name}
+          screens={[INTERVIEWED.screen]}
+          heading
+          contains={['Header (SubHeader + StageProgress)', ...INTERVIEWED.contains]}
+          links={[{ element: 'Hero button', label: 'Negotiate', href: negotiateHref }]}
+          idle={INTERVIEWED.idle}
+        />
+      ) : (
+        <Profile person={person} negotiateHref={negotiateHref} />
+      )}
     </>
   )
 }

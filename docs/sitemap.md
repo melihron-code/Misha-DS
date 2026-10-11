@@ -10,8 +10,10 @@ Routes live in `src/App.jsx`, the path helpers in `src/site/site.js` (`paths`), 
 **13 pages:** the Homepage, 11 pages from the design screens and the 404 page (plus /ds-dev/). The Homepage was
 added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that, All teams was on `/`.
 
-**Built: 5 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
-(v0.6.6). The rest are placeholders.
+**Built: 6 of 13** — Homepage (v0.6.2), All teams (v0.6.3), Employees (v0.6.4), All templates (v0.6.5), Team
+(v0.6.6), Person (v0.6.7: the profile view; the interview view is still a placeholder). The rest are placeholders.
+
+**Page brief:** `docs/page-prompt.md` (the steps for building one page).
 
 **Breakpoints:** the page container is the window minus its scrollbar, so a desktop browser exactly 768px wide
 (753px of page) gets the mobile layout; tablets (no fixed scrollbar) get the tablet layout. Left as is (decided
@@ -31,7 +33,7 @@ added to Figma on 2026-10-11 (screen `Homepage`, node `357:59066`); before that,
 | New campaign | `/campaigns/new?team=` | hiring-campaign-add | `NewCampaignPage.jsx` | Header | HeroCard with-bg, TaskItem ×6 |
 | Job description | `/campaigns/new/job-description?team=` | hiring-campaign-wizard, hiring-campaign-wizard-viewport (popover) | `JobDescriptionPage.jsx` | Header, SubHeader builder | ⚠ page title without a hero; TextInput, Dropdown, TextArea, ErrorMessage; ⚠ skill input + tag list; Button primary-lg; ⚠ "Head line" popover |
 | Campaign published | `/campaigns/new/published` | success | `CampaignPublishedPage.jsx` | Header without SubHeader | ⚠ full-screen backdrop, heading, Button primary-sm |
-| Person | `/people/:personId?campaign=`, `?from=employees` or `?team=` | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile: HeroCard with-bg, Notification, ⚠ achievements, StageProgress, ⚠ next level, ProfileCard short ×6. Interview: HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
+| Person | `/people/:personId?campaign=`, `?from=employees` or `?team=` | candidate (profile), candidate-interviewed (Interview stage) | `PersonPage.jsx` | Header with StageProgress | Profile (**built**, v0.6.7): HeroCard with-bg, TeamSummary, AchievementsCard, DevelopmentCard, RelationsCard. Interview (placeholder): HeroCard with-bg, Dropdown, ExperienceItem ×3, Tag ×5, ProjectCard ×3, ⚠ assessment results, ProfileCard short ×3 |
 | Negotiate | `/people/:personId/negotiate?campaign=` or `?team=` | negotiate | `NegotiatePage.jsx` | Header | HeroCard with-bg, AttemptCard ×3, ⚠ offer form, ⚠ prediction |
 | Not found | any other URL, or an unknown id | — | `NotFoundPage.jsx` | Header without SubHeader | heading, Button "Homepage" to `/` |
 | Design system | `/ds-dev/*` | — | `ds-dev/DsDevPage.jsx` | — | unchanged |
